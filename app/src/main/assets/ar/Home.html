@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css.css">
+	<script type="text/javascript" src="bootstrap.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+<body>
+	<style type="text/css">
+	
+	</style>
+	<section class="Home">
+		<div class="mind">
+			<span class="user-thumbail"></span>
+			<div class="post_area_container">
+				<input type="text" class="tell-text" placeholder="أخبرنا عن شئ ما ">
+			<img src="svg/post_btn.svg" class="post_btn">
+			<img src="svg/plus_post_btn.svg" class="plus post_btn">
+			</div>
+			
+
+		</div>
+		<div class="post_box">
+			<span class="user-thumbail"></span>
+			<div class="option_post_container">
+				<img class="post_option_dotted" src="svg/three_dotted.svg">
+				<ul class="hide_report_list">
+				<li><span>إخفاء</span></li>
+				<li><span>تقرير</span></li>
+			</ul>
+			</div>
+			<div class="poster_name">
+				Amr Tarek <i class="online"></i>
+             <span class="since">منذ 2 ساعة</span>
+			</div>
+			<div class="post_self">
+				<p>
+					هناك العديد من الاختلافات في المقاطع من الأرقام المتوفرة باليد ، ولكن الاغلبيه قد تعرضت للتعديل في شكل ما ، من خلال الفكاهة الحقن وهناك العديد من الاختلافات في ممرات الكمية المتاحة من اللوريم ، ولكن الاغلبيه عانت من تغيير في شكل ما حقن الفكاهة هناك العديد من الاختلافات في الممرات المتاحة من المبلغ الإجمالي ، ولكن الاغلبيه قد تعرضت للتعديل في شكل ما ، من خلال الفكاهة الحقن وهناك العديد من الاختلافات في ممرات الكمية المتاحة من اللوريم ، ولكن الاغلبيه عان شكل من اشكال ، من خلال حقن الفكاهة
+
+
+				</p>
+			</div>
+			<div class="post_control">
+				<ul>
+					<li><img src="svg/post_like.svg"><span>2</span><span>إعجاب</span></li>
+					<li><img src="svg/post_comment.svg"><span>2</span><span>تعليقات</span></li>
+					<li><img src="svg/post_share.svg"><span>2</span><span>مشاركة</span></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="post_box">
+			<span class="user-thumbail"></span>
+			<div class="option_post_container">
+				<img class="post_option_dotted" src="svg/three_dotted.svg">
+				<ul class="hide_report_list">
+				<li><span>إخفاء</span></li>
+				<li><span>تقرير</span></li>
+			</ul>
+			</div>
+			<div class="poster_name">
+				Amr Tarek <i class="online"></i>
+             <span class="since">منذ 2 ساعة</span>
+			</div>
+			<div class="post_self">
+				<img src="1.jpg">
+			</div>
+			<div class="post_control">
+				<ul>
+					<li><img src="svg/post_like.svg"><span>2</span><span>إعجاب</span></li>
+					<li><img src="svg/post_comment.svg"><span>2</span><span>تعليقات</span></li>
+					<li><img src="svg/post_share.svg"><span>2</span><span>مشاركة</span></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="post_box">
+			
+			<span class="user-thumbail"></span>
+			<div class="option_post_container">
+				<img class="post_option_dotted" src="svg/three_dotted.svg">
+				<ul class="hide_report_list">
+				<li><span>إخفاء</span></li>
+				<li><span>تقرير</span></li>
+			</ul>
+			</div>
+			<div class="poster_name">
+				Amr Tarek <i class="online"></i>
+             <span class="since">منذ 2 ساعة</span>
+			</div>
+			<div class="post_self">
+				<video controls="controls" poster="1.jpg">
+					<source src="1.mp4" type="video/mp4">
+				</video>
+			</div>
+			<div class="post_control">
+				<ul>
+					<li><img src="svg/post_like.svg"><span>2</span><span>إعجاب</span></li>
+					<li><img src="svg/post_comment.svg"><span>2</span><span>تعليقات</span></li>
+					<li><img src="svg/post_share.svg"><span>2</span><span>مشاركة</span></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+	<script type="text/javascript">
+				$("img.post_option_dotted").click(function(argument) {
+					$(this).parent().find(".hide_report_list").toggleClass('o');
+					
+				})
+				$(".hide_report_list li").click(function() {
+					$(this).parent().parent().find(".hide_report_list").removeClass('o');
+				})
+	</script>
+	<script type="text/javascript">
+		function toast() {
+			Android.showToast("tifaa");
+		}
+	</script>
+</body>
+</html>

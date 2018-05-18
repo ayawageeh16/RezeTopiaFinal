@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="@dimen/dimen_10"
+    android:paddingEnd="@dimen/dimen_10"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp">
+
+    <ImageView
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:id="@+id/searchBackView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_back_white"
+        android:layout_marginEnd="@dimen/dimen_10"
+        android:layout_marginRight="@dimen/dimen_10"
+        android:visibility="gone"
+        android:onClick="backClick"/>
+
+    <EditText
+        android:id="@+id/searchbox"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/searchBackView"
+        android:layout_toRightOf="@+id/searchBackView"
+        android:layout_centerVertical="true"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="0dp"
+        android:layout_marginLeft="0dp"
+        android:background="@drawable/search_round"
+        android:hint="@string/search"
+        android:inputType="textPersonName"
+        android:paddingTop="5dp"
+        android:paddingEnd="5dp"
+        android:paddingRight="5dp"
+        android:paddingBottom="5dp"
+        android:paddingStart="15dp"
+        android:paddingLeft="15dp"
+        android:textColor="@color/colorPrimary"
+        android:textColorHint="@color/colorPrimary" />
+
+
+    <ImageButton
+        android:id="@+id/searchIcon"
+        android:layout_width="50dp"
+        android:layout_height="34dp"
+        android:layout_alignBottom="@+id/searchbox"
+        android:layout_alignTop="@+id/searchbox"
+        android:layout_toEndOf="@+id/searchbox"
+        android:layout_toRightOf="@id/searchbox"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/seaico_round"
+        android:src="@drawable/ic_search_ico"
+        android:text="Button" />
+
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/ic_fir_ball" />
+
+
+</RelativeLayout>

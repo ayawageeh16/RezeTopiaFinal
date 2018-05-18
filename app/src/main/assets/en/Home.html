@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="css.css">
+<script type="text/javascript" src="bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<html>
+<body>
+	<style type="text/css">
+	
+	</style>
+	<section class="Home">
+		<div class="mind">
+			<span class="user-thumbail"></span>
+			<div class="post_area_container">
+				<input type="text" class="tell-text" placeholder="Tell Somthing To Your Network">
+			<img src="svg/post_btn.svg" class="post_btn">
+			<img src="svg/plus_post_btn.svg" class="plus post_btn">
+			</div>
+			
+
+		</div>
+		<div class="post_box">
+			<span class="user-thumbail"></span>
+			<div class="option_post_container">
+				<img class="post_option_dotted" src="svg/three_dotted.svg">
+				<ul class="hide_report_list">
+				<li><span>Hide</span></li>
+				<li><span>Report</span></li>
+			</ul>
+			</div>
+			<div class="poster_name">
+				Amr Tarek <i class="online"></i>
+             <span class="since">2 hrs ago</span>
+			</div>
+			<div class="post_self">
+				<p>
+					There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
+					There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
+					There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
+					There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour
+				</p>
+			</div>
+			<div class="post_control">
+				<ul>
+					<li><img src="svg/post_like.svg"><span>2</span><span>like</span></li>
+					<li><img src="svg/post_comment.svg"><span>2</span><span>comments</span></li>
+					<li><img src="svg/post_share.svg"><span>2</span><span>share</span></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="post_box">
+			<span class="user-thumbail"></span>
+			<div class="option_post_container">
+				<img class="post_option_dotted" src="svg/three_dotted.svg">
+				<ul class="hide_report_list">
+				<li><span>Hide</span></li>
+				<li><span>Report</span></li>
+			</ul>
+			</div>
+			<div class="poster_name">
+				Amr Tarek <i class="online"></i>
+             <span class="since">2 hrs ago</span>
+			</div>
+			<div class="post_self">
+				<img src="1.jpg">
+			</div>
+			<div class="post_control">
+				<ul>
+					<li><img src="svg/post_like.svg"><span>2</span><span>like</span></li>
+					<li><img src="svg/post_comment.svg"><span>2</span><span>comments</span></li>
+					<li><img src="svg/post_share.svg"><span>2</span><span>share</span></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+		<div class="post_box">
+			
+			<span class="user-thumbail"></span>
+			<div class="option_post_container">
+				<img class="post_option_dotted" src="svg/three_dotted.svg">
+				<ul class="hide_report_list">
+				<li><span>Hide</span></li>
+				<li><span>Report</span></li>
+			</ul>
+			</div>
+			
+			<div class="poster_name">
+				Amr Tarek <i class="online"></i>
+             <span class="since">2 hrs ago</span>
+			</div>
+			<div class="post_self">
+				<video controls="controls" poster="1.jpg">
+					<source src="1.mp4" type="video/mp4">
+				</video>
+			</div>
+			<div class="post_control">
+				<ul>
+					<li><img src="svg/post_like.svg"><span>2</span><span>like</span></li>
+					<li><img src="svg/post_comment.svg"><span>2</span><span>comments</span></li>
+					<li><img src="svg/post_share.svg"><span>2</span><span>share</span></li>
+				</ul>
+			</div>
+			<div class="clear"></div>
+		</div>
+	</section>
+	<script type="text/javascript">
+				$("img.post_option_dotted").click(function(argument) {
+					$(this).parent().find(".hide_report_list").toggleClass('o');
+					
+				})
+				$(".hide_report_list li").click(function() {
+					$(this).parent().parent().find(".hide_report_list").removeClass('o');
+				})
+	</script>
+	<script type="text/javascript">
+		function toast() {
+			Android.showToast("tifaa");
+		}
+	</script>
+</body>
+</html>
