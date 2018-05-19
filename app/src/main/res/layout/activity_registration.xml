@@ -1,152 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:background="@color/colorPrimary"
-    android:layout_height="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_height="wrap_content"
+    android:background="@color/colorPrimary">
 
 
     <LinearLayout
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
         <LinearLayout
-            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:orientation="vertical"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginBottom="@dimen/medium_margin"
-            android:paddingTop="@dimen/medium_margin"
-            android:layout_gravity="center">
+            android:orientation="vertical"
+            android:paddingTop="@dimen/medium_margin">
 
             <ImageView
-                android:layout_height="90dp"
                 android:layout_width="100dp"
+                android:layout_height="90dp"
                 android:layout_gravity="center"
-                android:src="@drawable/rezetopia"/>
+                android:src="@drawable/rezetopia" />
+
             <io.krito.com.reze.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/app_name"
                 android:textColor="@color/white"
-                android:textSize="@dimen/txtview_size"
-                android:text="@string/app_name"/>
+                android:textSize="@dimen/txtview_size" />
         </LinearLayout>
 
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     android:background="@drawable/namewhite" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Name"
-                    android:layout_marginLeft="@dimen/dividerlist"
                     android:layout_gravity="center"
-                    android:textColor="@color/colorPrimaryDark"/>
+                    android:layout_marginLeft="@dimen/dividerlist"
+                    android:text="Name"
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <View
-                    android:background="@color/green5"
-                    android:layout_height="35dp"
                     android:layout_width="10dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/medium_margin"
-                    android:layout_toLeftOf="@id/edName"/>
+                    android:layout_toLeftOf="@id/edName"
+                    android:background="@color/green5" />
+
+
                 <io.krito.com.reze.views.CustomEditText
-                    android:layout_height="wrap_content"
+                    android:id="@+id/edName"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:paddingTop="@dimen/lv_divider_height"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingBottom="@dimen/lv_divider_height"
-                    android:paddingLeft="@dimen/lv_divider_height"
-                    android:paddingRight="@dimen/lv_divider_height"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginRight="15dp"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:background="@drawable/roundtwo_green"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:gravity="left|center_vertical"
                     android:imeOptions="actionNext"
                     android:inputType="textPersonName"
                     android:maxLines="1"
-                    android:drawablePadding="@dimen/small_margin"
-                    android:gravity="left|center_vertical"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:textColorHint="@color/gray"
+                    android:paddingBottom="@dimen/lv_divider_height"
+                    android:paddingLeft="@dimen/lv_divider_height"
+                    android:paddingRight="@dimen/lv_divider_height"
+                    android:paddingTop="@dimen/lv_divider_height"
                     android:textColor="@android:color/white"
-                    android:layout_marginRight="15dp"
-                    android:id="@+id/edName"
-                    android:background="@drawable/roundtwo_green"/>
+                    android:textColorHint="@color/gray" />
             </LinearLayout>
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     android:background="@drawable/phonewhite" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:text="Phone"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dividerlist"
-                    android:layout_gravity="center"/>
+                    android:text="Phone"
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dimen_10">
+
                 <View
-                    android:background="@color/green5"
-                    android:layout_height="35dp"
                     android:layout_width="10dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/medium_margin"
-                    android:layout_toLeftOf="@id/edPhone"/>
+                    android:layout_toLeftOf="@id/edPhone"
+                    android:background="@color/green5" />
+
                 <io.krito.com.reze.views.CustomEditText
                     android:id="@+id/edPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginLeft="@dimen/card_view_content_padding"
+                    android:layout_marginRight="@dimen/medium_margin"
                     android:background="@drawable/roundtwo_green"
                     android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:maxLength="19"
                     android:maxLines="1"
                     android:padding="@dimen/lv_divider_height"
-                    android:layout_gravity="center|center_horizontal|center_vertical"
-                    android:textColor="@android:color/white"
-                    android:layout_marginRight="@dimen/medium_margin"
-                    android:layout_marginLeft="@dimen/card_view_content_padding"/>
+                    android:textColor="@android:color/white" />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_10">
+            android:layout_marginTop="@dimen/dimen_10"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -157,237 +173,254 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Email"
-                    android:layout_marginLeft="@dimen/dividerlist"
                     android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dividerlist"
+                    android:text="Email"
                     android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <View
-                    android:background="@color/green5"
-                    android:layout_height="35dp"
                     android:layout_width="10dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/medium_margin"
                     android:layout_toLeftOf="@id/edPhone"
-                    />
+                    android:background="@color/green5" />
 
                 <io.krito.com.reze.views.CustomEditText
-                    android:layout_height="wrap_content"
+                    android:id="@+id/edEmail"
                     android:layout_width="match_parent"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:paddingTop="@dimen/lv_divider_height"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:paddingBottom="@dimen/lv_divider_height"
-                    android:paddingLeft="@dimen/lv_divider_height"
-                    android:paddingRight="@dimen/lv_divider_height"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/card_view_content_padding"
+                    android:layout_marginRight="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:background="@drawable/roundtwo_green"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:gravity="left|center_vertical"
                     android:imeOptions="actionNext"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
-                    android:drawablePadding="@dimen/small_margin"
-                    android:gravity="left|center_vertical"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:textColorHint="@color/gray"
+                    android:paddingBottom="@dimen/lv_divider_height"
+                    android:paddingLeft="@dimen/lv_divider_height"
+                    android:paddingRight="@dimen/lv_divider_height"
+                    android:paddingTop="@dimen/lv_divider_height"
                     android:textColor="@android:color/white"
-                    android:layout_marginLeft="@dimen/card_view_content_padding"
-                    android:layout_marginRight="@dimen/medium_margin"
-                    android:id="@+id/edEmail"
-                    android:background="@drawable/roundtwo_green"/>
+                    android:textColorHint="@color/gray" />
             </LinearLayout>
 
 
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <ImageView
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_gravity="center|center_horizontal|center_vertical"
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     android:background="@drawable/datewhite" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:text="Date Of Birth"
+                    android:layout_gravity="center"
                     android:layout_marginLeft="@dimen/dividerlist"
-                    android:layout_gravity="center"/>
+                    android:text="Date Of Birth"
+                    android:textColor="@color/colorPrimaryDark" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <View
-                    android:background="@color/green5"
-                    android:layout_height="35dp"
                     android:layout_width="10dp"
+                    android:layout_height="35dp"
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/medium_margin"
                     android:layout_toLeftOf="@id/edPhone"
-                    />
+                    android:background="@color/green5" />
+
                 <io.krito.com.reze.views.CustomEditText
+                    android:id="@+id/edDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:paddingTop="@dimen/lv_divider_height"
                     android:layout_gravity="center"
-                    android:paddingBottom="@dimen/lv_divider_height"
-                    android:paddingLeft="@dimen/lv_divider_height"
-                    android:paddingRight="@dimen/lv_divider_height"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/card_view_content_padding"
+                    android:layout_marginRight="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:background="@drawable/roundtwo_green"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:gravity="left|center_vertical"
                     android:imeOptions="actionNext"
                     android:inputType="date"
                     android:maxLines="1"
-                    android:drawablePadding="@dimen/small_margin"
-                    android:gravity="left|center_vertical"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:textColorHint="@color/gray"
-                    android:textColor="@android:color/white"
-                    android:layout_marginLeft="@dimen/card_view_content_padding"
-                    android:layout_marginRight="@dimen/medium_margin"
-                    android:id="@+id/edDate"
-                    android:background="@drawable/roundtwo_green"/>
-            </LinearLayout>
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center|center_horizontal|center_vertical"
-                    android:layout_marginLeft="@dimen/kasb_margin_top"
-                    android:background="@drawable/passwordwhite" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Password"
-                    android:layout_marginLeft="@dimen/dividerlist"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <View
-                    android:background="@color/green5"
-                    android:layout_height="35dp"
-                    android:layout_width="10dp"
-                    android:layout_gravity="center|center_vertical|center_horizontal"
-                    android:layout_marginLeft="@dimen/medium_margin"
-                    android:layout_toLeftOf="@id/edPhone"
-                    />
-                <io.krito.com.reze.views.CustomEditText
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginBottom="@dimen/small_margin"
-                    android:paddingTop="@dimen/lv_divider_height"
-                    android:layout_gravity="center"
                     android:paddingBottom="@dimen/lv_divider_height"
                     android:paddingLeft="@dimen/lv_divider_height"
                     android:paddingRight="@dimen/lv_divider_height"
-                    android:imeOptions="actionNext"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:drawablePadding="@dimen/small_margin"
-                    android:gravity="left|center_vertical"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:textColorHint="@color/gray"
-                    android:textColor="@android:color/white"
-                    android:layout_marginLeft="@dimen/card_view_content_padding"
-                    android:layout_marginRight="@dimen/medium_margin"
-                    android:id="@+id/edPassword"
-                    android:background="@drawable/roundtwo_green"/>
-            </LinearLayout>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center|center_horizontal|center_vertical"
-                    android:layout_marginLeft="@dimen/kasb_margin_top"
-                    android:background="@drawable/passwordwhite" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Re-Password"
-                    android:layout_marginLeft="@dimen/dividerlist"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorPrimaryDark"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <View
-                    android:background="@color/green5"
-                    android:layout_height="35dp"
-                    android:layout_width="10dp"
-                    android:layout_gravity="center|center_vertical|center_horizontal"
-                    android:layout_marginLeft="@dimen/medium_margin"
-                    android:layout_toLeftOf="@id/edPhone"
-                    />
-                <io.krito.com.reze.views.CustomEditText
-                    android:layout_height="wrap_content"
-                    android:layout_width="match_parent"
-                    android:layout_marginBottom="@dimen/small_margin"
                     android:paddingTop="@dimen/lv_divider_height"
-                    android:layout_gravity="center"
-                    android:paddingBottom="@dimen/lv_divider_height"
-                    android:paddingLeft="@dimen/lv_divider_height"
-                    android:paddingRight="@dimen/lv_divider_height"
-                    android:imeOptions="actionDone"
-                    android:inputType="textPassword"
-                    android:maxLines="1"
-                    android:drawablePadding="@dimen/small_margin"
-                    android:gravity="left|center_vertical"
-                    android:layout_marginTop="@dimen/small_margin"
-                    android:textColorHint="@color/gray"
                     android:textColor="@android:color/white"
-                    android:layout_marginLeft="@dimen/card_view_content_padding"
-                    android:layout_marginRight="@dimen/medium_margin"
-                    android:id="@+id/edConfirmPassword"
-                    android:background="@drawable/roundtwo_green"/>
+                    android:textColorHint="@color/gray" />
             </LinearLayout>
 
+
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginLeft="@dimen/kasb_margin_top"
+                    android:background="@drawable/passwordwhite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dividerlist"
+                    android:text="Password"
+                    android:textColor="@color/colorPrimaryDark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center|center_vertical|center_horizontal"
+                    android:layout_marginLeft="@dimen/medium_margin"
+                    android:layout_toLeftOf="@id/edPhone"
+                    android:background="@color/green5" />
+
+                <io.krito.com.reze.views.CustomEditText
+                    android:id="@+id/edPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/card_view_content_padding"
+                    android:layout_marginRight="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:background="@drawable/roundtwo_green"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:gravity="left|center_vertical"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/lv_divider_height"
+                    android:paddingLeft="@dimen/lv_divider_height"
+                    android:paddingRight="@dimen/lv_divider_height"
+                    android:paddingTop="@dimen/lv_divider_height"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/gray" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginLeft="@dimen/kasb_margin_top"
+                    android:background="@drawable/passwordwhite" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dividerlist"
+                    android:text="Re-Password"
+                    android:textColor="@color/colorPrimaryDark" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="10dp"
+                    android:layout_height="35dp"
+                    android:layout_gravity="center|center_vertical|center_horizontal"
+                    android:layout_marginLeft="@dimen/medium_margin"
+                    android:layout_toLeftOf="@id/edPhone"
+                    android:background="@color/green5" />
+
+                <io.krito.com.reze.views.CustomEditText
+                    android:id="@+id/edConfirmPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:layout_marginLeft="@dimen/card_view_content_padding"
+                    android:layout_marginRight="@dimen/medium_margin"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:background="@drawable/roundtwo_green"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:gravity="left|center_vertical"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingBottom="@dimen/lv_divider_height"
+                    android:paddingLeft="@dimen/lv_divider_height"
+                    android:paddingRight="@dimen/lv_divider_height"
+                    android:paddingTop="@dimen/lv_divider_height"
+                    android:textColor="@android:color/white"
+                    android:textColorHint="@color/gray" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dimen_10"
             android:layout_marginTop="@dimen/kasb_margin_top"
-            android:orientation="horizontal"
-            android:layout_marginLeft="@dimen/dimen_10">
+            android:orientation="horizontal">
 
             <CheckBox
                 android:id="@+id/checkbox"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:checked="false"
+                android:layout_marginLeft="@dimen/small_padding"
                 android:layout_toStartOf="@+id/customTextView"
                 android:background="@drawable/roundone_green"
-                android:layout_marginLeft="@dimen/small_padding"/>
+                android:checked="false" />
 
             <io.krito.com.reze.views.CustomTextView
                 android:id="@+id/customTextView"
@@ -403,30 +436,32 @@
                 android:textSize="@dimen/txtsize" />
 
         </LinearLayout>
+
         <io.krito.com.reze.views.CustomButton
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/kasb_margin_top"
-            android:layout_marginRight="@dimen/img_gallery"
-            android:layout_marginLeft="@dimen/img_gallery"
-            android:background="@drawable/rect_white"
             android:layout_marginBottom="@dimen/kasb_margin_top"
-            android:textSize="@dimen/txtsize"
+            android:layout_marginLeft="@dimen/img_gallery"
+            android:layout_marginRight="@dimen/img_gallery"
+            android:layout_marginTop="@dimen/kasb_margin_top"
             android:alpha="1"
+            android:background="@drawable/rect_white"
             android:text="Sign Up"
             android:textColor="#000"
-            android:id="@+id/btnRegister"/>
+            android:textSize="@dimen/txtsize" />
+
         <io.krito.com.reze.views.CustomButton
+            android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/img_gallery"
-            android:layout_marginLeft="@dimen/img_gallery"
-            android:background="@drawable/roundone_green"
             android:layout_marginBottom="@dimen/kasb_margin_top"
-            android:textSize="@dimen/txtsize"
-            android:textColor="#fff"
+            android:layout_marginLeft="@dimen/img_gallery"
+            android:layout_marginRight="@dimen/img_gallery"
+            android:background="@drawable/roundone_green"
             android:text="Login"
-            android:id="@+id/btnLogin"/>
+            android:textColor="#fff"
+            android:textSize="@dimen/txtsize" />
 
     </LinearLayout>
 

@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingStart="@dimen/dimen_10"
@@ -55,7 +56,8 @@
         android:layout_marginLeft="2dp"
         android:background="@drawable/seaico_round"
         android:src="@drawable/ic_search_ico"
-        android:text="Button" />
+        android:text="Button"
+        tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
         android:id="@+id/imageButton"

@@ -1,23 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingStart="@dimen/dimen_10"
+    android:paddingBottom="5dp"
     android:paddingEnd="@dimen/dimen_10"
-    android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingStart="@dimen/dimen_10"
+    android:paddingTop="5dp">
 
     <ImageView
         android:id="@+id/searchBackView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back_ar"
-        android:layout_marginEnd="@dimen/dimen_10"
-        android:layout_marginRight="@dimen/dimen_10"
+        android:layout_width="28dp"
+        android:layout_height="27dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        android:onClick="backClick"/>
+        android:layout_marginEnd="356dp"
+        android:layout_marginRight="356dp"
+        android:onClick="backClick"
+        android:src="@drawable/ic_arrow_back_ar"
+        android:visibility="gone" />
 
 
     <ImageButton
@@ -25,25 +26,25 @@
         android:layout_width="50dp"
         android:layout_height="34dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginLeft="0dp"
         android:layout_marginEnd="2dp"
+        android:layout_marginLeft="0dp"
         android:layout_marginRight="2dp"
-        android:layout_toRightOf="@+id/searchBackView"
+        android:layout_marginStart="0dp"
         android:layout_toEndOf="@id/searchBackView"
+        android:layout_toRightOf="@+id/searchBackView"
         android:background="@drawable/seaico_round"
         android:src="@drawable/ic_search_ico"
-        />
+        tools:ignore="VectorDrawableCompat" />
 
     <EditText
-        android:layout_centerInParent="true"
         android:id="@+id/searchbox"
-        android:layout_marginRight="2dp"
-        android:layout_marginEnd="2dp"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/searchIcon"
         android:layout_alignTop="@+id/searchIcon"
+        android:layout_centerInParent="true"
+        android:layout_marginEnd="2dp"
+        android:layout_marginRight="2dp"
         android:layout_toEndOf="@+id/searchIcon"
         android:layout_toRightOf="@id/searchIcon"
         android:background="@drawable/search_round"
@@ -53,9 +54,9 @@
         android:onClick="active"
         android:paddingBottom="5dp"
         android:paddingEnd="5dp"
+        android:paddingLeft="15dp"
         android:paddingRight="5dp"
         android:paddingStart="15dp"
-        android:paddingLeft="15dp"
         android:paddingTop="5dp"
         android:text=""
         android:textColor="@color/colorPrimary"

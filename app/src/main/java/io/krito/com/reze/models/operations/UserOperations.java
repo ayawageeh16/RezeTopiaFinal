@@ -38,11 +38,11 @@ public class UserOperations {
         requestQueue = queue;
     }
 
-    public void Register(User user){
+    public static void Register(User user){
         new RegisterTask().execute(user);
     }
 
-    interface RegisterCallback{
+    public interface RegisterCallback{
         void onSuccess(String userId);
         void onError(String error);
     }
