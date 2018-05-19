@@ -1,5 +1,6 @@
 package io.krito.com.reze.activities;
 
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import io.krito.com.reze.R;
+import io.krito.com.reze.application.AppConfig;
 import io.krito.com.reze.helper.MainPagerAdapter;
 
 public class Main extends AppCompatActivity {
@@ -29,6 +31,8 @@ public class Main extends AppCompatActivity {
     ViewPager viewPager;
     MainPagerAdapter adapter;
 
+    String userId;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +46,14 @@ public class Main extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
+        if (userId == null || userId.isEmpty()){
+            startActivity(new Intent(this, Login.class));
+            finish();
+        }
 
         configureHeaderLayout();
     }
@@ -71,16 +83,16 @@ public class Main extends AppCompatActivity {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(Main.this, R.color.colorPrimaryDark);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+//                int tabIconColor = ContextCompat.getColor(Main.this, R.color.colorPrimaryDark);
+//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
                 viewPager.setCurrentItem(tab.getPosition());
                 tab.select();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(Main.this, R.color.tabs);
-                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+//                int tabIconColor = ContextCompat.getColor(Main.this, R.color.tabs);
+//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
             }
 
             @Override

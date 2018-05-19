@@ -20,6 +20,7 @@
     <string name="check_in">مكان</string>
     <string name="tag">الاشارة لصديق</string>
     <string name="slide_4_title">اعرف اكتر </string>
+    <string name="postHeader">بم تفكر ؟</string>
     <string name="slide_4_desc">ممكن تتفرج على الحلقة دي من اون تي في  علشان تعرف اكتر عن المبادرة... goo.gl/c76LPa</string>
     <string name="replay">رد</string>
     <string name="matches">المباريات</string>
@@ -56,6 +57,211 @@
     <string name="accept_friend_request">تاكيد</string>
     <string name="cancel_request">حذف</string>
     <string name="unfriend">حذف</string>
+    <string name="search">بحث</string>
     <string name="booking">حجز</string>
 
+
+
+
+
+
+
+    <string name="loginfacebook">التسجيل عن طريق الفيس بوك</string>
+    <string name="skip_login">تخطي تسجيل الدخول</string>
+    <string name="mobile">الهاتف</string>
+
+    <string name="next">التالي</string>
+    <string name="skip">تخطي</string>
+    <string name="start">الحصول عليها</string>
+    <string name="sign_up_with_facebook">تفعيل الحساب عن طريق الفيس بوك</string>
+
+
+
+
+
+    <string name="slide_2_title">Movie Tickets</string>
+
+
+
+
+
+    <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
+    <string name="play_again">العب مرة اخري</string>
+    <string name="facebook_app_id">2006084819714163</string>
+    <string name="fb_login_protocol_scheme">fb2006084819714163</string>
+    <string name="wronglogin">الرقم السري او البريد الالكتروني غير صحيح</string>
+    <string name="wrongreset">الهاتف او البريد الالكتروني غير صحيح</string>
+    <string name="exsistEmail">هذا البريد الالكتروني مستخدم من قبل</string>
+    <string name="spinner_carrer">اختار المجال</string>
+    <string name="spinner_city">اختار مدينتك</string>
+    <string name="spinner_playerPosition">اختار مدينتك</string>
+    <string name="spinner_foot">اختار القدم المفضلة</string>
+    <string name="countries_array">اختار الجنسية</string>
+    <string name="checkingNetwork">هناك خطا في الاتصال بالانترنت</string>
+
+    <string name="tell_something">اخبر فريقك بشئ&#8230;</string>
+
+
+    <string name="follow">متابعة</string>
+    <string name="schedule">الجدول</string>
+    <string name="details">التفاصيل</string>
+    <string name="amenities">وسائل الراحة</string>
+    <string name="review">المراجعة</string>
+    <string name="book_now">احجز الان</string>
+    <string name="arena_number">رقم الملعب</string>
+    <string name="your_news_feed">خلاصتك الاخباريه&#8230;</string>
+    <string name="add_to_your_post">اضف الي منشورك</string>
+    <string name="validate_address">اكتب عنوانك</string>
+    <string name="validate_phone">اكتب رقم الهاتف</string>
+    <string name="validate_city">اختار مدينتك</string>
+    <string name="validate_career">اختار مجالك</string>
+    <string name="validate_nag">اختار دولتك</string>
+    <string name="validate_foot">اختار القدم المفضلة</string>
+    <string name="validate_position">اختار مركزك</string>
+    <string name="write_comment">كتابة تعليق&#8230;</string>
+    <string name="write_replay">كتابة رد&#8230;</string>
+    <string name="users">المستخدمين</string>
+
+    <string name="search_result">لا توجد نتائج</string>
+    <string name="edit">تعديل</string>
+    <string name="remove">ازالة</string>
+    <string name="save_post">حفظ المنشور</string>
+    <string name="report_post">ابلاغ</string>
+
+    <string name="product">المنتج</string>
+    <string name="title">العنوان</string>
+    <string name="description">الوصف</string>
+    <string name="price">السعر</string>
+    <string name="discount">خصم</string>
+    <string name="post">منشور</string>
+    <string name="upload">تحميل</string>
+    <string name="amount">كمية</string>
+    <string name="available">متاح</string>
+    <string name="unavailable">غير متاح</string>
+    <string name="pound">نتقطة</string>
+    <string name="buy">اشتري الان</string>
+    <string name="sold_out">تباع</string>
+    <string name="member">عضو</string>
+    <string name="home">الرئيسية</string>
+    <string name="report">ابلاغ</string>
+    <string name="add_friend">اضافى صديق</string>
+    <string name="secret">سري</string>
+    <string name="closed">مغلق</string>
+    <string name="public_">عامة</string>
+    <string name="create_team">عمل فريق</string>
+    <string name="owner">المالك</string>
+
+    <string name="vendors">البائعين</string>
+    <string name="teams">الفرق</string>
+    <string name="discussion">متاقشة</string>
+    <string name="occur_date">يحدث في: </string>
+    <string name="create">عمل</string>
+    <string name="create_event">عمل حدث</string>
+    <string name="my_event">احداثي</string>
+    <string name="to">الي</string>
+
+    <string name="create_store">عمل منجر</string>
+    <string name="my_store">متجري</string>
+    <string name="explore">استكشاف</string>
+    <string name="address">العنوان</string>
+    <string name="beta">الإصدار بيتا</string>
+
+    <string-array name="object_array">
+
+        <item>010</item>
+
+        <item>011</item>
+
+        <item>012</item>
+
+    </string-array>
+
+    <string-array name="spinner_city">
+        <item>اختار المدينة</item>
+        <item>القاهرة</item>
+        <item>حلوان</item>
+        <item>مدينة نصر</item>
+        <item>الاسكندرية</item>
+        <item>الجيزة</item>
+        <item>شبرا الخيمة</item>
+        <item>بورسعيد</item>
+        <item>السويس</item>
+        <item>الاقصر</item>
+        <item>المنصورة</item>
+        <item>المحلة الكبري</item>
+        <item>طنطا</item>
+        <item>اسيوط</item>
+        <item>الاسماعيلية</item>
+        <item>الفيوم</item>
+        <item>الزقازيق</item>
+        <item>اسوان</item>
+        <item>دمياط</item>
+        <item>دمنهور</item>
+        <item>المنيا</item>
+        <item>بني سويف</item>
+        <item>قنا</item>
+        <item>سوهاج</item>
+        <item>الغردقة</item>
+        <item>مدينة السادس من اكتوبر</item>
+        <item>شبين الكوم</item>
+        <item>بنها</item>
+        <item>العريش</item>
+        <item>ملوي</item>
+        <item>مدينة العاشر من رمضان</item>
+        <item>بلبيس</item>
+        <item>مرسي مطروح</item>
+        <item>ادفو</item>
+        <item>ميت غمر</item>
+        <item>الحوامدية</item>
+        <item>دسوق</item>
+        <item>قليوب</item>
+        <item>ابو كبير</item>
+        <item>كفر الدوار</item>
+        <item>جرجا</item>
+        <item>اخميم</item>
+        <item>المطرية</item>
+
+    </string-array>
+
+
+    <string-array name="spinner_carrer">
+        <item>اختار مجالك</item>
+        <item>هاوي</item>
+        <item>محترف</item>
+
+    </string-array>
+    <string-array name="spinner_playerPosition">
+        <item>اختار مركزك</item>
+        <item>هاوي</item>
+        <item>حارس مرمي</item>
+        <item>مدافع</item>
+        <item>خط الوسط </item>
+        <item>المهاجم</item>
+    </string-array>
+    <string-array name="spinner_foot">
+        <item>اختار القدم المفضلة</item>
+        <item>القدم اليمني</item>
+        <item>القدم اليسري</item>
+    </string-array>
+    <string-array name="countries_array">
+        <item>اختار دولتك</item>
+        <item>مصر</item>
+    </string-array>
+    <string name="title_activity_vendor">صفحة البائع</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">الاعدادات</string>
+    <string name="send">ارسل</string>
+    <string name="action_send">ارسل</string>
+    <string name="prompt_message">رسالة</string>
+    <string name="action_attach">ارفاق</string>
+    <string name="action_capture">التقاط صورة</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="loading">جاري التحميل</string>
+    <string name="please_wait">انتظر من فضلك ....</string>
+    <string name="user_successfully_added">تم اضافة المستخدم بنجاح</string>
+    <string name="user_unable_to_add">غير مسموح باضافة مستخدم</string>
+
 </resources>
+

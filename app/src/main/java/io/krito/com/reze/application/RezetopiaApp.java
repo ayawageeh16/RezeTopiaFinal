@@ -62,14 +62,14 @@ public class RezetopiaApp extends Application {
         receiver = new ConnectivityReceiver();
         registerReceiver(receiver, filter);
 
-        getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
+        /*getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE).edit()
                 .putString(FirebaseInstanceId.getInstance().getToken(), AppConfig.DEVICE_TOKEN_SHARED)
                 .apply();
         //Toast.makeText(this, FirebaseInstanceId.getInstance().getToken(), Toast.LENGTH_LONG).show();
         if (FirebaseInstanceId.getInstance().getToken() != null) {
             Log.i("fcm_token", FirebaseInstanceId.getInstance().getToken());
             updateToken();
-        }
+        }*/
 
         UserOperations.setRequestQueue(getRequestQueue());
     }

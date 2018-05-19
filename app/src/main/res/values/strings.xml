@@ -49,6 +49,11 @@
     <string name="spinner_foot">Select Dominant Foot</string>
     <string name="countries_array">Select nationality</string>
     <string name="checkingNetwork">There is an error in network</string>
+    <string name="server_error">The server could not be found. Please try again after some time!</string>
+    <string name="connection_error">Cannot connect to Internet&#8230;Please check your connection!</string>
+    <string name="parsing_error">Parsing error! Please try again after some time!</string>
+    <string name="time_out">Connection TimeOut! Please check your internet connection.</string>
+    <string name="unknown_error">Unknown Error</string>
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>

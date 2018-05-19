@@ -31,4 +31,6 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
         super.onResume();
         RezetopiaApp.getInstance().setConnectivityListener(this);
     }
+
+
 }

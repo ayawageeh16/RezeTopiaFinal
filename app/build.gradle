@@ -4,13 +4,13 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "io.krito.com.reze"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        android.defaultConfig.vectorDrawables.useSupportLibrary true
+        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {
@@ -45,4 +45,7 @@ dependencies {
 
     //facebook
     implementation 'com.facebook.android:facebook-android-sdk:4.28.0'
+
+    //animation button
+    compile 'com.github.rasoulmiri:buttonloading:v1.0.8'
 }

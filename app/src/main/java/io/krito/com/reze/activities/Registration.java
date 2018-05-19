@@ -1,19 +1,14 @@
 package io.krito.com.reze.activities;
 
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Patterns;
 import android.view.View;
 import android.widget.CheckBox;
 
-import com.google.android.gms.common.api.BooleanResult;
-
-import java.util.IllegalFormatCodePointException;
-
 import io.krito.com.reze.R;
-import io.krito.com.reze.fragments.AlertFragments;
+import io.krito.com.reze.application.AppConfig;
+import io.krito.com.reze.fragments.AlertFragment;
 import io.krito.com.reze.models.operations.UserOperations;
 import io.krito.com.reze.models.pojo.User;
 import io.krito.com.reze.views.CustomButton;
@@ -61,21 +56,18 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                     UserOperations.Register(user);
                     UserOperations.setRegisterCallback(new UserOperations.RegisterCallback() {
                         @Override
-                        public void onSuccess(String userId) {
-                            Intent registerIntent = new Intent(getApplicationContext(), Login.class);
-                            registerIntent.putExtra("fbname", edtName.getText().toString());
-                            registerIntent.putExtra("profImage", "null");
-                            registerIntent.putExtra("id", userId);
-                            startActivity(registerIntent);
+                        public void onSuccess(String id) {
+                            getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                                    .edit().putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id).apply();
+                            startActivity(new Intent(Registration.this, Main.class));
                             finish();
                         }
 
                         @Override
-                        public void onError(String error) {
-                            AlertFragments.createFragment(error).show(getSupportFragmentManager(), null);
-
+                        public void onError(int error) {
+                            String s = getResources().getString(error);
+                            AlertFragment.createFragment(s).show(getFragmentManager(), null);
                         }
-
                     });
                 }
                 break;
@@ -94,8 +86,8 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         dateOfBirth = edtDate.getText().toString();
         phone = edtPhone.getText().toString();
 
-        if (name.isEmpty() || name.length() < 4) {
-            edtName.setError("Must be at least 4 characters ");
+        if (name.isEmpty() || name.length() < 3) {
+            edtName.setError("Must be at least 3 characters ");
             valid = false;
         } else
             edtName.setError(null);
@@ -111,7 +103,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             valid = false;
         } else
             edtEmail.setError(null);
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
+        if (password.isEmpty() || password.length() < 4) {
             edtPassword.setError("Must be between 4 and 10 alphanumeric characters ");
             valid = false;
         } else
