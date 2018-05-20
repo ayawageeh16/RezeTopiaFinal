@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.krito.com.reze.models.operations.HomeOperations;
 import io.krito.com.reze.models.operations.UserOperations;
 import io.krito.com.reze.receivers.ConnectivityReceiver;
 
@@ -72,6 +73,7 @@ public class RezetopiaApp extends Application {
         }*/
 
         UserOperations.setRequestQueue(getRequestQueue());
+        HomeOperations.setRequestQueue(getRequestQueue());
     }
 
     public static synchronized RezetopiaApp getInstance() {

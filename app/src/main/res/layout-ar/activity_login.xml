@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout android:id="@+id/loginLayout"
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -79,7 +80,7 @@
                         android:textColor="@android:color/white"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="0dp"
-                        android:id="@+id/edName"
+                        android:id="@+id/emailView"
                         android:textAlignment="viewStart"
                         android:background="@drawable/roundtwo_green"/>
                 </LinearLayout>
@@ -119,7 +120,7 @@
                         android:textColor="@android:color/white"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="0dp"
-                        android:id="@+id/edPassword"
+                        android:id="@+id/passwordView"
                         android:textAlignment="viewStart"
                         android:background="@drawable/roundtwo_green"/>
 
@@ -133,36 +134,53 @@
                     android:paddingBottom="@dimen/small_margin"
                     android:gravity="center">
 
-                    <io.krito.com.reze.views.CustomTextView
-                        android:visibility="gone"
-                        android:layout_height="wrap_content"
-                        android:layout_width="match_parent"
-                        android:layout_marginTop="@dimen/lv_divider_height"
-                        android:paddingBottom="@dimen/small_margin"
-                        android:paddingTop="@dimen/small_margin"
-                        android:gravity="center"
-                        android:textColor="@color/white"
-                        android:layout_marginLeft="@dimen/large_margin"
-                        android:layout_marginRight="@dimen/large_margin"
-                        android:id="@+id/txtvForgetPass"
-                        android:textSize="@dimen/txtsize"
-                        android:text="@string/forget_password"
-                        />
+                    <!--<io.krito.com.reze.views.CustomTextView-->
+                        <!--android:visibility="gone"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_marginTop="@dimen/lv_divider_height"-->
+                        <!--android:paddingBottom="@dimen/small_margin"-->
+                        <!--android:paddingTop="@dimen/small_margin"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textColor="@color/white"-->
+                        <!--android:layout_marginLeft="@dimen/large_margin"-->
+                        <!--android:layout_marginRight="@dimen/large_margin"-->
+                        <!--android:id="@+id/txtvForgetPass"-->
+                        <!--android:textSize="@dimen/txtsize"-->
+                        <!--android:text="@string/forget_password"-->
+                        <!--/>-->
 
-                    <io.krito.com.reze.views.CustomButton
-                        android:layout_height="wrap_content"
+                    <!--<io.krito.com.reze.views.CustomButton-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_marginTop="@dimen/small_margin"-->
+                        <!--android:paddingBottom="@dimen/small_margin"-->
+                        <!--android:paddingTop="@dimen/small_margin"-->
+                        <!--android:gravity="center"-->
+                        <!--android:textColor="@android:color/black"-->
+                        <!--android:layout_marginLeft="@dimen/extra_extra_large_margin70"-->
+                        <!--android:layout_marginRight="@dimen/extra_extra_large_margin70"-->
+                        <!--android:id="@+id/btnSignIn"-->
+                        <!--android:textSize="@dimen/bigger_text_size"-->
+                        <!--android:text="@string/sign_in"-->
+                        <!--android:background="@drawable/rect_white"/>-->
+
+                    <io.rmiri.buttonloading.ButtonLoading
+                        android:id="@+id/btnSignIn"
                         android:layout_width="match_parent"
+                        android:layout_height="48dp"
                         android:layout_marginTop="@dimen/small_margin"
                         android:paddingBottom="@dimen/small_margin"
-                        android:paddingTop="@dimen/small_margin"
-                        android:gravity="center"
-                        android:textColor="@android:color/black"
                         android:layout_marginLeft="@dimen/extra_extra_large_margin70"
                         android:layout_marginRight="@dimen/extra_extra_large_margin70"
-                        android:id="@+id/btnSignIn"
-                        android:textSize="@dimen/bigger_text_size"
-                        android:text="@string/sign_in"
-                        android:background="@drawable/rect_white"/>
+                        app:BL_backgroundColor="#80ffffff"
+                        app:BL_circleColor="@color/white"
+                        app:BL_circleColorSecond="#80ffffff"
+                        app:BL_enable="true"
+                        app:BL_stateShow="normal"
+                        app:BL_text="Login"
+                        app:BL_textColor="@color/black"
+                        app:BL_textSize="20sp" />
 
 
                     <io.krito.com.reze.views.CustomButton
@@ -180,14 +198,14 @@
                         android:text="@string/sign_up"
                         android:textSize="@dimen/bigger_text_size" />
 
-                    <com.facebook.login.widget.LoginButton
-                        android:id="@+id/login_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_marginTop="30dp"
-                        android:layout_marginBottom="30dp"
-                        android:visibility="gone"/>
+                    <!--<com.facebook.login.widget.LoginButton-->
+                        <!--android:id="@+id/login_button"-->
+                        <!--android:layout_width="wrap_content"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center_horizontal"-->
+                        <!--android:layout_marginTop="30dp"-->
+                        <!--android:layout_marginBottom="30dp"-->
+                        <!--android:visibility="gone"/>-->
 
                     <io.krito.com.reze.views.CustomTextView
                         android:visibility="gone"

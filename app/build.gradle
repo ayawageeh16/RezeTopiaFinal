@@ -31,6 +31,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
+    //volley
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.google.code.gson:gson:2.8.1'
 
@@ -47,5 +48,11 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.28.0'
 
     //animation button
-    compile 'com.github.rasoulmiri:buttonloading:v1.0.8'
+    implementation 'com.github.rasoulmiri:buttonloading:v1.0.8'
+
+    //picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //circle image
+    implementation 'de.hdodenhof:circleimageview:2.1.0'
 }

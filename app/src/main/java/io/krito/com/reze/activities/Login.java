@@ -21,7 +21,6 @@ import io.rmiri.buttonloading.ButtonLoading;
 public class Login extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
 
     RelativeLayout loginLayout;
-    //CustomButton sign_in;
     CustomButton sign_up;
     CustomEditText emailView;
     CustomEditText passwordView;
@@ -36,14 +35,12 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Co
         setContentView(R.layout.activity_login);
 
         loginLayout = findViewById(R.id.loginLayout);
-        //sign_in = findViewById(R.id.btnSignIn);
         sign_up = findViewById(R.id.btnRegister);
         emailView = findViewById(R.id.emailView);
         passwordView = findViewById(R.id.passwordView);
         forgetPassword = findViewById(R.id.forgetPassword);
         buttonLoading = findViewById(R.id.btnSignIn);
 
-        //buttonLoading.setOnClickListener(this);
         sign_up.setOnClickListener(this);
 
         buttonLoading.setOnButtonLoadingListener(new ButtonLoading.OnButtonLoadingListener() {

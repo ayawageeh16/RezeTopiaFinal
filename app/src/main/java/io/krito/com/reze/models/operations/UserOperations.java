@@ -140,7 +140,6 @@ public class UserOperations {
         }
     }
 
-
     private static class LoginTask extends AsyncTask<String, String, Void>{
 
         @Override

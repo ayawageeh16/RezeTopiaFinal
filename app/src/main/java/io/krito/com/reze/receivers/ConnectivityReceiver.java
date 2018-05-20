@@ -31,8 +31,7 @@ public class ConnectivityReceiver extends BroadcastReceiver {
     }
 
     public static boolean isConnected(Context context) {
-        ConnectivityManager
-                cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 
         Log.e("isConnected", "status " + (activeNetwork != null
@@ -42,19 +41,17 @@ public class ConnectivityReceiver extends BroadcastReceiver {
                 && activeNetwork.isConnectedOrConnecting();
     }
 
-    public static boolean isMobileDataConnected(Context context){
-        boolean mobileDataEnabled = false; // Assume disabled
+    public static boolean isConnectedWifi(Context context){
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        try {
-            Class cmClass = Class.forName(cm.getClass().getName());
-            Method method = cmClass.getDeclaredMethod("getMobileDataEnabled");
-            method.setAccessible(true); // Make the method callable
-            mobileDataEnabled = (Boolean)method.invoke(cm);
-        } catch (Exception e) {
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_WIFI);
+    }
 
-        }
 
-        return mobileDataEnabled;
+    public static boolean isConnectedMobile(Context context){
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return (info != null && info.isConnected() && info.getType() == ConnectivityManager.TYPE_MOBILE);
     }
 
     public interface ConnectivityReceiverListener {

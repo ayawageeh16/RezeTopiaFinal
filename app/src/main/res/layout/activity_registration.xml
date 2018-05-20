@@ -2,6 +2,7 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimary">
 
 
@@ -437,19 +438,35 @@
 
         </LinearLayout>
 
-        <io.krito.com.reze.views.CustomButton
-            android:id="@+id/btnRegister"
+        <!--<io.krito.com.reze.views.CustomButton-->
+            <!--android:id="@+id/btnRegister"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginBottom="@dimen/kasb_margin_top"-->
+            <!--android:layout_marginLeft="@dimen/img_gallery"-->
+            <!--android:layout_marginRight="@dimen/img_gallery"-->
+            <!--android:layout_marginTop="@dimen/kasb_margin_top"-->
+            <!--android:alpha="1"-->
+            <!--android:background="@drawable/rect_white"-->
+            <!--android:text="Sign Up"-->
+            <!--android:textColor="#000"-->
+            <!--android:textSize="@dimen/txtsize" />-->
+
+        <io.rmiri.buttonloading.ButtonLoading
+            android:id="@+id/btnSignIn"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="48dp"
             android:layout_marginBottom="@dimen/kasb_margin_top"
             android:layout_marginLeft="@dimen/img_gallery"
             android:layout_marginRight="@dimen/img_gallery"
-            android:layout_marginTop="@dimen/kasb_margin_top"
-            android:alpha="1"
-            android:background="@drawable/rect_white"
-            android:text="Sign Up"
-            android:textColor="#000"
-            android:textSize="@dimen/txtsize" />
+            app:BL_backgroundColor="#80ffffff"
+            app:BL_circleColor="@color/white"
+            app:BL_circleColorSecond="#80ffffff"
+            app:BL_enable="true"
+            app:BL_stateShow="normal"
+            app:BL_text="Login"
+            app:BL_textColor="@color/black"
+            app:BL_textSize="20sp" />
 
         <io.krito.com.reze.views.CustomButton
             android:id="@+id/btnLogin"

@@ -13,10 +13,13 @@ import io.krito.com.reze.models.operations.UserOperations;
 import io.krito.com.reze.models.pojo.User;
 import io.krito.com.reze.views.CustomButton;
 import io.krito.com.reze.views.CustomEditText;
+import io.rmiri.buttonloading.ButtonLoading;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
+
     CustomEditText edtName, edtPhone, edtEmail, edtDate, edtPassword;
-    CustomButton btnSignUp, btnLogin;
+    CustomButton btnLogin;
+    ButtonLoading btnSignUp;
     CheckBox checkBox;
 
     @Override
@@ -31,20 +34,12 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         btnLogin = findViewById(R.id.btnLogin);
         btnSignUp = findViewById(R.id.btnRegister);
         checkBox = findViewById(R.id.checkbox);
-        btnSignUp.setOnClickListener(this);
+        //btnSignUp.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
-    }
 
-    @Override
-    public void onClick(View view) {
-
-        switch (view.getId()) {
-            case R.id.btnLogin:
-                Intent loginIntent = new Intent(this, Login.class);
-                startActivity(loginIntent);
-
-                break;
-            case R.id.btnRegister:
+        btnSignUp.setOnButtonLoadingListener(new ButtonLoading.OnButtonLoadingListener() {
+            @Override
+            public void onClick() {
                 if (checkData()) {
 
                     final User user = new User();
@@ -67,9 +62,34 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
                         public void onError(int error) {
                             String s = getResources().getString(error);
                             AlertFragment.createFragment(s).show(getFragmentManager(), null);
+                            btnSignUp.setProgress(false);
                         }
                     });
                 }
+            }
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onFinish() {
+                btnSignUp.setProgress(false);
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        switch (view.getId()) {
+            case R.id.btnLogin:
+                Intent loginIntent = new Intent(this, Login.class);
+                startActivity(loginIntent);
+
+                break;
+            case R.id.btnRegister:
                 break;
         }
 

@@ -18,8 +18,7 @@
         android:src="@drawable/ic_back_white"
         android:layout_marginEnd="@dimen/dimen_10"
         android:layout_marginRight="@dimen/dimen_10"
-        android:visibility="gone"
-        android:onClick="backClick"/>
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/searchbox"
