@@ -2,7 +2,9 @@ package io.krito.com.reze.helper;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -37,23 +40,43 @@ import java.util.Map;
 import io.krito.com.reze.R;
 import io.krito.com.reze.fragments.AlertFragment;
 import io.krito.com.reze.models.operations.HomeOperations;
+import io.krito.com.reze.models.pojo.news_feed.NewsFeed;
 import io.krito.com.reze.models.pojo.news_feed.NewsFeedItem;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
 
     private static final int VIEW_HEADER = 1;
     private static final int VIEW_POST = 2;
+    private static final int VIEW_PROGRESS = 3;
 
     private Context context;
     private ArrayList<NewsFeedItem> items;
     private long now;
     private String userId;
-    
+
+
     public PostRecyclerAdapter(Context context, ArrayList<NewsFeedItem> items, long now, String userId) {
         this.context = context;
         this.items = items;
         this.now = now;
         this.userId = userId;
+    }
+
+    public ArrayList<NewsFeedItem> getItems() {
+        return items;
+    }
+
+    public int addItem(){
+        NewsFeedItem item = new NewsFeedItem();
+        item.setType(1009);
+        items.add(item);
+        //this.items.add(this.items.size() - 1, item);
+        return this.items.size();
+    }
+
+    public int removeLastItem(){
+        this.items.remove(this.items.size() - 1);
+        return this.items.size();
     }
 
     @NonNull
@@ -62,9 +85,12 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         if (viewType == VIEW_HEADER){
             View view = LayoutInflater.from(context).inflate(R.layout.create_post_header, parent, false);
             return new HeaderViewHolder(view);
-        } else {
+        } else if (viewType == VIEW_POST){
             View view = LayoutInflater.from(context).inflate(R.layout.post_card, parent, false);
             return new PostViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.progress, parent, false);
+            return new ProgressViewHolder(view);
         }
     }
 
@@ -85,6 +111,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     public int getItemViewType(int position) {
         if (isPositionHeader(position)){
             return VIEW_HEADER;
+        }
+        else if (items.get(position - 1).getType() == 1009){
+            return VIEW_PROGRESS;
         }
 
         return VIEW_POST;
@@ -110,6 +139,20 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                     //startActivityForResult(intent, CREATE_POST_RESULT);
                 }
             });
+        }
+    }
+
+    private class ProgressViewHolder extends RecyclerView.ViewHolder{
+
+        private ProgressBar progressBar;
+
+        public ProgressViewHolder(View itemView) {
+            super(itemView);
+            progressBar = itemView.findViewById(R.id.homeProgress);
+
+            progressBar.getIndeterminateDrawable().setColorFilter(context.getResources()
+                    .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
+
         }
     }
 
@@ -162,7 +205,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 verifyView.setVisibility(View.VISIBLE);
             }
 
-            if (item.getPostAttachment() != null) {
+            if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null && item.getPostAttachment().getImages().length > 0) {
                 if (item.getPostAttachment().getImages()[0].getPath() != null) {
                     postImage.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
@@ -177,9 +220,10 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             if (item.getOwnerName() != null){
                 usernameView.setText(item.getOwnerName());
             }
+
             Date date = null;
             try {
-                date = new SimpleDateFormat("yyyy-mm-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

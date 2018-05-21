@@ -17,15 +17,17 @@ import android.widget.ImageView;
 
 import io.krito.com.reze.R;
 import io.krito.com.reze.application.AppConfig;
+import io.krito.com.reze.fragments.Home;
 import io.krito.com.reze.helper.MainPagerAdapter;
 
-public class Main extends AppCompatActivity {
+public class Main extends AppCompatActivity implements Home.HomeCallback {
 
     View requestView;
     View notificationView;
     EditText searchBox;
     ImageButton searchIcon;
     ImageView backView;
+    FloatingActionButton fab;
 
     TabLayout tabLayout;
     ViewPager viewPager;
@@ -38,7 +40,7 @@ public class Main extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
+        fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,4 +104,12 @@ public class Main extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onScroll(boolean show) {
+        if (show){
+            fab.show();
+        } else {
+            fab.hide();
+        }
+    }
 }

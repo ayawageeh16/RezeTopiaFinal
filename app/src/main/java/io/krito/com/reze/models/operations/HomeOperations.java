@@ -40,6 +40,7 @@ public class HomeOperations {
     private static RequestQueue requestQueue;
     private static NewsFeedCallback feedCallback;
     private LikeCallback likeCallback;
+    private static String homeCursor = "0";
 
     public static void setRequestQueue(RequestQueue queue){
         requestQueue = queue;
@@ -95,10 +96,13 @@ public class HomeOperations {
                                 item.setType(NewsFeedItem.POST_TYPE);
                                 items.add(item);
                             }
+
                             newsFeed.setItems(items);
                             newsFeed.setNextCursor(response.getNextCursor());
                             newsFeed.setNow(response.getNow());
                             feedCallback.onSuccess(newsFeed);
+                            homeCursor = String.valueOf(Integer.parseInt(homeCursor) + 10);
+                            Log.i("response_cursor", "onResponse: " + homeCursor);
                         }
                     } else {
                         feedCallback.onError(R.string.unknown_error);
@@ -134,7 +138,7 @@ public class HomeOperations {
                     Map<String, String> map = new HashMap<>();
                         map.put("method", "get_news_feed");
                     map.put("userId", strings[0]);
-                    map.put("cursor", strings[1]);
+                    map.put("cursor", homeCursor);
                     return map;
                 }
             };
