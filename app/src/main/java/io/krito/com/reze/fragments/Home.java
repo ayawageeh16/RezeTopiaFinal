@@ -1,6 +1,8 @@
 package io.krito.com.reze.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,12 +15,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
 
 import io.krito.com.reze.R;
+import io.krito.com.reze.activities.Comment;
 import io.krito.com.reze.application.AppConfig;
 import io.krito.com.reze.application.RezetopiaApp;
 import io.krito.com.reze.helper.PostRecyclerAdapter;
@@ -29,9 +33,12 @@ import io.krito.com.reze.receivers.ConnectivityReceiver;
 
 public class Home extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener {
 
-    LinearLayout homeHeader;
+    private static final int COMMENT_ACTIVITY_RESULT = 1001;
+
+    FrameLayout homeHeader;
     RecyclerView recyclerView;
     LinearLayoutManager layoutManager;
+    ProgressBar progressBar;
     String cursor = "0";
 
     NewsFeed newsFeed;
@@ -41,6 +48,7 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
     HomeCallback homeCallback;
 
     int start = 0, end = 0;
+    boolean loadingData = false;
 
 
     @Nullable
@@ -49,6 +57,9 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         homeHeader = view.findViewById(R.id.homeHeader);
         recyclerView = view.findViewById(R.id.homePostsRecyclerView);
+        progressBar = view.findViewById(R.id.homeProgress);
+        progressBar.getIndeterminateDrawable().setColorFilter(getResources()
+                .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
@@ -65,12 +76,18 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
                     int visibleItemCount = layoutManager.getChildCount();
                     int totalItemCount = layoutManager.getItemCount();
                     int pastVisibleItems = layoutManager.findFirstVisibleItemPosition();
+                    int lastVisibleItem = layoutManager.findLastVisibleItemPosition();
+
 
                     if ( (visibleItemCount + pastVisibleItems) >= totalItemCount){
-                        Log.v("SCROLL_DOWN", "Last Item Wow !");
-                        Snackbar.make(homeHeader, R.string.loading, BaseTransientBottomBar.LENGTH_LONG).show();
+                        //Snackbar.make(homeHeader, R.string.loading, BaseTransientBottomBar.LENGTH_LONG).show();
                         //adapter.notifyItemInserted(adapter.addItem());
-                        fetchNewsFeed();
+                        if (!loadingData){
+                            Log.v("SCROLL_DOWN", "Last Item Wow !");
+                            loadingData = true;
+                            adapter.addItem();
+                            fetchNewsFeed();
+                        }
                     }
                 }
             }
@@ -117,19 +134,29 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
                     end = newsFeed.getItems().size()-1;
                     Log.i("Array_size", "onSuccess: " + start + " : " + end);
                     cursor = String.valueOf(Integer.parseInt(cursor) + 10);
-                    //adapter.notifyItemRemoved(adapter.removeLastItem());
-                    adapter.notifyItemRangeInserted(Integer.parseInt(cursor) - 10, Integer.parseInt(cursor));
-                    updateUi(0, 0);
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.removeLastItem();
+                            adapter.notifyItemRangeInserted(Integer.parseInt(cursor) - 10, Integer.parseInt(cursor));
+                        }
+                    });
+                    //updateUi(0, 0);
                 } else {
                     newsFeed = feed;
                     updateUi(0, 0);
                     cursor = String.valueOf(Integer.parseInt(cursor) + 10);
+                    progressBar.setVisibility(View.GONE);
                 }
+                loadingData = false;
             }
 
             @Override
             public void onError(int error) {
-                Snackbar.make(homeHeader, error, BaseTransientBottomBar.LENGTH_LONG).show();
+                String errorString = getActivity().getResources().getString(error);
+                Log.i("news_feed_error", "onError: " + errorString);
+                //Snackbar.make(homeHeader, error, BaseTransientBottomBar.LENGTH_LONG).show();
+                loadingData = false;
             }
         });
     }
@@ -140,6 +167,38 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
             recyclerView.setAdapter(adapter);
             layoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(layoutManager);
+
+            adapter.setCallback(new PostRecyclerAdapter.AdapterCallback() {
+                @Override
+                public void onStartComment(NewsFeedItem item, long now) {
+                    Intent intent = Comment.createIntent(item.getLikes(), Integer.parseInt(item.getPostId()), now, Integer.parseInt(item.getOwnerId()),
+                            getActivity());
+
+                    startActivityForResult(intent, COMMENT_ACTIVITY_RESULT);
+                    getActivity().overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
+                }
+
+                @Override
+                public void onItemAdded(final int position) {
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyItemInserted(position);
+                        }
+                    });
+                }
+
+                @Override
+                public void onItemRemoved(final int position) {
+                    recyclerView.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter.notifyItemRemoved(position);
+                        }
+                    });
+                }
+            });
+
         } else if (s > 0 && e > 0){
             adapter.notifyItemRangeInserted(s, e);
         }
@@ -159,5 +218,17 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
     public void onDetach() {
         super.onDetach();
         homeCallback = null;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == COMMENT_ACTIVITY_RESULT){
+            if (data != null){
+                int postId = data.getIntExtra("post_id", 0);
+                int commentSize = data.getIntExtra("added_size", 0);
+                adapter.addCommentItem(postId, commentSize);
+            }
+        }
     }
 }

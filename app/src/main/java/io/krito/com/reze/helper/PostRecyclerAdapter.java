@@ -1,10 +1,8 @@
 package io.krito.com.reze.helper;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
@@ -38,9 +36,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.krito.com.reze.R;
-import io.krito.com.reze.fragments.AlertFragment;
 import io.krito.com.reze.models.operations.HomeOperations;
-import io.krito.com.reze.models.pojo.news_feed.NewsFeed;
 import io.krito.com.reze.models.pojo.news_feed.NewsFeedItem;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
@@ -53,6 +49,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     private ArrayList<NewsFeedItem> items;
     private long now;
     private String userId;
+    private AdapterCallback callback;
 
 
     public PostRecyclerAdapter(Context context, ArrayList<NewsFeedItem> items, long now, String userId) {
@@ -66,17 +63,35 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         return items;
     }
 
-    public int addItem(){
+    public void addItem(){
         NewsFeedItem item = new NewsFeedItem();
         item.setType(1009);
         items.add(item);
-        //this.items.add(this.items.size() - 1, item);
-        return this.items.size();
+        //notifyItemInserted(items.size() - 1);
+        callback.onItemAdded(items.size() - 1);
     }
 
-    public int removeLastItem(){
-        this.items.remove(this.items.size() - 1);
-        return this.items.size();
+    public void removeLastItem(){
+        items.remove(items.size() - 1);
+        //notifyItemRemoved(items.size() - 1);
+        callback.onItemRemoved(items.size() - 1);
+    }
+
+    public void addCommentItem(int postId, int commentSize){
+        for (int i = 0; i < items.size(); i++) {
+            Log.e("feed_size", String.valueOf(items.size()));
+            Log.e("postIDs", String.valueOf(items.get(i).getId()) );
+            if (items.get(i).getType() == NewsFeedItem.POST_TYPE) {
+                if (items.get(i).getId() == postId) {
+                    items.get(i).setCommentSize(commentSize);
+                    notifyItemChanged(i);
+                }
+            }
+        }
+    }
+
+    public void setCallback(AdapterCallback adapterCallback){
+        this.callback = adapterCallback;
     }
 
     @NonNull
@@ -265,13 +280,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             commentButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-//                    Intent intent = CommentActivity.createIntent(item.getLikes(), item.getId(), now, item.getOwnerId(),
-//                            context);
-//
-//                    //adapterPos = pos;
-//                    startActivityForResult(intent, COMMENT_ACTIVITY_RESULT);
-//                    context.overridePendingTransition(R.anim.slide_in_bottom, R.anim.slide_out_top);
-
+                    callback.onStartComment(item, now);
                 }
             });
 
@@ -536,4 +545,9 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         Volley.newRequestQueue(context).add(stringRequest);
     }
 
+    public interface AdapterCallback{
+        void onStartComment(NewsFeedItem item, long now);
+        void onItemAdded(int position);
+        void onItemRemoved(int position);
+    }
 }

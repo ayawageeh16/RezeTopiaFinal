@@ -19,7 +19,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="top"
-            android:src="@drawable/ic_arrow_back"
+            android:src="@drawable/ic_arrow_back_ar"
             />
 
         <TextView
@@ -41,7 +41,6 @@
     </LinearLayout>
 
 
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -59,7 +58,6 @@
         android:layout_width="@dimen/dimen_20"
         android:layout_height="@dimen/dimen_20"
         android:layout_gravity="center_vertical|center_horizontal"/>
-
 
     <io.krito.com.reze.views.CustomTextView
         android:visibility="gone"
