@@ -86,6 +86,19 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         bundle.putLong(TIME_NOW_EXTRA, now);
         bundle.putInt(POST_OWNER_EXTRA, postOwnerId);
         intent.putExtras(bundle);
+
+        setLoadMoreCallback(new LoadMoreCallback() {
+            @Override
+            public void onSuccess() {
+                //todo
+            }
+
+            @Override
+            public void onEmptyResult() {
+
+            }
+        });
+
         return intent;
     }
 
@@ -153,7 +166,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     response.setCommentText(commentEditText.getText().toString());
                     response.setPending(true);
                     comments.add(response);
-                    updateUi();
+                    //updateUi();
                     adapter.notifyItemInserted(comments.size()-1);
                     commentsRecyclerView.scrollToPosition(comments.size()-1);
                     performComment();
@@ -170,6 +183,10 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             super(itemView);
 
             loadMore = itemView.findViewById(R.id.loadMoreComments);
+
+            if (!(comments.size() >= 10)){
+                loadMore.setVisibility(View.GONE);
+            }
 
             loadMore.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -455,7 +472,6 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     private void performComment(){
         if (commentEditText.getText().toString().length() > 0){
             final String commentText = commentEditText.getText().toString();
-            commentEditText.setText(null);
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
@@ -468,6 +484,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                                     //   Toast.makeText(CommentActivity.this, "Error submitting comment", Toast.LENGTH_SHORT).show();
                                     comments.remove(comments.size()-1);
                                 } else {
+                                    commentEditText.setText(null);
                                     Comment = new io.krito.com.reze.models.pojo.post.Comment();
                                     Comment.setCommenterId(jsonObject.getInt("commenterId"));
                                     Comment.setCommentId(jsonObject.getInt("commentId"));
