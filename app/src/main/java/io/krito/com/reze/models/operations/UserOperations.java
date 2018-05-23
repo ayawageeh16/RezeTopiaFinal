@@ -26,7 +26,7 @@ import io.krito.com.reze.models.pojo.User;
 
 public class UserOperations {
 
-    private static final String baseUrl = "https://rezetopia.dev-krito.com/app/";
+    private static final String baseUrl = "http://rezetopia.dev-krito.com/app/";
 
     private static RegisterCallback registerCallback;
     private static LoginCallback loginCallback;

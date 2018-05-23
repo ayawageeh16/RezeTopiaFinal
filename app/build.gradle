@@ -4,13 +4,12 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "io.krito.com.reze"
-        minSdkVersion 17
+        minSdkVersion 18
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        vectorDrawables.useSupportLibrary = true
     }
     buildTypes {
         release {

@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -39,6 +40,7 @@ import java.util.Map;
 import io.krito.com.reze.R;
 import io.krito.com.reze.application.AppConfig;
 import io.krito.com.reze.helper.VolleyCustomRequest;
+import io.krito.com.reze.models.operations.HomeOperations;
 import io.krito.com.reze.models.pojo.post.ApiCommentResponse;
 import io.krito.com.reze.views.CustomEditText;
 import io.krito.com.reze.views.CustomTextView;
@@ -46,6 +48,9 @@ import io.krito.com.reze.views.CustomTextView;
 public class Comment extends AppCompatActivity implements View.OnClickListener{
 
     private static final int REPLAY_REQUEST_CODE = 1006;
+
+    private static final int VIEW_HEADER = 1;
+    private static final int VIEW_COMMENT = 2;
 
     private static final String COMMENTS_EXTRA = "comment_activity.comments_extra";
     private static final String POST_ID_EXTRA = "comment_activity.post_id_extra";
@@ -69,6 +74,8 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     int ownerId;
     ProgressBar commentProgressView;
     int addedComments = 0;
+    ApiCommentResponse apiComment;
+    static LoadMoreCallback loadMoreCallback;
 
 
     public static Intent createIntent(int[] likeItems, int postId, long now, int postOwnerId, Context context){
@@ -152,6 +159,36 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     performComment();
                 }
                 break;
+        }
+    }
+
+    private class LoadMoreHeader extends RecyclerView.ViewHolder{
+
+        private CustomTextView loadMore;
+
+        public LoadMoreHeader(View itemView) {
+            super(itemView);
+
+            loadMore = itemView.findViewById(R.id.loadMoreComments);
+
+            loadMore.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    fetchComments();
+
+                    setLoadMoreCallback(new LoadMoreCallback() {
+                        @Override
+                        public void onSuccess() {
+
+                        }
+
+                        @Override
+                        public void onEmptyResult() {
+                            loadMore.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            });
         }
     }
 
@@ -270,7 +307,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
         private void performLike(final io.krito.com.reze.models.pojo.post.Comment comment, final int position){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -317,7 +354,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         }
 
         private void reverseLike(final io.krito.com.reze.models.pojo.post.Comment comment, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -374,23 +411,44 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         }
     }
 
-    private class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentViewHolder>{
+    private class CommentRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         @NonNull
         @Override
-        public CommentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(Comment.this).inflate(R.layout.post_comment, parent, false);
-            return new CommentViewHolder(view);
+        public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            if (viewType == VIEW_HEADER){
+                View view = LayoutInflater.from(Comment.this).inflate(R.layout.load_more_header, parent, false);
+                return new LoadMoreHeader(view);
+            } else {
+                View view = LayoutInflater.from(Comment.this).inflate(R.layout.post_comment, parent, false);
+                return new CommentViewHolder(view);
+            }
         }
 
         @Override
-        public void onBindViewHolder(@NonNull CommentViewHolder holder, int position) {
-            holder.bind(comments.get(position), comments.get(position).isPending(), position);
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            if (holder instanceof CommentViewHolder) {
+                CommentViewHolder pHolder = (CommentViewHolder) holder;
+                pHolder.bind(comments.get(position - 1), comments.get(position - 1).isPending(), position - 1);
+            }
         }
 
         @Override
         public int getItemCount() {
-            return comments.size();
+            return comments.size() + 1;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (isPositionHeader(position)){
+                return VIEW_HEADER;
+            } else {
+                return VIEW_COMMENT;
+            }
+        }
+
+        private boolean isPositionHeader(int position) {
+            return position == 0;
         }
     }
 
@@ -398,7 +456,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         if (commentEditText.getText().toString().length() > 0){
             final String commentText = commentEditText.getText().toString();
             commentEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -477,7 +535,44 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     }
 
     private void fetchComments(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        String cursor = "0";
+        if (apiComment != null){
+            cursor = apiComment.getNextCursor();
+        }
+
+
+        HomeOperations.fetchComments(String.valueOf(postId), cursor);
+        HomeOperations.setFetchCommentsCallback(new HomeOperations.FetchCommentsCallback() {
+            @Override
+            public void onSuccess(ApiCommentResponse response) {
+                if (apiComment != null && response.getComments() != null && response.getComments().length > 0){
+                    //comments.addAll(Arrays.asList(response.getComments()));
+                    comments.addAll(1, Arrays.asList(response.getComments()));
+                } else {
+                    comments = new ArrayList<>(Arrays.asList(response.getComments()));
+                }
+
+                apiComment = response;
+
+                for (io.krito.com.reze.models.pojo.post.Comment Comment:comments) {
+                    Comment.setPending(false);
+                }
+
+                updateUi();
+
+                commentProgressView.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(int error) {
+                commentProgressView.setVisibility(View.GONE);
+                loadMoreCallback.onEmptyResult();
+                if (apiComment != null){
+                    apiComment.setError(true);
+                }
+            }
+        });
+        /*VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 ApiCommentResponse.class,
                 new Response.Listener<ApiCommentResponse>() {
                     @Override
@@ -517,7 +612,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             }
         };
 
-        Volley.newRequestQueue(this).add(stringRequest);
+        Volley.newRequestQueue(this).add(stringRequest);*/
     }
 
     private void updateUi(){
@@ -525,7 +620,19 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             adapter = new CommentRecyclerAdapter();
             commentsRecyclerView.setAdapter(adapter);
             commentsRecyclerView.setLayoutManager(new LinearLayoutManager(Comment.this));
+        } else {
+            adapter.notifyDataSetChanged();
+            commentsRecyclerView.scrollToPosition(1);
         }
+    }
+
+    public interface LoadMoreCallback{
+        void onSuccess();
+        void onEmptyResult();
+    }
+
+    public static void setLoadMoreCallback(LoadMoreCallback callback){
+        loadMoreCallback = callback;
     }
 }
 

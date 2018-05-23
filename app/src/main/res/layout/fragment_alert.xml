@@ -23,7 +23,7 @@
                 android:layout_centerVertical="true"
                 android:layout_gravity="center"
                 android:contentDescription="logo"
-                app:srcCompat="@drawable/ic_logo_splash"
+                android:src="@drawable/ic_logo_splash"
                 android:alpha="0.2"/>
 
             <TextView

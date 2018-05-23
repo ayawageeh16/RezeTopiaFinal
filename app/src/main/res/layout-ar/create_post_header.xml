@@ -4,7 +4,8 @@
     android:layout_marginTop="@dimen/dimen_10"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ImageView
         android:layout_centerVertical="true"
@@ -44,9 +45,8 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_width="60dp"
-
                 android:layout_height="60dp"
-                android:background="@drawable/ic_ball"
+                android:src="@drawable/ic_ball"
                 android:padding="0dp"/>
 
         </RelativeLayout>

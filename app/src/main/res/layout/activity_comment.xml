@@ -61,17 +61,6 @@
         android:layout_gravity="center_vertical|center_horizontal"/>
 
 
-    <io.krito.com.reze.views.CustomTextView
-        android:visibility="gone"
-        android:id="@+id/loadMoreComments"
-        android:text="@string/load_more"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dimen_10"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="5dp"/>
-
     <android.support.v7.widget.RecyclerView
         android:layout_weight="1.8"
         android:layout_width="match_parent"
@@ -99,9 +88,9 @@
             android:hint="@string/write_comment"/>
 
         <ImageView
-            android:padding="10dp"
+            android:padding="15dp"
             android:id="@+id/sendCommentView"
-            app:srcCompat="@drawable/ic_send"
+            android:src="@drawable/ic_send"
             android:layout_weight="0.3"
             android:layout_width="0dp"
             android:layout_height="match_parent" />

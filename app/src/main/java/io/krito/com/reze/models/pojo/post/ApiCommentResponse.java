@@ -15,6 +15,11 @@ public class ApiCommentResponse implements Serializable {
     @Expose
     private Comment[] comments;
 
+    @SerializedName("nextCursor")
+    @Expose
+    private String nextCursor;
+
+
     public boolean isError() {
         return error;
     }
@@ -29,5 +34,13 @@ public class ApiCommentResponse implements Serializable {
 
     public void setComments(Comment[] comments) {
         this.comments = comments;
+    }
+
+    public String getNextCursor() {
+        return nextCursor;
+    }
+
+    public void setNextCursor(String nextCursor) {
+        this.nextCursor = nextCursor;
     }
 }

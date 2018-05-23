@@ -5,7 +5,8 @@
     android:paddingStart="@dimen/dimen_10"
     android:paddingEnd="@dimen/dimen_10"
     android:paddingTop="5dp"
-    android:paddingBottom="5dp">
+    android:paddingBottom="5dp"
+    android:background="@color/colorPrimary">
 
     <ImageView
         android:id="@+id/searchBackView"
@@ -31,7 +32,7 @@
         android:layout_toRightOf="@+id/searchBackView"
         android:layout_toEndOf="@id/searchBackView"
         android:background="@drawable/seaico_round"
-        app:srcCompat="@drawable/ic_search_ico"
+        android:src="@drawable/ic_search_white"
         />
 
     <EditText
@@ -56,8 +57,8 @@
         android:paddingLeft="15dp"
         android:paddingTop="5dp"
         android:text=""
-        android:textColor="@color/colorPrimary"
-        android:textColorHint="@color/colorPrimary" />
+        android:textColor="@color/white"
+        android:textColorHint="@color/white" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -66,7 +67,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        app:srcCompat="@drawable/ic_fir_ball"
+        android:src="@drawable/ic_fir_ball"
         android:background="@android:color/transparent"/>
 
 

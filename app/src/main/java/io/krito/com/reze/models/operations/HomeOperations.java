@@ -27,6 +27,7 @@ import io.krito.com.reze.R;
 import io.krito.com.reze.helper.VolleyCustomRequest;
 import io.krito.com.reze.models.pojo.news_feed.NewsFeed;
 import io.krito.com.reze.models.pojo.news_feed.NewsFeedItem;
+import io.krito.com.reze.models.pojo.post.ApiCommentResponse;
 import io.krito.com.reze.models.pojo.post.ApiResponse;
 import io.krito.com.reze.models.pojo.post.Post;
 
@@ -37,16 +38,28 @@ import io.krito.com.reze.models.pojo.post.Post;
 public class HomeOperations {
 
 
-    private static final String baseUrl = "https://rezetopia.dev-krito.com/app/reze/";
+    private static final String baseUrl = "http://rezetopia.dev-krito.com/app/reze/";
     private static RequestQueue requestQueue;
     private static NewsFeedCallback feedCallback;
     private LikeCallback likeCallback;
+    private static FetchCommentsCallback fetchCommentsCallback;
     private static String homeCursor = "0";
 
     public static void setRequestQueue(RequestQueue queue){
         requestQueue = queue;
     }
 
+    public static void setFeedCallback(NewsFeedCallback call) {
+        feedCallback = call;
+    }
+
+    public void setLikeCallback(LikeCallback callback){
+        likeCallback = callback;
+    }
+
+    public static void setFetchCommentsCallback(FetchCommentsCallback callback) {
+        fetchCommentsCallback = callback;
+    }
 
     public static void fetchNewsFeed(String userId, String cursor){
         new FetchNewsFeedTask().execute(userId, cursor);
@@ -60,13 +73,11 @@ public class HomeOperations {
         new PerformLikeTask().execute(method, userId, ownerId, postId);
     }
 
-    public static void setFeedCallback(NewsFeedCallback call) {
-        feedCallback = call;
+
+    public static void fetchComments(String postId, String cursor){
+        new FetchCommentsTask().execute(postId, cursor);
     }
 
-    public void setLikeCallback(LikeCallback callback){
-        likeCallback = callback;
-    }
 
     public static class FetchNewsFeedTask extends AsyncTask<String, Void, Void>{
 
@@ -179,7 +190,26 @@ public class HomeOperations {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.i("like_error", "onErrorResponse: " + error.getMessage());
-                    likeCallback.onError(R.string.unknown_error);
+                    if (error instanceof NetworkError) {
+                        likeCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ServerError) {
+                        likeCallback.onError(R.string.server_error);
+                        return;
+                    } else if (error instanceof AuthFailureError) {
+                        likeCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ParseError) {
+                        likeCallback.onError(R.string.parsing_error);
+                        return;
+                    } else if (error instanceof NoConnectionError) {
+                        likeCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof TimeoutError) {
+                        likeCallback.onError(R.string.time_out);
+                        return;
+                    }
+                    likeCallback.onError(R.string.connection_error);
                 }
             }){
                 @Override
@@ -207,6 +237,65 @@ public class HomeOperations {
         }
     }
 
+    public static class FetchCommentsTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+                    ApiCommentResponse.class,
+                    new Response.Listener<ApiCommentResponse>() {
+                        @Override
+                        public void onResponse(ApiCommentResponse response) {
+                            if (!response.isError()){
+                                fetchCommentsCallback.onSuccess(response);
+                            } else {
+                                fetchCommentsCallback.onError(R.string.empty_date);
+                                Log.i("commentResponse", "onResponse: " + response.isError());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                    if (error instanceof NetworkError) {
+                        fetchCommentsCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ServerError) {
+                        fetchCommentsCallback.onError(R.string.server_error);
+                        return;
+                    } else if (error instanceof AuthFailureError) {
+                        fetchCommentsCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ParseError) {
+                        fetchCommentsCallback.onError(R.string.parsing_error);
+                        return;
+                    } else if (error instanceof NoConnectionError) {
+                        fetchCommentsCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof TimeoutError) {
+                        fetchCommentsCallback.onError(R.string.time_out);
+                        return;
+                    }
+                    fetchCommentsCallback.onError(R.string.connection_error);
+
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+                    map.put("method", "get_comments");
+                    map.put("post_id", strings[0]);
+                    map.put("cursor", strings[1]);
+
+                    return map;
+                }
+            };
+
+            requestQueue.add(stringRequest);
+            return null;
+        }
+    }
+
     public interface NewsFeedCallback{
         void onSuccess(NewsFeed newsFeed);
         void onError(int error);
@@ -214,6 +303,11 @@ public class HomeOperations {
 
     public interface LikeCallback {
         void onSuccess();
+        void onError(int error);
+    }
+
+    public interface FetchCommentsCallback{
+        void onSuccess(ApiCommentResponse response);
         void onError(int error);
     }
 }

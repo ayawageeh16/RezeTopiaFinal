@@ -109,7 +109,7 @@ public class RezetopiaApp extends Application {
     }
 
     private void updateToken() {
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/push_notification.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/push_notification.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

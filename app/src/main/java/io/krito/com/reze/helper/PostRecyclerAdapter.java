@@ -453,7 +453,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     }
 
     private void removePost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -490,7 +490,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     }
 
     private void savePost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -518,7 +518,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     }
 
     private void reportPost(final int postId){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {

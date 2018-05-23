@@ -8,7 +8,7 @@
         android:id="@+id/icon_in"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/ic_notification_tab" />
+        android:src="@drawable/ic_notification_tab" />
 
     <TextView
         android:id="@+id/notification_count"
