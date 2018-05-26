@@ -150,6 +150,10 @@
     <string name="password_prompt">More Than 4 alphanumeric characters</string>
     <string name="terms_and_conditions">Terms and Conditions</string>
     <string name="accept_friend_request">accept</string>
+    <string name="privacy">Privacy</string>
+    <string name="friends">Friends</string>
+    <string name="friends_of_friends">Friends of Friends</string>
+    <string name="only_me">Only me</string>
     <string name="cancel_request">remove</string>
     <string-array name="object_array">
 

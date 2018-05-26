@@ -32,7 +32,9 @@
         <activity
             android:name=".activities.Main"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activities.Comment"></activity>
+        <activity android:name=".activities.Comment" />
+        <activity android:name=".activities.Replay" />
+        <activity android:name=".activities.CreatePost"/>
     </application>
 
 </manifest>

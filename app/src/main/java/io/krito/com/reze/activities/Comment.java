@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -42,6 +43,7 @@ import io.krito.com.reze.application.AppConfig;
 import io.krito.com.reze.helper.VolleyCustomRequest;
 import io.krito.com.reze.models.operations.HomeOperations;
 import io.krito.com.reze.models.pojo.post.ApiCommentResponse;
+import io.krito.com.reze.models.pojo.post.Replay;
 import io.krito.com.reze.views.CustomEditText;
 import io.krito.com.reze.views.CustomTextView;
 
@@ -178,32 +180,41 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     private class LoadMoreHeader extends RecyclerView.ViewHolder{
 
         private CustomTextView loadMore;
+        private LinearLayout layout;
+        private ProgressBar progressBar;
 
         public LoadMoreHeader(View itemView) {
             super(itemView);
 
             loadMore = itemView.findViewById(R.id.loadMoreComments);
+            layout = itemView.findViewById(R.id.loadMoreLayout);
+            progressBar = itemView.findViewById(R.id.loadMoreProgress);
+
+            progressBar.getIndeterminateDrawable().setColorFilter(getResources()
+                    .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
             if (!(comments.size() >= 10)){
-                loadMore.setVisibility(View.GONE);
+                layout.setVisibility(View.GONE);
             }
 
-            loadMore.setOnClickListener(new View.OnClickListener() {
+            layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    fetchComments();
+                    if (progressBar.getVisibility() == View.GONE){
+                        fetchComments();
 
-                    setLoadMoreCallback(new LoadMoreCallback() {
-                        @Override
-                        public void onSuccess() {
-                            //todo
-                        }
+                        setLoadMoreCallback(new LoadMoreCallback() {
+                            @Override
+                            public void onSuccess() {
+                                progressBar.setVisibility(View.GONE);
+                            }
 
-                        @Override
-                        public void onEmptyResult() {
-                            loadMore.setVisibility(View.GONE);
-                        }
-                    });
+                            @Override
+                            public void onEmptyResult() {
+                                layout.setVisibility(View.GONE);
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -253,17 +264,18 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     commentReplayView.setText(comment.getReplaySize() + " " + replay);
                 }
 
+                String like = getResources().getString(R.string.like);
                 if (comment.getLikes() != null && comment.getLikes().length > 0) {
-                    String like = getResources().getString(R.string.like);
                     commentLikeView.setText(comment.getLikes().length + " " + like);
                     for (int i = 0; i < comment.getLikes().length; i++) {
                         if (comment.getLikes()[i] == Integer.parseInt(userId)) {
-
                             if (comment.getLikes().length > 0) {
                                 commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
                             }
                         }
                     }
+                } else {
+                    commentLikeView.setText(like);
                 }
 
 
@@ -296,27 +308,27 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                 commentReplayView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-//                        ArrayList<CommentReplyResponse> replies = new ArrayList<>();
-//                        int[] likes = new int[0];
+                        ArrayList<Replay> replies = new ArrayList<>();
+                        int[] likes = new int[0];
 //                        if (comment.getReplies() != null) {
 //                            replies = new ArrayList<>(Arrays.asList(comment.getReplies()));
 //                        }
-//
-//                        if (comment.getLikes() != null) {
-//                            likes = comment.getLikes();
-//                        }
-//
-//
-//                        Intent intent = ReplayActivity.createIntent(
-//                                likes,
-//                                postId,
-//                                comment.getCommentId(),
-//                                now,
-//                                CommentActivity.this
-//                        );
-//
-//                        startActivityForResult(intent, REPLAY_REQUEST_CODE);
-                        //startActivity(intent);
+
+                        if (comment.getLikes() != null) {
+                            likes = comment.getLikes();
+                        }
+
+
+                        Intent intent = io.krito.com.reze.activities.Replay.createIntent(
+                                likes,
+                                postId,
+                                comment.getCommentId(),
+                                now,
+                                Comment.this
+                        );
+
+                        startActivityForResult(intent, REPLAY_REQUEST_CODE);
+                        startActivity(intent);
                     }
                 });
             }

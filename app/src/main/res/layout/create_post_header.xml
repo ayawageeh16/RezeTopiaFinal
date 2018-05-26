@@ -44,8 +44,8 @@
                 android:layout_marginEnd="@dimen/dimen_10"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:src="@drawable/ic_ball"
                 android:padding="0dp"/>
 

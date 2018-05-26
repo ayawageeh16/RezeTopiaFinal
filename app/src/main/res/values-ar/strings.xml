@@ -59,6 +59,10 @@
     <string name="unfriend">حذف</string>
     <string name="search">بحث</string>
     <string name="booking">حجز</string>
+    <string name="privacy">الخصوصية</string>
+    <string name="friends">الاصدقاء</string>
+    <string name="friends_of_friends">اصدقاءالاصدقاء</string>
+    <string name="only_me">انا فقط</string>
 
 
 
@@ -134,7 +138,7 @@
     <string name="description">الوصف</string>
     <string name="price">السعر</string>
     <string name="discount">خصم</string>
-    <string name="post">منشور</string>
+    <string name="post">نشر</string>
     <string name="upload">تحميل</string>
     <string name="amount">كمية</string>
     <string name="available">متاح</string>

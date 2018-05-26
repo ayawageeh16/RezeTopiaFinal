@@ -1,0 +1,180 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:id="@+id/createPostNav"
+                android:background="@color/green7"
+                android:layout_width="match_parent"
+                android:layout_height="45dp">
+
+                <ImageView
+                    android:id="@+id/backView"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginLeft="@dimen/dimen_10"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_back"/>
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:layout_marginEnd="@dimen/dimen_20"
+                    android:layout_marginRight="@dimen/dimen_20"
+                    android:textSize="18sp"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:id="@+id/createPostView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/post"/>
+
+                <TextView
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:layout_centerVertical="true"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/privacy"/>
+
+                <ImageView
+                    android:id="@+id/privacyIcon"
+                    android:src="@drawable/ic_earth"
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:layout_toEndOf="@id/privacy"
+                    android:padding="3dp"
+                    android:layout_centerVertical="true"/>
+
+            </RelativeLayout>
+
+            <EditText
+                android:layout_below="@id/createPostNav"
+                android:paddingRight="@dimen/dimen_10"
+                android:paddingEnd="@dimen/dimen_10"
+                android:paddingLeft="@dimen/dimen_10"
+                android:paddingStart="@dimen/dimen_10"
+                android:paddingTop="@dimen/dimen_10"
+                android:paddingBottom="@dimen/dimen_10"
+                android:hint="@string/tell_something"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:id="@+id/postText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"/>
+
+
+            <io.krito.com.reze.views.CustomTextView
+                android:drawableStart="@drawable/ic_image"
+                android:id="@+id/pickImage"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/postText"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:hint="@string/image"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="9dp"
+                android:layout_below="@id/pickImage"
+                android:id="@+id/imagesRecView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <io.krito.com.reze.views.CustomTextView
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_video"
+                android:textSize="15sp"
+                android:id="@+id/pickVideo"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/imagesRecView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:hint="@string/video"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="9dp"
+                android:layout_below="@id/pickVideo"
+                android:id="@+id/videosRecView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <io.krito.com.reze.views.CustomTextView
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_tag"
+                android:textSize="15sp"
+                android:id="@+id/tagFriend"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/videosRecView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:hint="@string/tag"
+                android:paddingStart="@dimen/dimen_10"/>
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:layout_marginStart="25dp"
+                android:layout_marginEnd="9dp"
+                android:layout_below="@id/tagFriend"
+                android:id="@+id/tagRecView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <io.krito.com.reze.views.CustomTextView
+                android:gravity="center_vertical"
+                android:drawableStart="@drawable/ic_location"
+                android:textSize="15sp"
+                android:id="@+id/pickLocation"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@id/tagRecView"
+                android:layout_marginStart="9dp"
+                android:layout_marginEnd="9dp"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:hint="@string/check_in"
+                android:paddingStart="@dimen/dimen_10"/>
+
+        </RelativeLayout>
+
+        <id.arieridwan.lib.PageLoader
+            android:layout_gravity="center"
+            android:id="@+id/pageLoader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:setLoadingText="Please wait..."
+            app:setErrorText="Something happened"
+            app:setTextColor="@color/black"
+            app:setTextSize="16sp"
+            app:setLoadingImage="@drawable/rezetopia"
+            app:setLoadingAnimationMode="rotate"/>
+
+    </FrameLayout>
+</ScrollView>

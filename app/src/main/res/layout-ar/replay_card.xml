@@ -1,0 +1,112 @@
+<RelativeLayout
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:layout_centerVertical="true"
+        android:id="@+id/commentPPView"
+        android:background="@drawable/pp_circle"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="@dimen/dimen_10"
+        android:layout_marginStart="@dimen/dimen_10"/>
+
+    <RelativeLayout
+        android:id="@+id/commentLayout"
+        android:layout_toEndOf="@id/commentPPView"
+        android:background="@drawable/tell_something_background"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp">
+
+        <LinearLayout
+            android:id="@+id/userDataLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:id="@+id/commenterView"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:text="Rezetopia"
+                android:textColor="@android:color/black"/>
+
+            <!--<ImageView-->
+                <!--android:layout_marginStart="5dp"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_width="8dp"-->
+                <!--android:layout_height="8dp"-->
+                <!--android:background="@drawable/online_circle"/>-->
+
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_marginBottom="@dimen/dimen_10"
+            android:layout_below="@id/userDataLayout"
+            android:id="@+id/commentTextView"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_20"
+            android:text="@string/tell_something"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/dimen_40"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/commentPPView"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dimen_20">
+
+        <TextView
+            android:layout_centerVertical="true"
+            android:visibility="gone"
+            android:id="@+id/postingView"
+            android:layout_marginStart="@dimen/dimen_40"
+            android:layout_alignParentStart="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/posting"
+            />
+
+        <LinearLayout
+            android:layout_alignParentEnd="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/commentCreatedAtView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1m"
+                android:layout_marginEnd="@dimen/dimen_20"/>
+
+
+            <TextView
+                android:id="@+id/replayLikeView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13sp"
+                android:text="@string/like"
+                android:layout_marginEnd="@dimen/dimen_10"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import io.krito.com.reze.R;
 import io.krito.com.reze.activities.Comment;
+import io.krito.com.reze.activities.CreatePost;
 import io.krito.com.reze.application.AppConfig;
 import io.krito.com.reze.application.RezetopiaApp;
 import io.krito.com.reze.helper.PostRecyclerAdapter;
@@ -34,6 +35,7 @@ import io.krito.com.reze.receivers.ConnectivityReceiver;
 public class Home extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener {
 
     private static final int COMMENT_ACTIVITY_RESULT = 1001;
+    private static final int CREATE_POST_RESULT = 1002;
 
     FrameLayout homeHeader;
     RecyclerView recyclerView;
@@ -126,6 +128,7 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
             @Override
             public void onSuccess(NewsFeed feed) {
                 if (newsFeed != null && feed.getItems() != null && feed.getItems().size() > 0){
+                    final int lastItem = adapter.removeLastItem();
                     Log.i("newsFeed_size", "onSuccess: " + newsFeed.getItems().size() + " " + feed.getItems().size());
                     start = newsFeed.getItems().size();
                     newsFeed.addAllitems(feed.getItems());
@@ -138,7 +141,9 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
                         @Override
                         public void run() {
                             adapter.removeLastItem();
-                            adapter.notifyItemRangeInserted(Integer.parseInt(cursor) - 10, Integer.parseInt(cursor));
+                            adapter.notifyDataSetChanged();
+                            recyclerView.scrollToPosition(lastItem);
+                            //adapter.notifyItemRangeInserted(Integer.parseInt(cursor) - 10, Integer.parseInt(cursor));
                         }
                     });
                     //updateUi(0, 0);
@@ -196,6 +201,12 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
                             adapter.notifyItemRemoved(position);
                         }
                     });
+                }
+
+                @Override
+                public void onStartCreatePost() {
+                    Intent intent = new Intent(getActivity(), CreatePost.class);
+                    startActivityForResult(intent, CREATE_POST_RESULT);
                 }
             });
 

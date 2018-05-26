@@ -113,7 +113,7 @@ public class HomeOperations {
                             newsFeed.setNextCursor(response.getNextCursor());
                             newsFeed.setNow(response.getNow());
                             feedCallback.onSuccess(newsFeed);
-                            homeCursor = String.valueOf(Integer.parseInt(homeCursor) + 10);
+                            homeCursor = String.valueOf(Integer.parseInt(homeCursor) + 11);
                             Log.i("response_cursor", "onResponse: " + homeCursor);
                         }
                     } else {

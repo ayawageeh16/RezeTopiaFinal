@@ -26,9 +26,7 @@ public class VolleyCustomRequest extends Request {
     protected Response parseNetworkResponse(NetworkResponse response) {
         try {
             String jsonString = new String(response.data, "UTF-8");
-
             return Response.success(gson.fromJson(jsonString,responseClass), HttpHeaderParser.parseCacheHeaders(response));
-
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return Response.error(new ParseError(e));
@@ -37,9 +35,7 @@ public class VolleyCustomRequest extends Request {
 
     @Override
     protected void deliverResponse(Object response) {
-
         listener.onResponse(response);
-
     }
 
 }

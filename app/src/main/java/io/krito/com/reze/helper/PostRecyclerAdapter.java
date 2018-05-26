@@ -68,13 +68,22 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         item.setType(1009);
         items.add(item);
         //notifyItemInserted(items.size() - 1);
-        callback.onItemAdded(items.size() - 1);
+        callback.onItemAdded(items.size());
     }
 
-    public void removeLastItem(){
-        items.remove(items.size() - 1);
+    public int removeLastItem(){
+        //items.remove(items.size() - 1);
         //notifyItemRemoved(items.size() - 1);
-        callback.onItemRemoved(items.size() - 1);
+
+        for (NewsFeedItem item:items) {
+            if (item.getType() == 1009){
+                items.remove(items.size() - 1);
+                callback.onItemRemoved(items.size());
+                return items.size();
+            }
+        }
+        //callback.onItemRemoved(items.size());
+        return 0;
     }
 
     public void addCommentItem(int postId, int commentSize){
@@ -101,7 +110,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             View view = LayoutInflater.from(context).inflate(R.layout.create_post_header, parent, false);
             return new HeaderViewHolder(view);
         } else if (viewType == VIEW_POST){
-            View view = LayoutInflater.from(context).inflate(R.layout.post_card, parent, false);
+            View view = LayoutInflater.from(context).inflate(R.layout.post_card_1, parent, false);
             return new PostViewHolder(view);
         } else {
             View view = LayoutInflater.from(context).inflate(R.layout.progress, parent, false);
@@ -150,8 +159,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             createPostLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Intent intent = new Intent(context, CreatePostActivity.class);
-                    //startActivityForResult(intent, CREATE_POST_RESULT);
+                    callback.onStartCreatePost();
                 }
             });
         }
@@ -214,10 +222,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 Picasso.with(context).load(item.getItemImage()).into(ppView);
             } else {
                 ppView.setImageDrawable(context.getResources().getDrawable(R.drawable.default_avatar));
-            }
-
-            if (item.getOwnerId().contains("1")){
-                verifyView.setVisibility(View.VISIBLE);
             }
 
             if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null && item.getPostAttachment().getImages().length > 0) {
@@ -424,7 +428,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         }
 
 
-        ListAdapter adapter = new ListPopupWindowAdapter(context, itemList);
+        ListAdapter adapter = new ListPopupWindowAdapter(context, itemList, R.layout.custom_menu);
         popupWindow.setAnchorView(anchor);
         popupWindow.setAdapter(adapter);
         popupWindow.setWidth(400);
@@ -547,6 +551,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
 
     public interface AdapterCallback{
         void onStartComment(NewsFeedItem item, long now);
+        void onStartCreatePost();
         void onItemAdded(int position);
         void onItemRemoved(int position);
     }

@@ -16,10 +16,12 @@ public class ListPopupWindowAdapter extends BaseAdapter {
 
     LayoutInflater mLayoutInflater;
     List<MenuCustomItem> mItemList;
+    int mLayout;
 
-    public ListPopupWindowAdapter(Context context, List<MenuCustomItem> itemList) {
+    public ListPopupWindowAdapter(Context context, List<MenuCustomItem> itemList, int layout) {
         mLayoutInflater = LayoutInflater.from(context);
         mItemList = itemList;
+        mLayout = layout;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class ListPopupWindowAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.custom_menu, parent, false);
+            convertView = mLayoutInflater.inflate(mLayout, parent, false);
             holder = new ViewHolder(convertView);
             convertView.setTag(holder);
         } else {

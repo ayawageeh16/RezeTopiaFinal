@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="paddingPercent" value="50" />
+                                                <entry key="paddingPercent" value="20" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/E:/Programs/Delvelopment%20tools/Android/android-studio-ide-162.3742087-windows/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/content/ic_send_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/E:/Programs/Delvelopment%20tools/Android/android-studio-ide-162.3742087-windows/android-studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_close_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -44,7 +44,7 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_send" />
+                                      <entry key="outputName" value="ic_exit" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="021408" />
                                     </map>
