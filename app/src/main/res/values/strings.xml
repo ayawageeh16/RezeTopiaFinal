@@ -103,6 +103,7 @@
     <string name="report_post">Report</string>
     <string name="image">Image</string>
     <string name="video">Video</string>
+    <string name="image_video">Image/Video</string>
     <string name="check_in">Check in</string>
     <string name="tag">Tag friend</string>
     <string name="product">Product</string>

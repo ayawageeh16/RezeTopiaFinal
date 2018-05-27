@@ -51,9 +51,10 @@
                     android:layout_height="wrap_content"
                     android:text="@string/privacy"/>
 
+                <!--android:src="@drawable/ic_earth"-->
+
                 <ImageView
                     android:id="@+id/privacyIcon"
-                    android:src="@drawable/ic_earth"
                     android:layout_width="@dimen/dimen_20"
                     android:layout_height="@dimen/dimen_20"
                     android:layout_toEndOf="@id/privacy"
@@ -83,47 +84,47 @@
 
             <io.krito.com.reze.views.CustomTextView
                 android:drawableStart="@drawable/ic_image"
-                android:id="@+id/pickImage"
+                android:id="@+id/pickImageVideo"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@id/postText"
                 android:layout_marginStart="9dp"
                 android:layout_marginEnd="9dp"
-                android:hint="@string/image"
+                android:hint="@string/image_video"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/dimen_10"/>
 
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
-                android:layout_marginStart="25dp"
+                android:layout_marginStart="20dp"
                 android:layout_marginEnd="9dp"
-                android:layout_below="@id/pickImage"
+                android:layout_below="@id/pickImageVideo"
                 android:id="@+id/imagesRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <io.krito.com.reze.views.CustomTextView
-                android:gravity="center_vertical"
-                android:drawableStart="@drawable/ic_video"
-                android:textSize="15sp"
-                android:id="@+id/pickVideo"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_below="@id/imagesRecView"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="9dp"
-                android:hint="@string/video"
-                android:layout_marginTop="@dimen/dimen_10"
-                android:paddingStart="@dimen/dimen_10"/>
+            <!--<io.krito.com.reze.views.CustomTextView-->
+            <!--android:gravity="center_vertical"-->
+            <!--android:drawableStart="@drawable/ic_video"-->
+            <!--android:textSize="15sp"-->
+            <!--android:id="@+id/pickVideo"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_below="@id/imagesRecView"-->
+            <!--android:layout_marginStart="9dp"-->
+            <!--android:layout_marginEnd="9dp"-->
+            <!--android:hint="@string/video"-->
+            <!--android:layout_marginTop="@dimen/dimen_10"-->
+            <!--android:paddingStart="@dimen/dimen_10"/>-->
 
-            <android.support.v7.widget.RecyclerView
-                android:visibility="gone"
-                android:layout_marginStart="25dp"
-                android:layout_marginEnd="9dp"
-                android:layout_below="@id/pickVideo"
-                android:id="@+id/videosRecView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+            <!--<android.support.v7.widget.RecyclerView-->
+            <!--android:visibility="gone"-->
+            <!--android:layout_marginStart="25dp"-->
+            <!--android:layout_marginEnd="9dp"-->
+            <!--android:layout_below="@id/pickVideo"-->
+            <!--android:id="@+id/videosRecView"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
 
             <io.krito.com.reze.views.CustomTextView
                 android:gravity="center_vertical"
@@ -132,7 +133,7 @@
                 android:id="@+id/tagFriend"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/videosRecView"
+                android:layout_below="@id/imagesRecView"
                 android:layout_marginStart="9dp"
                 android:layout_marginEnd="9dp"
                 android:layout_marginTop="@dimen/dimen_10"

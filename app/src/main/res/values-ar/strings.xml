@@ -16,6 +16,7 @@
     <string name="slide_3_desc">الموقع شغال حاليا بشكل تجريبي سجل بياناتك و خليك متابع علشان يوم 8 مايو الموقع هينطلق و هيكون زي فيسبوك لكن بشكل متطور خاص بالرياضيين... </string>
     <string name="posting">جاري النشر&#8230;</string>
     <string name="image">صورة</string>
+    <string name="image_video">صورة/فيديو</string>
     <string name="video">فيديو</string>
     <string name="check_in">مكان</string>
     <string name="tag">الاشارة لصديق</string>

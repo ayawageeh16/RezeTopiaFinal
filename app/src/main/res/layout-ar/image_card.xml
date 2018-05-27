@@ -1,6 +1,6 @@
 <FrameLayout android:id="@+id/imageHolder"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="110dp"
+    android:layout_height="90dp"
     android:layout_marginStart="5dp"
     android:layout_marginEnd="5dp"
     android:layout_marginTop="5dp"
@@ -8,23 +8,40 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!--<ImageView-->
-        <!--android:layout_gravity="bottom"-->
-        <!--android:id="@+id/dummy"-->
-        <!--android:layout_width="88dp"-->
-        <!--android:layout_height="88dp"-->
-        <!--android:background="@color/grey" />-->
+    <!--android:layout_gravity="bottom"-->
+    <!--android:id="@+id/dummy"-->
+    <!--android:layout_width="88dp"-->
+    <!--android:layout_height="88dp"-->
+    <!--android:background="@color/grey" />-->
 
     <ImageView
+        android:visibility="gone"
         android:id="@+id/imageView"
         android:layout_width="100dp"
         android:layout_height="80dp"
         android:background="@color/white"/>
 
+    <VideoView
+        android:visibility="gone"
+        android:id="@+id/videoView"
+        android:layout_width="100dp"
+        android:layout_height="80dp" />
 
-    <ImageView
-        android:id="@+id/closeView"
-        android:src="@drawable/ic_exit"
+    <FrameLayout
+        android:layout_width="25dp"
+        android:layout_height="25dp"
         android:layout_gravity="end"
-        android:layout_width="@dimen/dimen_20"
-        android:layout_height="@dimen/dimen_20" />
+        android:background="@drawable/small_circle">
+
+        <ImageView
+            android:id="@+id/closeView"
+            android:src="@drawable/ic_exit"
+            android:layout_gravity="center"
+            android:layout_width="@dimen/dimen_20"
+            android:layout_height="@dimen/dimen_20" />
+
+    </FrameLayout>
+
+
+
 </FrameLayout>
