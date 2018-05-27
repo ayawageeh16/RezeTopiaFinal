@@ -8,6 +8,16 @@
     android:paddingBottom="5dp"
     android:background="@color/colorPrimary">
 
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/ic_fir_ball"
+        android:background="@android:color/transparent"/>
+
     <ImageView
         android:id="@+id/searchBackView"
         android:layout_width="wrap_content"
@@ -60,16 +70,6 @@
         android:text=""
         android:textColor="@color/white"
         android:textColorHint="@color/white" />
-
-    <ImageButton
-        android:id="@+id/imageButton"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/ic_fir_ball"
-        android:background="@android:color/transparent"/>
 
 
 </RelativeLayout>

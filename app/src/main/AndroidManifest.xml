@@ -34,7 +34,8 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activities.Comment" />
         <activity android:name=".activities.Replay" />
-        <activity android:name=".activities.CreatePost"/>
+        <activity android:name=".activities.CreatePost" />
+        <activity android:name=".activities.ImagePicker"></activity>
     </application>
 
 </manifest>

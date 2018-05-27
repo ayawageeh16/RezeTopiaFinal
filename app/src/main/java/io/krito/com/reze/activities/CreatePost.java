@@ -4,13 +4,18 @@ import android.Manifest;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -65,9 +70,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     PageLoader loader;
     RecyclerView imagesRecView;
 
-    String userId;
+    private String userId;
     private List<Image> selectedImages;
     private ArrayList<String> encodedImages;
+    private RecyclerView.Adapter imageAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -199,6 +205,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             selectedImages = ImagePicker.getImages(data);
+            if (selectedImages != null && selectedImages.size() > 0){
+                imagesRecView.setVisibility(View.VISIBLE);
+                updateImageHolder();
+            }
         }
 
 
@@ -278,5 +288,60 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         RezetopiaApp.getInstance().getRequestQueue().add(stringRequest);
     }
 
+    private class ImageViewHolder extends RecyclerView.ViewHolder{
+
+        ImageView close;
+        ImageView image;
+
+        public ImageViewHolder(View itemView) {
+            super(itemView);
+
+            close = itemView.findViewById(R.id.closeView);
+            image = itemView.findViewById(R.id.imageView);
+        }
+
+        public void bind(final Image i){
+            Bitmap bm = BitmapFactory.decodeFile(i.getPath());
+            image.setImageBitmap(bm);
+
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    selectedImages.remove(i);
+                    imageAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    private class ImageRecyclerAdapter extends RecyclerView.Adapter<ImageViewHolder>{
+
+        @NonNull
+        @Override
+        public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(CreatePost.this).inflate(R.layout.image_card, parent, false);
+            return new ImageViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ImageViewHolder holder, int position) {
+            holder.bind(selectedImages.get(position));
+        }
+
+        @Override
+        public int getItemCount() {
+            return selectedImages.size();
+        }
+    }
+
+    private void updateImageHolder(){
+        if (imageAdapter == null){
+            imageAdapter = new ImageRecyclerAdapter();
+            imagesRecView.setAdapter(imageAdapter);
+            imagesRecView.setLayoutManager(new GridLayoutManager(this, 5));
+        } else {
+            imageAdapter.notifyDataSetChanged();
+        }
+    }
 
 }
