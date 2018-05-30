@@ -1,4 +1,4 @@
-package io.krito.com.reze.helper;
+package io.krito.com.rezetopia.helper;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import io.krito.com.reze.R;
-import io.krito.com.reze.models.operations.HomeOperations;
-import io.krito.com.reze.models.pojo.news_feed.NewsFeedItem;
+import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.models.operations.HomeOperations;
+import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
 

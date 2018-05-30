@@ -1,4 +1,4 @@
-package io.krito.com.reze.activities;
+package io.krito.com.rezetopia.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -37,12 +37,12 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.krito.com.reze.R;
-import io.krito.com.reze.application.AppConfig;
-import io.krito.com.reze.helper.VolleyCustomRequest;
-import io.krito.com.reze.models.pojo.post.ApiReplayResponse;
-import io.krito.com.reze.views.CustomEditText;
-import io.krito.com.reze.views.CustomTextView;
+import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.application.AppConfig;
+import io.krito.com.rezetopia.helper.VolleyCustomRequest;
+import io.krito.com.rezetopia.models.pojo.post.ApiReplayResponse;
+import io.krito.com.rezetopia.views.CustomEditText;
+import io.krito.com.rezetopia.views.CustomTextView;
 
 public class Replay extends AppCompatActivity implements View.OnClickListener {
 
@@ -52,7 +52,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
     private static final String TIME_NOW_EXTRA = "replay_activity.time_now_extra";
     private static final String LIKES_EXTRA = "replay_activity.likes_extra";
 
-    ArrayList<io.krito.com.reze.models.pojo.post.Replay> replies;
+    ArrayList<io.krito.com.rezetopia.models.pojo.post.Replay> replies;
     ImageView backView;
     long now;
     ImageView sendReplayView;
@@ -61,7 +61,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
     int postId;
     int commentId;
     String userId;
-    io.krito.com.reze.models.pojo.post.Replay replayResponse;
+    io.krito.com.rezetopia.models.pojo.post.Replay replayResponse;
     int[] likes;
     RecyclerView repliesRecyclerView;
     RecyclerView.Adapter adapter;
@@ -139,7 +139,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                 break;
             case R.id.sendReplayView:
                 if (!replayEditText.getText().toString().contentEquals("")) {
-                    io.krito.com.reze.models.pojo.post.Replay response = new io.krito.com.reze.models.pojo.post.Replay();
+                    io.krito.com.rezetopia.models.pojo.post.Replay response = new io.krito.com.rezetopia.models.pojo.post.Replay();
                     response.setReplayText(replayEditText.getText().toString());
                     response.setPending(true);
                     replies.add(response);
@@ -213,7 +213,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
             likeReplayView = itemView.findViewById(R.id.replayLikeView);
         }
 
-        public void bind(final io.krito.com.reze.models.pojo.post.Replay replay, boolean pending, final int position){
+        public void bind(final io.krito.com.rezetopia.models.pojo.post.Replay replay, boolean pending, final int position){
             if (pending){
                 postingView.setVisibility(View.VISIBLE);
             } else {
@@ -284,7 +284,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
             }
         }
 
-        private void performLike(final io.krito.com.reze.models.pojo.post.Replay replay){
+        private void performLike(final io.krito.com.rezetopia.models.pojo.post.Replay replay){
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
@@ -332,7 +332,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
             Volley.newRequestQueue(Replay.this).add(stringRequest);
         }
 
-        private void reverseLike(final io.krito.com.reze.models.pojo.post.Replay replay){
+        private void reverseLike(final io.krito.com.rezetopia.models.pojo.post.Replay replay){
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
@@ -425,7 +425,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                                 if (jsonObject.getBoolean("error")){
                                     //  Toast.makeText(ReplayActivity.this, "Error submitting replay", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    replayResponse = new io.krito.com.reze.models.pojo.post.Replay();
+                                    replayResponse = new io.krito.com.rezetopia.models.pojo.post.Replay();
                                     replayResponse.setReplayId(Integer.parseInt(userId));
                                     replayResponse.setReplierId(jsonObject.getInt("replierId"));
                                     replayResponse.setReplayText(jsonObject.getString("replay_text"));
@@ -491,7 +491,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                         if (!response.isError()){
                             if (response.getReplies() != null) {
                                 replies = new ArrayList<>(Arrays.asList(response.getReplies()));
-                                for (io.krito.com.reze.models.pojo.post.Replay replyResponse:replies) {
+                                for (io.krito.com.rezetopia.models.pojo.post.Replay replyResponse:replies) {
                                     replyResponse.setPending(false);
                                 }
                                 updateUi();

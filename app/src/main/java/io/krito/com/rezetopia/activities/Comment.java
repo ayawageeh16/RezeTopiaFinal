@@ -1,4 +1,4 @@
-package io.krito.com.reze.activities;
+package io.krito.com.rezetopia.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -38,14 +38,14 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import io.krito.com.reze.R;
-import io.krito.com.reze.application.AppConfig;
-import io.krito.com.reze.helper.VolleyCustomRequest;
-import io.krito.com.reze.models.operations.HomeOperations;
-import io.krito.com.reze.models.pojo.post.ApiCommentResponse;
-import io.krito.com.reze.models.pojo.post.Replay;
-import io.krito.com.reze.views.CustomEditText;
-import io.krito.com.reze.views.CustomTextView;
+import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.application.AppConfig;
+import io.krito.com.rezetopia.helper.VolleyCustomRequest;
+import io.krito.com.rezetopia.models.operations.HomeOperations;
+import io.krito.com.rezetopia.models.pojo.post.ApiCommentResponse;
+import io.krito.com.rezetopia.models.pojo.post.Replay;
+import io.krito.com.rezetopia.views.CustomEditText;
+import io.krito.com.rezetopia.views.CustomTextView;
 
 public class Comment extends AppCompatActivity implements View.OnClickListener{
 
@@ -61,7 +61,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     private static final String POST_OWNER_EXTRA = "comment_activity.post_owner_extra";
 
     ImageView backView;
-    ArrayList<io.krito.com.reze.models.pojo.post.Comment> comments;
+    ArrayList<io.krito.com.rezetopia.models.pojo.post.Comment> comments;
     int[] likes;
     RecyclerView commentsRecyclerView;
     RecyclerView.Adapter adapter;
@@ -70,7 +70,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     CustomEditText commentEditText;
     CustomTextView loadMoreComments;
     int postId;
-    io.krito.com.reze.models.pojo.post.Comment Comment;
+    io.krito.com.rezetopia.models.pojo.post.Comment Comment;
     long now;
     String userId;
     int ownerId;
@@ -164,7 +164,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                 break;
             case R.id.sendCommentView:
                 if (!commentEditText.getText().toString().contentEquals("")) {
-                    io.krito.com.reze.models.pojo.post.Comment response = new io.krito.com.reze.models.pojo.post.Comment();
+                    io.krito.com.rezetopia.models.pojo.post.Comment response = new io.krito.com.rezetopia.models.pojo.post.Comment();
                     response.setCommentText(commentEditText.getText().toString());
                     response.setPending(true);
                     comments.add(response);
@@ -242,7 +242,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             postingView = itemView.findViewById(R.id.postingView);
         }
 
-        public void bind(final io.krito.com.reze.models.pojo.post.Comment comment, boolean pending, final int position){
+        public void bind(final io.krito.com.rezetopia.models.pojo.post.Comment comment, boolean pending, final int position){
             if (pending){
                 postingView.setVisibility(View.VISIBLE);
             } else {
@@ -321,7 +321,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                         }
 
 
-                        Intent intent = io.krito.com.reze.activities.Replay.createIntent(
+                        Intent intent = io.krito.com.rezetopia.activities.Replay.createIntent(
                                 likes,
                                 postId,
                                 comment.getCommentId(),
@@ -336,7 +336,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             }
         }
 
-        private void performLike(final io.krito.com.reze.models.pojo.post.Comment comment, final int position){
+        private void performLike(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
 
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
@@ -384,7 +384,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             Volley.newRequestQueue(Comment.this).add(stringRequest);
         }
 
-        private void reverseLike(final io.krito.com.reze.models.pojo.post.Comment comment, final int position){
+        private void reverseLike(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
             StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
@@ -499,7 +499,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                                     comments.remove(comments.size()-1);
                                 } else {
                                     commentEditText.setText(null);
-                                    Comment = new io.krito.com.reze.models.pojo.post.Comment();
+                                    Comment = new io.krito.com.rezetopia.models.pojo.post.Comment();
                                     Comment.setCommenterId(jsonObject.getInt("commenterId"));
                                     Comment.setCommentId(jsonObject.getInt("commentId"));
                                     Comment.setCommentText(jsonObject.getString("commentText"));
@@ -585,7 +585,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
                 apiComment = response;
 
-                for (io.krito.com.reze.models.pojo.post.Comment Comment:comments) {
+                for (io.krito.com.rezetopia.models.pojo.post.Comment Comment:comments) {
                     Comment.setPending(false);
                 }
 

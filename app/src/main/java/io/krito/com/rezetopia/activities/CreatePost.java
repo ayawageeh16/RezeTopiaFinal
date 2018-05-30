@@ -1,4 +1,4 @@
-package io.krito.com.reze.activities;
+package io.krito.com.rezetopia.activities;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -47,11 +47,11 @@ import java.util.List;
 import java.util.Map;
 
 import id.arieridwan.lib.PageLoader;
-import io.krito.com.reze.R;
-import io.krito.com.reze.application.AppConfig;
-import io.krito.com.reze.application.RezetopiaApp;
-import io.krito.com.reze.models.pojo.post.PostResponse;
-import io.krito.com.reze.views.CustomTextView;
+import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.application.AppConfig;
+import io.krito.com.rezetopia.application.RezetopiaApp;
+import io.krito.com.rezetopia.models.pojo.post.PostResponse;
+import io.krito.com.rezetopia.views.CustomTextView;
 
 public class CreatePost extends AppCompatActivity implements View.OnClickListener {
 
@@ -338,7 +338,6 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 Bitmap bm = BitmapFactory.decodeFile(i.path);
                 image.setVisibility(View.VISIBLE);
                 image.setImageBitmap(bm);
-
             } else {
                 image.setVisibility(View.GONE);
                 video.setVisibility(View.VISIBLE);
