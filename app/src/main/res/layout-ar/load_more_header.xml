@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="30dp">
 
-    <io.krito.com.reze.views.CustomTextView
+    <io.krito.com.rezetopia.views.CustomTextView
         android:id="@+id/loadMoreComments"
         android:text="@string/load_more"
         android:layout_width="wrap_content"

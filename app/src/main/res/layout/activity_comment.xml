@@ -76,7 +76,7 @@
         android:layout_weight="2"
         android:orientation="horizontal">
 
-        <io.krito.com.reze.views.CustomEditText
+        <io.krito.com.rezetopia.views.CustomEditText
             android:layout_weight="1.7"
             android:background="@android:color/transparent"
             android:id="@+id/commentEditText"

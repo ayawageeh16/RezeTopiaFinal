@@ -29,7 +29,7 @@
                     android:layout_width="100dp"
                     android:layout_gravity="center"
                     android:src="@drawable/rezetopia"/>
-                <io.krito.com.reze.views.CustomTextView
+                <io.krito.com.rezetopia.views.CustomTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -57,7 +57,7 @@
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     />
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/emailView"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
@@ -97,7 +97,7 @@
                     android:layout_gravity="center|center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/kasb_margin_top"
                     />
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:layout_height="40dp"
                     android:layout_width="match_parent"
                     android:layout_marginTop="@dimen/small_margin"
@@ -177,7 +177,7 @@
                     app:BL_textSize="20sp" />
 
 
-                <io.krito.com.reze.views.CustomButton
+                <io.krito.com.rezetopia.views.CustomButton
                     android:id="@+id/btnRegister"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -201,7 +201,7 @@
                     <!--android:layout_marginTop="30dp"-->
                     <!--android:layout_marginBottom="30dp" />-->
 
-                <io.krito.com.reze.views.CustomTextView
+                <io.krito.com.rezetopia.views.CustomTextView
                     android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -211,7 +211,7 @@
                     android:textColor="@color/white"/>
 
 
-                <io.krito.com.reze.views.CustomTextView
+                <io.krito.com.rezetopia.views.CustomTextView
                     android:layout_marginTop="@dimen/dimen_20"
                     android:id="@+id/forgetPassword"
                     android:layout_width="wrap_content"
