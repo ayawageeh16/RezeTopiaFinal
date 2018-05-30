@@ -42,8 +42,12 @@ import io.krito.com.reze.models.pojo.news_feed.NewsFeedItem;
 public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
 
     private static final int VIEW_HEADER = 1;
-    private static final int VIEW_POST = 2;
+    private static final int VIEW_POST_1 = 2;
     private static final int VIEW_PROGRESS = 3;
+    private static final int VIEW_POST_2 = 4;
+    private static final int VIEW_POST_3 = 5;
+    private static final int VIEW_POST_4 = 6;
+    private static final int VIEW_POST_5 = 7;
 
     private Context context;
     private ArrayList<NewsFeedItem> items;
@@ -109,10 +113,24 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         if (viewType == VIEW_HEADER){
             View view = LayoutInflater.from(context).inflate(R.layout.create_post_header, parent, false);
             return new HeaderViewHolder(view);
-        } else if (viewType == VIEW_POST){
+        } else if (viewType == VIEW_POST_1){
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_1, parent, false);
             return new PostViewHolder(view);
-        } else {
+        } else if (viewType == VIEW_POST_2){
+            View view = LayoutInflater.from(context).inflate(R.layout.post_card_2, parent, false);
+            return new PostViewHolder(view);
+        } else if (viewType == VIEW_POST_3){
+            View view = LayoutInflater.from(context).inflate(R.layout.post_card_3, parent, false);
+            return new PostViewHolder(view);
+        } else if (viewType == VIEW_POST_4){
+            View view = LayoutInflater.from(context).inflate(R.layout.post_card_4, parent, false);
+            return new PostViewHolder(view);
+        } else if (viewType == VIEW_POST_5){
+            View view = LayoutInflater.from(context).inflate(R.layout.post_card_5, parent, false);
+            return new PostViewHolder(view);
+        }
+
+        else {
             View view = LayoutInflater.from(context).inflate(R.layout.progress, parent, false);
             return new ProgressViewHolder(view);
         }
@@ -140,7 +158,19 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             return VIEW_PROGRESS;
         }
 
-        return VIEW_POST;
+        else if (items.get(position - 1).getPostAttachment() != null && items.get(position - 1).getPostAttachment().getImages() != null && items.get(position - 1).getPostAttachment().getImages().length > 0){
+            if (items.get(position - 1).getPostAttachment().getImages().length == 2){
+                return VIEW_POST_2;
+            } else if (items.get(position - 1).getPostAttachment().getImages().length == 3){
+                return VIEW_POST_3;
+            } else if (items.get(position - 1).getPostAttachment().getImages().length == 4){
+                return VIEW_POST_4;
+            } else if (items.get(position - 1).getPostAttachment().getImages().length == 5){
+                return VIEW_POST_5;
+            }
+        }
+
+        return VIEW_POST_1;
     }
 
     private boolean isPositionHeader(int position) {
@@ -190,7 +220,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         ImageView postSideMenu;
         Button postShareButton;
         ImageView verifyView;
-        ImageView postImage;
+        ImageView image1;
+        ImageView image2;
+        ImageView image3;
+        ImageView image4;
+        ImageView image5;
 
         public PostViewHolder(final View itemView) {
             super(itemView);
@@ -204,7 +238,11 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             postSideMenu = itemView.findViewById(R.id.postSideMenu);
             postShareButton = itemView.findViewById(R.id.postShareButton);
             verifyView = itemView.findViewById(R.id.verifyView);
-            postImage = itemView.findViewById(R.id.postImage);
+            image1 = itemView.findViewById(R.id.postImage1);
+            image2 = itemView.findViewById(R.id.postImage2);
+            image3 = itemView.findViewById(R.id.postImage3);
+            image4 = itemView.findViewById(R.id.postImage4);
+            image5 = itemView.findViewById(R.id.postImage5);
 
 
             postShareButton.setOnClickListener(new View.OnClickListener() {
@@ -225,14 +263,113 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             }
 
             if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null && item.getPostAttachment().getImages().length > 0) {
-                if (item.getPostAttachment().getImages()[0].getPath() != null) {
-                    postImage.setVisibility(View.VISIBLE);
-                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(postImage);
+                if (item.getPostAttachment().getImages().length == 1){
+                    image1.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
                 } else {
-                    postImage.setVisibility(View.GONE);
+                    image1.setVisibility(View.GONE);
                 }
+
+                if (item.getPostAttachment().getImages().length == 2){
+                    Log.i("IMAGE1", "bind: " + item.getPostAttachment().getImages()[0].getPath());
+                    Log.i("IMAGE2", "bind: " + item.getPostAttachment().getImages()[1].getPath());
+                    image1.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
+                    image2.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[1].getPath()).into(image2);
+                } else {
+                    image1.setVisibility(View.GONE);
+                    if (image2 != null){
+                        image2.setVisibility(View.GONE);
+                    }
+                }
+
+                if (item.getPostAttachment().getImages().length == 3){
+                    image1.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
+                    image2.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[1].getPath()).into(image2);
+                    image3.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[2].getPath()).into(image3);
+                } else {
+                    image1.setVisibility(View.GONE);
+                    if (image2 != null){
+                        image2.setVisibility(View.GONE);
+                    }
+                    if (image3 != null){
+                        image3.setVisibility(View.GONE);
+                    }
+                }
+
+                if (item.getPostAttachment().getImages().length == 4){
+                    image1.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
+                    image2.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[1].getPath()).into(image2);
+                    image3.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[2].getPath()).into(image3);
+                    image4.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[3].getPath()).into(image4);
+                } else {
+                    image1.setVisibility(View.GONE);
+                    if (image2 != null){
+                        image2.setVisibility(View.GONE);
+                    }
+                    if (image3 != null){
+                        image3.setVisibility(View.GONE);
+                    }
+                    if (image4 != null){
+                        image4.setVisibility(View.GONE);
+                    }
+                }
+
+                if (item.getPostAttachment().getImages().length == 5){
+                    image1.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
+                    image2.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[1].getPath()).into(image2);
+                    image3.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[2].getPath()).into(image3);
+                    image4.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[3].getPath()).into(image4);
+                    image5.setVisibility(View.VISIBLE);
+                    Picasso.with(context).load(item.getPostAttachment().getImages()[4].getPath()).into(image5);
+                } else {
+                    image1.setVisibility(View.GONE);
+                    if (image2 != null){
+                        image2.setVisibility(View.GONE);
+                    }
+                    if (image3 != null){
+                        image3.setVisibility(View.GONE);
+                    }
+                    if (image4 != null){
+                        image4.setVisibility(View.GONE);
+                    }
+                    if (image5 != null){
+                        image5.setVisibility(View.GONE);
+                    }
+                }
+
+//                if (item.getPostAttachment().getImages()[0].getPath() != null) {
+//                    image1.setVisibility(View.VISIBLE);
+//                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
+//                } else {
+//                    image1.setVisibility(View.GONE);
+//                }
             } else {
-                postImage.setVisibility(View.GONE);
+                image1.setVisibility(View.GONE);
+                if (image2 != null){
+                    image2.setVisibility(View.GONE);
+                }
+                if (image3 != null){
+                    image3.setVisibility(View.GONE);
+                }
+                if (image4 != null){
+                    image4.setVisibility(View.GONE);
+                }
+                if (image5 != null){
+                    image5.setVisibility(View.GONE);
+                }
             }
 
             String postText = null;

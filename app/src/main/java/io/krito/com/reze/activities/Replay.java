@@ -286,7 +286,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
 
         private void performLike(final io.krito.com.reze.models.pojo.post.Replay replay){
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -333,7 +333,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
         }
 
         private void reverseLike(final io.krito.com.reze.models.pojo.post.Replay replay){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -414,7 +414,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
         if (replayEditText.getText().toString().length() > 0){
             final String replayText = replayEditText.getText().toString();
             replayEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -482,7 +482,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void fetchReplies(){
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 ApiReplayResponse.class,
                 new Response.Listener<ApiReplayResponse>() {
                     @Override

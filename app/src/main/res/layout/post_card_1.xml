@@ -103,7 +103,7 @@
     <ImageView
         android:background="@color/white"
         android:scaleType="centerCrop"
-        android:id="@+id/postImage"
+        android:id="@+id/postImage1"
         android:layout_below="@id/postTextView"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"
@@ -116,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
         android:background="@android:color/darker_gray"
-        android:layout_below="@id/postImage"
+        android:layout_below="@id/postImage1"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
 

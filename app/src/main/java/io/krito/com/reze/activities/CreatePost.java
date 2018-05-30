@@ -21,8 +21,13 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
@@ -32,6 +37,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -160,7 +169,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     }
 
     private boolean validPost(){
-        if (!postText.getText().toString().isEmpty()){
+        if (!postText.getText().toString().isEmpty() || (selectedImages != null && selectedImages.size() > 0) || selectedVideo != null){
             return true;
         }
 
@@ -222,14 +231,11 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                     String encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
                     encodedImages.add(encodedImage);
                 }
-
-                HashMap<String, ArrayList<String>> jsonMap = new HashMap<>();
-                jsonMap.put("imageList", encodedImages);
             }
         }
 
 
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -255,19 +261,48 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                //Log.i("volley error", "onErrorResponse: " + error.getMessage());
                 loader.stopProgress();
+                if (error instanceof NetworkError) {
+                    Log.i("CreateError",  getResources().getString(R.string.connection_error));
+                } else if (error instanceof ServerError) {
+                    Log.i("CreateError",  getResources().getString(R.string.server_error));
+                } else if (error instanceof AuthFailureError) {
+                    Log.i("CreateError",  getResources().getString(R.string.connection_error));
+                } else if (error instanceof ParseError) {
+                    Log.i("CreateError",  getResources().getString(R.string.parsing_error));
+                } else if (error instanceof NoConnectionError) {
+                    Log.i("CreateError",  getResources().getString(R.string.connection_error));
+                } else if (error instanceof TimeoutError) {
+                    Log.i("CreateError",  getResources().getString(R.string.time_out));
+                }
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
 
-                if (encodedImages.size() > 0) {
+                if (encodedImages != null && encodedImages.size() > 0) {
                     for (String value : encodedImages) {
                         map.put(String.valueOf(encodedImages.indexOf(value)), value);
                     }
                     map.put("images_size", String.valueOf(encodedImages.size()));
+                }
+
+                if (selectedVideo != null && !selectedVideo.isEmpty()) {
+                    File originalFile = new File(selectedVideo);
+                    try {
+                        FileInputStream fileInputStreamReader = new FileInputStream(originalFile);
+                        byte[] bytes = new byte[(int) originalFile.length()];
+                        fileInputStreamReader.read(bytes);
+                        String decodedVideo = Base64.encodeToString(bytes, Base64.DEFAULT);
+                        Log.i("DecodedVideo", "performUserUpload: " + decodedVideo);
+                        map.put("video", decodedVideo);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
 
                 map.put("method", "create_post");

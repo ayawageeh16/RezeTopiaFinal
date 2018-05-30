@@ -66,6 +66,8 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
         userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
 
+        //Log.i("USER_ID", "onCreateView: " + userId);
+
         fetchNewsFeed();
 
         recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener(){

@@ -168,9 +168,11 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     response.setCommentText(commentEditText.getText().toString());
                     response.setPending(true);
                     comments.add(response);
-                    //updateUi();
-                    adapter.notifyItemInserted(comments.size()-1);
-                    commentsRecyclerView.scrollToPosition(comments.size()-1);
+                    updateUi();
+//                    if (adapter != null) {
+//                        adapter.notifyItemInserted(comments.size());
+//                        commentsRecyclerView.scrollToPosition(comments.size());
+//                    }
                     performComment();
                 }
                 break;
@@ -328,7 +330,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                         );
 
                         startActivityForResult(intent, REPLAY_REQUEST_CODE);
-                        startActivity(intent);
+                        //startActivity(intent);
                     }
                 });
             }
@@ -508,8 +510,8 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                                     comments.set(comments.size()-1, Comment);
 
                                     //comments.add(Comment);
-                                    adapter.notifyItemChanged(comments.size()-1);
-                                    commentsRecyclerView.scrollToPosition(comments.size()-1);
+                                    adapter.notifyItemChanged(comments.size());
+                                    commentsRecyclerView.scrollToPosition(comments.size());
                                     addedComments ++;
                                 }
                             } catch (JSONException e) {
@@ -601,7 +603,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         });
-        /*VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+        /*VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/rezetopia/user_post.php",
                 ApiCommentResponse.class,
                 new Response.Listener<ApiCommentResponse>() {
                     @Override
@@ -611,7 +613,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                             if (response.getComments() != null) {
                                 Log.i("commentResponse", "onResponse: " + response.getComments()[0].getCommentText());
                                 comments = new ArrayList<>(Arrays.asList(response.getComments()));
-                                for (io.krito.com.reze.models.pojo.post.Comment Comment:comments) {
+                                for (io.krito.com.rezetopia.models.pojo.post.Comment Comment:comments) {
                                     Comment.setPending(false);
                                 }
                                 updateUi();
@@ -634,13 +636,10 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                 map.put("method", "get_comments");
                 map.put("post_id", String.valueOf(postId));
                 map.put("cursor", "0");
-
                 Log.i("post_id", "getParams: " + postId);
-
                 return map;
             }
         };
-
         Volley.newRequestQueue(this).add(stringRequest);*/
     }
 
@@ -664,4 +663,3 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         loadMoreCallback = callback;
     }
 }
-
