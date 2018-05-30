@@ -59,7 +59,7 @@
         android:layout_height="@dimen/dimen_20"
         android:layout_gravity="center_vertical|center_horizontal"/>
 
-    <io.krito.com.reze.views.CustomTextView
+    <io.krito.com.rezetopia.views.CustomTextView
         android:visibility="gone"
         android:id="@+id/loadMoreComments"
         android:text="@string/load_more"
@@ -85,7 +85,7 @@
         android:layout_weight="2"
         android:orientation="horizontal">
 
-        <io.krito.com.reze.views.CustomEditText
+        <io.krito.com.rezetopia.views.CustomEditText
             android:layout_weight="1.7"
             android:background="@android:color/transparent"
             android:id="@+id/commentEditText"

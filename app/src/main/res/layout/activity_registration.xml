@@ -26,7 +26,7 @@
                 android:layout_gravity="center"
                 android:src="@drawable/rezetopia" />
 
-            <io.krito.com.reze.views.CustomTextView
+            <io.krito.com.rezetopia.views.CustomTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
@@ -73,7 +73,7 @@
                     android:background="@color/green5" />
 
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/edName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
                     android:layout_toLeftOf="@id/edPhone"
                     android:background="@color/green5" />
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/edPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                     android:layout_toLeftOf="@id/edPhone"
                     android:background="@color/green5" />
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/edEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -255,7 +255,7 @@
                     android:layout_toLeftOf="@id/edPhone"
                     android:background="@color/green5" />
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/edDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -318,7 +318,7 @@
                     android:layout_toLeftOf="@id/edPhone"
                     android:background="@color/green5" />
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/edPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -381,7 +381,7 @@
                     android:layout_toLeftOf="@id/edPhone"
                     android:background="@color/green5" />
 
-                <io.krito.com.reze.views.CustomEditText
+                <io.krito.com.rezetopia.views.CustomEditText
                     android:id="@+id/edConfirmPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -423,7 +423,7 @@
                 android:background="@drawable/roundone_green"
                 android:checked="false" />
 
-            <io.krito.com.reze.views.CustomTextView
+            <io.krito.com.rezetopia.views.CustomTextView
                 android:id="@+id/customTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -468,7 +468,7 @@
             app:BL_textColor="@color/black"
             app:BL_textSize="20sp" />
 
-        <io.krito.com.reze.views.CustomButton
+        <io.krito.com.rezetopia.views.CustomButton
             android:id="@+id/btnLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
