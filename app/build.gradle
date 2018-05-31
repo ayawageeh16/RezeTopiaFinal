@@ -72,4 +72,7 @@ dependencies {
 
     //upload
     implementation 'net.gotev:uploadservice:2.1'
+
+    //retrofit
+    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
 }

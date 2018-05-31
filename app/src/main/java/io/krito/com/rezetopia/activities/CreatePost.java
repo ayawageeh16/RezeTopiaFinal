@@ -64,10 +64,10 @@ import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.helper.EncodeBase64;
+import io.krito.com.rezetopia.helper.RetrofitUploadService;
 import io.krito.com.rezetopia.helper.Upload;
 import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 import io.krito.com.rezetopia.views.CustomTextView;
-
 public class CreatePost extends AppCompatActivity implements View.OnClickListener {
 
     private static final int TYPE_TEXT = 0;
@@ -511,4 +511,5 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
+
 }
