@@ -67,6 +67,7 @@
     <string name="add">Add +</string>
     <string name="unfriend">Unfriend</string>
     <string name="load_more">Load more&#8230;</string>
+    <string name="empty_post">Empty Post</string>
 
     <string name="follow">Follow</string>
     <string name="schedule">Schedule</string>

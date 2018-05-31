@@ -17,6 +17,7 @@
     <string name="posting">جاري النشر&#8230;</string>
     <string name="image">صورة</string>
     <string name="image_video">صورة/فيديو</string>
+    <string name="empty_date">منشور فارغ</string>
     <string name="video">فيديو</string>
     <string name="check_in">مكان</string>
     <string name="tag">الاشارة لصديق</string>

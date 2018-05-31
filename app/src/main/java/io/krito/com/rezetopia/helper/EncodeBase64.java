@@ -1,5 +1,6 @@
 package io.krito.com.rezetopia.helper;
 
+import android.os.Debug;
 import android.util.Base64;
 
 import java.io.File;
@@ -8,6 +9,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class EncodeBase64 {
+
+    public static final long SAFETY_MEMORY_BUFFER = 10;//MB
 
     private String encodeFileToBase64Binary(String fileName) throws IOException {
 
@@ -43,5 +46,12 @@ public class EncodeBase64 {
 
         is.close();
         return bytes;
+    }
+
+    public static double availableMemoryMB(){
+        double max = Runtime.getRuntime().maxMemory()/1024;
+        Debug.MemoryInfo memoryInfo = new Debug.MemoryInfo();
+        Debug.getMemoryInfo(memoryInfo);
+        return (max - memoryInfo.getTotalPss())/1024;
     }
 }

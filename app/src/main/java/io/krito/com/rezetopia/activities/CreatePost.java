@@ -1,23 +1,32 @@
 package io.krito.com.rezetopia.activities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
@@ -33,6 +42,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
 
+import net.gotev.uploadservice.MultipartUploadRequest;
+import net.gotev.uploadservice.UploadNotificationConfig;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -45,16 +57,22 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import id.arieridwan.lib.PageLoader;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
+import io.krito.com.rezetopia.helper.EncodeBase64;
+import io.krito.com.rezetopia.helper.Upload;
 import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 import io.krito.com.rezetopia.views.CustomTextView;
 
 public class CreatePost extends AppCompatActivity implements View.OnClickListener {
 
+    private static final int TYPE_TEXT = 0;
+    private static final int TYPE_VIDEO = 1;
+    private static final int TYPE_TEXT_VIDEO = 2;
     private static final int PICK_IMAGE_REQUEST_CODE = 1006;
     TextView createPost;
     TextView privacyText;
@@ -67,13 +85,16 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     CustomTextView tag;
     PageLoader loader;
     RecyclerView imagesVideoRecView;
+    RelativeLayout createPostNav;
 
+    private String decodedVideo;
     private String userId;
     private List<String> selectedImages;
     private String selectedVideo;
     List<MediaType> media;
     private ArrayList<String> encodedImages;
     private RecyclerView.Adapter imageVideoAdapter;
+    private int postType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +115,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         tag = findViewById(R.id.tagFriend);
         loader = findViewById(R.id.pageLoader);
         imagesVideoRecView = findViewById(R.id.imagesRecView);
+        createPostNav = findViewById(R.id.createPostNav);
 
         createPost.setOnClickListener(this);
         privacyText.setOnClickListener(this);
@@ -140,6 +162,13 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         switch (v.getId()){
             case R.id.createPostView:
                 if (validPost()){
+//                    if (selectedVideo != null && !selectedVideo.isEmpty()){
+//                        if (decodeVideo()){
+//                            loader.startProgress();
+//                            performUserUpload();
+//                            return;
+//                        }
+//                    }
                     loader.startProgress();
                     performUserUpload();
                 }
@@ -169,8 +198,22 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     }
 
     private boolean validPost(){
-        if (!postText.getText().toString().isEmpty() || (selectedImages != null && selectedImages.size() > 0) || selectedVideo != null){
+        if (!postText.getText().toString().isEmpty() || (selectedImages != null && selectedImages.size() > 0)
+                || (selectedVideo != null && !selectedVideo.isEmpty())){
+            postType = TYPE_TEXT;
+
+            if (selectedVideo != null && !selectedVideo.isEmpty()){
+                postType = TYPE_VIDEO;
+            }
+
+            if (selectedVideo != null && !selectedVideo.isEmpty() && !postText.getText().toString().isEmpty()){
+                postType = TYPE_TEXT_VIDEO;
+            }
+
             return true;
+        } else if (postText.getText().toString().isEmpty()){
+            Snackbar.make(createPostNav, R.string.empty_post, BaseTransientBottomBar.LENGTH_SHORT).show();
+            return false;
         }
 
         return false;
@@ -204,6 +247,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }
 
             if (selectedVideo != null && !selectedVideo.isEmpty()) {
+                imagesVideoRecView.setVisibility(View.VISIBLE);
                 Log.i("videoPath", "onActivityResult: " + selectedVideo);
                 MediaType mediaType = new MediaType();
                 mediaType.path = selectedVideo;
@@ -234,7 +278,14 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }
         }
 
+        if (postType == TYPE_TEXT) {
+            createPost();
+        } else
+            uploadVideo(postText.getText().toString());
+            //uploadMultipart(postText.getText().toString());
+    }
 
+    private void createPost(){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
@@ -244,14 +295,16 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                             JSONObject jsonObject = new JSONObject(response);
                             PostResponse postResponse = new PostResponse();
                             //todo add
+                            postResponse.setPostId(jsonObject.getInt("post_id"));
                             postResponse.setUsername(jsonObject.getString("username"));
                             postResponse.setCreatedAt(jsonObject.getString("createdAt"));
-                            postResponse.setText(jsonObject.getString("text"));
-                            postResponse.setPostId(jsonObject.getInt("post_id"));
-                            postResponse.setCreatedAt(jsonObject.getString("createdAt"));
                             postResponse.setUserId(userId);
+                            postResponse.setText(null);
+                            if (postType == TYPE_TEXT) {
+                                postResponse.setText(jsonObject.getString("text"));
+                            }
                             Intent intent = new Intent();
-                            intent.putExtra("post", postResponse);
+                            intent.putExtra("post", response);
                             setResult(RESULT_OK, intent);
                             onBackPressed();
                         } catch (JSONException e) {
@@ -289,20 +342,8 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                     map.put("images_size", String.valueOf(encodedImages.size()));
                 }
 
-                if (selectedVideo != null && !selectedVideo.isEmpty()) {
-                    File originalFile = new File(selectedVideo);
-                    try {
-                        FileInputStream fileInputStreamReader = new FileInputStream(originalFile);
-                        byte[] bytes = new byte[(int) originalFile.length()];
-                        fileInputStreamReader.read(bytes);
-                        String decodedVideo = Base64.encodeToString(bytes, Base64.DEFAULT);
-                        Log.i("DecodedVideo", "performUserUpload: " + decodedVideo);
-                        map.put("video", decodedVideo);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                if (decodedVideo != null && !decodedVideo.isEmpty()){
+                    map.put("video", decodedVideo);
                 }
 
                 map.put("method", "create_post");
@@ -400,4 +441,74 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         public String path;
     }
 
+    private boolean decodeVideo(){
+        if (selectedVideo != null && !selectedVideo.isEmpty()) {
+            File originalFile = new File(selectedVideo);
+
+            int file_size = Integer.parseInt(String.valueOf(originalFile.length()/1024));
+
+            if (file_size <= EncodeBase64.availableMemoryMB() - EncodeBase64.SAFETY_MEMORY_BUFFER){
+                try {
+                    FileInputStream fileInputStreamReader = new FileInputStream(originalFile);
+                    byte[] bytes = new byte[(int) originalFile.length()];
+                    fileInputStreamReader.read(bytes);
+                    decodedVideo = Base64.encodeToString(bytes, Base64.DEFAULT);
+                    Log.i("DecodedVideo", "performUserUpload: " + decodedVideo);
+                    return true;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            Log.i("AviSize", "performUserUpload: " + EncodeBase64.availableMemoryMB());
+            Log.i("fileSize", "performUserUpload: " + file_size);
+            return false;
+        }
+
+        return false;
+    }
+
+    private void uploadVideo(final String postText) {
+        class UploadVideo extends AsyncTask<Void, Void, Boolean> {
+            @Override
+            protected void onPostExecute(Boolean s) {
+                super.onPostExecute(s);
+                loader.stopProgress();
+            }
+
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected Boolean doInBackground(Void... params) {
+                Upload u = new Upload();
+                return u.uploadVideo(selectedVideo, postText);
+            }
+        }
+        UploadVideo uv = new UploadVideo();
+        uv.execute();
+    }
+
+    public void uploadMultipart(String post) {
+        try {
+            String uploadId = UUID.randomUUID().toString();
+            //Creating a multi part request
+            new MultipartUploadRequest(this, uploadId, "http://rezetopia.dev-krito.com/app/reze/user_post.php")
+                    .addFileToUpload(selectedVideo, "MP4")
+                    .addParameter("post_text", post)
+                    .addParameter("userId", userId)
+                    .addParameter("method", "video_post")
+                    .setNotificationConfig(new UploadNotificationConfig())
+                    .setMaxRetries(2)
+                    .setUtf8Charset()
+                    .startUpload();
+
+        } catch (Exception exc) {
+            Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
 }
