@@ -16,7 +16,6 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.krito.com.rezetopia.models.operations.HomeOperations;
+import io.krito.com.rezetopia.models.operations.ProfileOperations;
 import io.krito.com.rezetopia.models.operations.UserOperations;
 import io.krito.com.rezetopia.receivers.ConnectivityReceiver;
 
@@ -74,6 +74,7 @@ public class RezetopiaApp extends Application {
 
         UserOperations.setRequestQueue(getRequestQueue());
         HomeOperations.setRequestQueue(getRequestQueue());
+        ProfileOperations.setRequestQueue(getRequestQueue());
     }
 
     public static synchronized RezetopiaApp getInstance() {

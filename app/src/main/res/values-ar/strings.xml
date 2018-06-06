@@ -57,7 +57,8 @@
     <string name="going">انوي الحضور</string>
     <string name="interested">مهتم</string>
     <string name="accept_friend_request">تاكيد</string>
-    <string name="cancel_request">حذف</string>
+    <string name="remove_friend">حذف</string>
+    <string name="cancel_friend_request">حذف الطلب</string>
     <string name="unfriend">حذف</string>
     <string name="search">بحث</string>
     <string name="booking">حجز</string>

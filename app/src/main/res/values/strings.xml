@@ -55,6 +55,7 @@
     <string name="time_out">Connection TimeOut! Please check your internet connection.</string>
     <string name="unknown_error">Unknown Error</string>
     <string name="empty_date">Empty Data</string>
+    <string name="level">Level</string>
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
@@ -156,7 +157,8 @@
     <string name="friends">Friends</string>
     <string name="friends_of_friends">Friends of Friends</string>
     <string name="only_me">Only me</string>
-    <string name="cancel_request">remove</string>
+    <string name="cancel_friend_request">cancel request</string>
+    <string name="remove_friend">remove</string>
     <string-array name="object_array">
 
         <item>010</item>

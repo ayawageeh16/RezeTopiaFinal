@@ -1,6 +1,7 @@
 package io.krito.com.rezetopia.helper;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.ListPopupWindow;
@@ -36,6 +37,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.activities.OtherProfile;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 
@@ -449,7 +451,12 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                     }
 
 
-                    likeButton.setText((item.getLikes().length + 1) + " " + likeString);
+                    if (item.getLikes() != null && item.getLikes().length > 0){
+                        likeButton.setText((item.getLikes().length + 1) + " " + likeString);
+                    } else {
+                        likeButton.setText(("1 " + likeString));
+                    }
+
                     likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star,  0, 0, 0);
                     performLike(item);
 
@@ -461,7 +468,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 public void onClick(View v) {
                     if (item.getOwnerId().contentEquals(userId)) {
                         //todo start profile activity
-                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+                    } else  {
                         startOtherProfile(item);
                     }
                 }
@@ -472,7 +479,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 public void onClick(View v) {
                     if (item.getOwnerId().contentEquals(userId)) {
                         //todo start profile activity
-                    } else if (item.getType() == NewsFeedItem.POST_TYPE) {
+                    } else  {
                         startOtherProfile(item);
                     }
                 }
@@ -491,12 +498,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         }
 
         private void startOtherProfile(NewsFeedItem item){
-//            Intent intent = OtherProfileActivity.createIntent(
-//                    String.valueOf(item.getOwnerId()),
-//                    item.getOwnerName(),
-//                    item.getItemImage(),
-//                    context);
-//            context.startActivity(intent);
+            Intent intent = OtherProfile.createIntent(item.getOwnerId(), context);
+            context.startActivity(intent);
         }
 
         private void performLike(final NewsFeedItem item){

@@ -21,9 +21,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,6 +33,7 @@ import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -64,8 +67,11 @@ import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.helper.EncodeBase64;
+import io.krito.com.rezetopia.helper.ListPopupWindowAdapter;
+import io.krito.com.rezetopia.helper.MenuCustomItem;
 import io.krito.com.rezetopia.helper.RetrofitUploadService;
 import io.krito.com.rezetopia.helper.Upload;
+import io.krito.com.rezetopia.helper.VolleyMultipartRequest;
 import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 import io.krito.com.rezetopia.views.CustomTextView;
 public class CreatePost extends AppCompatActivity implements View.OnClickListener {
@@ -95,6 +101,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     private ArrayList<String> encodedImages;
     private RecyclerView.Adapter imageVideoAdapter;
     private int postType;
+    String privacy = "public";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,34 +134,43 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     private void showPostPopupWindow(View anchor) {
         final ListPopupWindow popupWindow = new ListPopupWindow(this);
 
-//        List<MenuCustomItem> itemList = new ArrayList<>();
-//        itemList.add(new MenuCustomItem(getResources().getString(R.string.public_), R.drawable.ic_earth));
-//        itemList.add(new MenuCustomItem(getResources().getString(R.string.friends), R.drawable.ic_account_check));
-//        itemList.add(new MenuCustomItem(getResources().getString(R.string.friends_of_friends), R.drawable.ic_account_switch));
-//        itemList.add(new MenuCustomItem(getResources().getString(R.string.only_me), R.drawable.ic_lock));
+        final List<MenuCustomItem> itemList = new ArrayList<>();
+        itemList.add(new MenuCustomItem(getResources().getString(R.string.public_), R.drawable.ic_earth_grey600_24dp));
+        itemList.add(new MenuCustomItem(getResources().getString(R.string.friends), R.drawable.ic_account_check_grey600_24dp));
+        itemList.add(new MenuCustomItem(getResources().getString(R.string.friends_of_friends), R.drawable.ic_account_multiple_check_grey600_24dp));
+        itemList.add(new MenuCustomItem(getResources().getString(R.string.only_me), R.drawable.ic_lock_grey600_24dp));
 
 
-//        ListAdapter adapter = new ListPopupWindowAdapter(this, itemList, R.layout.dark_custom_menu);
-//        popupWindow.setAnchorView(anchor);
-//        popupWindow.setAdapter(adapter);
-//        popupWindow.setWidth(500);
-//        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                if (i == 0){
-//
-//                } else if (i == 1){
-//
-//                } else if (i == 2){
-//
-//                } else if (i == 3){
-//
-//                }
-//
-//                popupWindow.dismiss();
-//            }
-//        });
-//        popupWindow.show();
+        ListAdapter adapter = new ListPopupWindowAdapter(this, itemList, R.layout.custom_menu);
+        popupWindow.setAnchorView(anchor);
+        popupWindow.setAdapter(adapter);
+        popupWindow.setWidth(500);
+        popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0){
+                    privacy = "public";
+                    privacyText.setText(R.string.public_);
+                    privacyIcon.setBackground(getResources().getDrawable(R.drawable.earth));
+                } else if (i == 1){
+                    privacy = "friends";
+                    privacyText.setText(R.string.friends);
+                    privacyIcon.setBackground(getResources().getDrawable(R.drawable.account_check));
+                } else if (i == 2){
+                    privacy = "friends_of_friends";
+                    privacyText.setText(R.string.friends_of_friends);
+                    privacyIcon.setBackground(getResources().getDrawable(R.drawable.account_multiple_check));
+                } else if (i == 3){
+                    privacy = "only_me";
+                    privacyText.setText(R.string.only_me);
+                    privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                }
+
+
+                popupWindow.dismiss();
+            }
+        });
+        popupWindow.show();
     }
 
     @Override
@@ -174,10 +190,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 }
                 break;
             case R.id.privacy:
-                //showPostPopupWindow(privacyText);
+                showPostPopupWindow(privacyText);
                 break;
             case R.id.privacyIcon:
-                //showPostPopupWindow(privacyText);
+                showPostPopupWindow(privacyText);
                 break;
             case R.id.backView:
                 onBackPressed();
@@ -281,7 +297,8 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         if (postType == TYPE_TEXT) {
             createPost();
         } else
-            uploadVideo(postText.getText().toString());
+            multiPartRequest();
+            //uploadVideo(postText.getText().toString());
             //uploadMultipart(postText.getText().toString());
     }
 
@@ -350,6 +367,10 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 map.put("userId", userId);
                 if (postText.getText().toString().length() > 0) {
                     map.put("post_text", postText.getText().toString());
+                }
+
+                if (privacy != null && !privacy.isEmpty()){
+                    map.put("privacy", privacy);
                 }
 
                 return map;
@@ -510,6 +531,64 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         } catch (Exception exc) {
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void multiPartRequest(){
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+                new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                String responseString = new String(response.data);
+                Log.i("responseString", "onResponse: " + responseString);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() {
+                Map<String, String> params = new HashMap<>();
+                params.put("userId", userId);
+                params.put("post_text", postText.getText().toString());
+                return params;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                new DataPart();
+                //params.put("video_file", new DataPart("video.mp4", convert(selectedVideo), "image/mp4"));
+                return params;
+            }
+        };
+
+        RezetopiaApp.getInstance().getRequestQueue().add(request);
+    }
+
+    public byte[] convert(String path){
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] b = new byte[1024];
+
+        try {
+            for (int readNum; (readNum = fis.read(b)) != -1;) {
+                bos.write(b, 0, readNum);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        byte[] bytes = bos.toByteArray();
+
+        return bytes;
     }
 
 }

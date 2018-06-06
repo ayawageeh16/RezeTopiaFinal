@@ -6,8 +6,6 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -133,7 +130,7 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
                     final int lastItem = adapter.removeLastItem();
                     Log.i("newsFeed_size", "onSuccess: " + newsFeed.getItems().size() + " " + feed.getItems().size());
                     start = newsFeed.getItems().size();
-                    newsFeed.addAllitems(feed.getItems());
+                    newsFeed.addAllItems(feed.getItems());
                     newsFeed.setNow(feed.getNow());
                     newsFeed.setNextCursor(feed.getNextCursor());
                     end = newsFeed.getItems().size()-1;
@@ -160,8 +157,8 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
 
             @Override
             public void onError(int error) {
-                String errorString = getActivity().getResources().getString(error);
-                Log.i("news_feed_error", "onError: " + errorString);
+                //String errorString = getActivity().getResources().getString(error);
+                //Log.i("news_feed_error", "onError: " + errorString);
                 //Snackbar.make(homeHeader, error, BaseTransientBottomBar.LENGTH_LONG).show();
                 loadingData = false;
             }

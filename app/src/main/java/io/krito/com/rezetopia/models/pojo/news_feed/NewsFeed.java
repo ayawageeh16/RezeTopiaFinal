@@ -12,7 +12,7 @@ public class NewsFeed {
         return items;
     }
 
-    public void addAllitems(ArrayList<NewsFeedItem> s){
+    public void addAllItems(ArrayList<NewsFeedItem> s){
         if (items != null){
             items.addAll(s);
         } else {
