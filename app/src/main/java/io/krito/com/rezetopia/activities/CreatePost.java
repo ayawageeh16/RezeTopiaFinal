@@ -69,7 +69,6 @@ import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.helper.EncodeBase64;
 import io.krito.com.rezetopia.helper.ListPopupWindowAdapter;
 import io.krito.com.rezetopia.helper.MenuCustomItem;
-import io.krito.com.rezetopia.helper.RetrofitUploadService;
 import io.krito.com.rezetopia.helper.Upload;
 import io.krito.com.rezetopia.helper.VolleyMultipartRequest;
 import io.krito.com.rezetopia.models.pojo.post.PostResponse;

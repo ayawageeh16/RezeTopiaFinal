@@ -73,11 +73,9 @@ public class HomeOperations {
         new PerformLikeTask().execute(method, userId, ownerId, postId);
     }
 
-
     public static void fetchComments(String postId, String cursor){
         new FetchCommentsTask().execute(postId, cursor);
     }
-
 
     public static class FetchNewsFeedTask extends AsyncTask<String, Void, Void>{
 

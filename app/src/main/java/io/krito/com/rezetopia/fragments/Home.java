@@ -112,13 +112,11 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
 
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
         RezetopiaApp.getInstance().setConnectivityListener(this);
     }
-
 
     private void fetchNewsFeed(){
         Log.i("POST_CURSOR", "fetchNewsFeed: " + cursor);

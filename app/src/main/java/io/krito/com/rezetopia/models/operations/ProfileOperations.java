@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
@@ -18,11 +19,17 @@ import com.android.volley.toolbox.StringRequest;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.helper.VolleyCustomRequest;
 import io.krito.com.rezetopia.models.pojo.User;
+import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeed;
+import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
+import io.krito.com.rezetopia.models.pojo.post.ApiResponse;
+import io.krito.com.rezetopia.models.pojo.post.Post;
 
 /**
  * Created by Ahmed Ali on 6/2/2018.
@@ -37,6 +44,8 @@ public class ProfileOperations {
     private static IsFriendCallback isFriendCallback;
     private static SendFriendRequestCallback friendRequestCallback;
     private static CancelDeleteFriendRequestCallback cancelDeleteFriendRequestCallback;
+    private static NewsFeedCallback feedCallback;
+    private static String profileCursor = "0";
 
     public static void setFriendRequestCallback(SendFriendRequestCallback friendRequestCallback) {
         ProfileOperations.friendRequestCallback = friendRequestCallback;
@@ -44,6 +53,10 @@ public class ProfileOperations {
 
     public static void setCancelDeleteFriendRequestCallback(CancelDeleteFriendRequestCallback cancelDeleteFriendRequestCallback) {
         ProfileOperations.cancelDeleteFriendRequestCallback = cancelDeleteFriendRequestCallback;
+    }
+
+    public static void setFeedCallback(NewsFeedCallback call) {
+        feedCallback = call;
     }
 
     public static void setInfoCallback(UserInfoCallback callback){
@@ -72,6 +85,10 @@ public class ProfileOperations {
 
     public static void cancelFriendRequest(String from, String to){
         new CancelDeleteFriendRequestTask().execute(from, to);
+    }
+
+    public static void fetchNewsFeed(String userId, String cursor){
+        new FetchNewsFeedTask().execute(userId, cursor);
     }
 
     private static class GetInfoTask extends AsyncTask<String, String, Void> {
@@ -365,6 +382,93 @@ public class ProfileOperations {
         }
     }
 
+    public static class FetchNewsFeedTask extends AsyncTask<String, Void, Void>{
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            String url = baseUrl + "reze/user_post.php";
+
+            VolleyCustomRequest request = new VolleyCustomRequest(Request.Method.POST, url, ApiResponse.class,
+                    new Response.Listener<ApiResponse>() {
+                        @Override
+                        public void onResponse(ApiResponse response) {
+                            if (!response.isError()){
+                                if (response.getPosts() != null && response.getPosts().length > 0){
+                                    NewsFeed newsFeed = new NewsFeed();
+                                    ArrayList<NewsFeedItem> items = new ArrayList<>();
+
+                                    for (Post post:response.getPosts()) {
+                                        NewsFeedItem item = new NewsFeedItem();
+                                        item.setPostId(post.getPostId());
+                                        item.setCreatedAt(post.getCreatedAt());
+                                        item.setCommentSize(post.getCommentSize());
+                                        item.setItemImage(post.getImageUrl());
+                                        item.setLikes(post.getLikes());
+                                        item.setOwnerId(post.getUserId());
+                                        item.setOwnerName(post.getUsername());
+                                        item.setPostText(post.getText());
+                                        item.setPostAttachment(post.getAttachment());
+                                        item.setType(NewsFeedItem.POST_TYPE);
+                                        items.add(item);
+                                    }
+
+                                    newsFeed.setItems(items);
+                                    newsFeed.setNextCursor(response.getNextCursor());
+                                    newsFeed.setNow(response.getNow());
+                                    feedCallback.onSuccess(newsFeed);
+                                    profileCursor = String.valueOf(Integer.parseInt(profileCursor) + 11);
+                                    Log.i("response_cursor", "onResponse: " + profileCursor);
+                                }
+                            } else if (response.isError() && response.getMessage().contentEquals("there are no posts")){
+                                feedCallback.onEmptyResult();
+                            } else {
+                                feedCallback.onError(R.string.unknown_error);
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    if (error instanceof NetworkError) {
+                        feedCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ServerError) {
+                        feedCallback.onError(R.string.server_error);
+                        return;
+                    } else if (error instanceof AuthFailureError) {
+                        feedCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ParseError) {
+                        feedCallback.onError(R.string.parsing_error);
+                        return;
+                    } else if (error instanceof NoConnectionError) {
+                        feedCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof TimeoutError) {
+                        feedCallback.onError(R.string.time_out);
+                        return;
+                    }
+                    feedCallback.onError(R.string.connection_error);
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<>();
+                    map.put("method", "get_user_profile");
+                    map.put("userId", strings[0]);
+                    map.put("cursor", profileCursor);
+                    return map;
+                }
+            };
+
+            request.setRetryPolicy(new DefaultRetryPolicy(5000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+
+            requestQueue.add(request);
+            return null;
+        }
+    }
+
     public interface UserInfoCallback{
         void onSuccess(User user);
         void onError(int error);
@@ -383,5 +487,11 @@ public class ProfileOperations {
     public interface CancelDeleteFriendRequestCallback{
         void onSuccess(boolean result);
         void onError(int error);
+    }
+
+    public interface NewsFeedCallback{
+        void onSuccess(NewsFeed newsFeed);
+        void onError(int error);
+        void onEmptyResult();
     }
 }

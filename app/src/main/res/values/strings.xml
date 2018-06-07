@@ -69,7 +69,7 @@
     <string name="unfriend">Unfriend</string>
     <string name="load_more">Load more&#8230;</string>
     <string name="empty_post">Empty Post</string>
-
+    <string name="no_posts">there are no posts</string>
     <string name="follow">Follow</string>
     <string name="schedule">Schedule</string>
     <string name="details">Details</string>
@@ -104,6 +104,10 @@
     <string name="save_post">Save post</string>
     <string name="report_post">Report</string>
     <string name="image">Image</string>
+    <string name="photos">Photos</string>
+    <string name="videos">Videos</string>
+    <string name="skills">Skills</string>
+    <string name="about">About</string>
     <string name="video">Video</string>
     <string name="image_video">Image/Video</string>
     <string name="check_in">Check in</string>

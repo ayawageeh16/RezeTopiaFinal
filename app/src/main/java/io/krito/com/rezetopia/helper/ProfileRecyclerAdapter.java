@@ -36,14 +36,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.activities.OtherProfile;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
+import io.krito.com.rezetopia.models.operations.ProfileOperations;
+import io.krito.com.rezetopia.models.pojo.User;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 
-public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
+public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
 
-    private static final int VIEW_HOME_HEADER = 1;
+    private static final int VIEW_HEADER = 1;
     private static final int VIEW_POST_1 = 2;
     private static final int VIEW_PROGRESS = 3;
     private static final int VIEW_POST_2 = 4;
@@ -54,15 +57,24 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     private Context context;
     private ArrayList<NewsFeedItem> items;
     private long now;
-    private String userId;
+    private String loggedInUserId;
     private AdapterCallback callback;
+    private String userId;
+    private boolean isFriend;
+    private boolean friendState ;
+    private User user;
 
 
-    public PostRecyclerAdapter(Context context, ArrayList<NewsFeedItem> items, long now, String userId) {
+    public ProfileRecyclerAdapter(Context context, ArrayList<NewsFeedItem> items, long now, String loggedInUserId, String profileOwnerId,
+                                  boolean isFriend, boolean friendState, User user) {
         this.context = context;
         this.items = items;
         this.now = now;
-        this.userId = userId;
+        this.loggedInUserId = loggedInUserId;
+        this.userId  = profileOwnerId;
+        this.isFriend = isFriend;
+        this.friendState = friendState;
+        this.user = user;
     }
 
     public ArrayList<NewsFeedItem> getItems() {
@@ -81,11 +93,13 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         //items.remove(items.size() - 1);
         //notifyItemRemoved(items.size() - 1);
 
-        for (NewsFeedItem item:items) {
-            if (item.getType() == 1009){
-                items.remove(items.size() - 1);
-                callback.onItemRemoved(items.size());
-                return items.size();
+        if (items != null && items.size() > 0) {
+            for (NewsFeedItem item : items) {
+                if (item.getType() == 1009) {
+                    items.remove(items.size() - 1);
+                    callback.onItemRemoved(items.size());
+                    return items.size();
+                }
             }
         }
         //callback.onItemRemoved(items.size());
@@ -112,8 +126,8 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_HOME_HEADER){
-            View view = LayoutInflater.from(context).inflate(R.layout.create_post_header, parent, false);
+        if (viewType == VIEW_HEADER){
+            View view = LayoutInflater.from(context).inflate(R.layout.profile_header, parent, false);
             return new HeaderViewHolder(view);
         } else if (viewType == VIEW_POST_1){
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_1, parent, false);
@@ -154,7 +168,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
     @Override
     public int getItemViewType(int position) {
         if (isPositionHeader(position)){
-            return VIEW_HOME_HEADER;
+            return VIEW_HEADER;
         }
         else if (items.get(position - 1).getType() == 1009){
             return VIEW_PROGRESS;
@@ -181,17 +195,97 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
 
     private class HeaderViewHolder extends RecyclerView.ViewHolder{
 
-        private RelativeLayout createPostLayout;
+        RelativeLayout createPostLayout;
+        CircleImageView ppView;
+        TextView usernameView;
+        ImageView coverView;
+        TextView addFriendBtn;
+
 
         public HeaderViewHolder(View itemView) {
             super(itemView);
 
             createPostLayout = itemView.findViewById(R.id.createPostLayout);
+            ppView = itemView.findViewById(R.id.ppView);
+            usernameView = itemView.findViewById(R.id.usernameView);
+            coverView = itemView.findViewById(R.id.coverView);
+            addFriendBtn = itemView.findViewById(R.id.addFriendBtn);
+
+            if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
+                Picasso.with(context).load("http://rezetopia.dev-krito.com/images/profileImgs/" + user.getImageUrl() + ".JPG").into(ppView);
+            }
+
+            if (user.getCover() != null && !user.getCover().isEmpty()){
+                Picasso.with(context).load(user.getCover()).into(coverView);
+            } else {
+                coverView.setBackground(context.getResources().getDrawable(R.drawable.cover));
+            }
+
+            usernameView.setText(user.getName());
+
+            if (isFriend && friendState){
+                addFriendBtn.setText(context.getResources().getString(R.string.remove_friend));
+            } else if (isFriend && !friendState){
+                addFriendBtn.setText(context.getResources().getString(R.string.cancel_friend_request));
+            } else {
+                addFriendBtn.setText(context.getResources().getString(R.string.add));
+            }
 
             createPostLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     callback.onStartCreatePost();
+                }
+            });
+
+            addFriendBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (isFriend){
+                        cancelDeleteFriendship();
+                    } else {
+                        sendFriendRequest();
+                    }
+                }
+            });
+        }
+
+        private void sendFriendRequest(){
+            addFriendBtn.setEnabled(false);
+            ProfileOperations.sendFriendRequest(loggedInUserId, userId);
+            ProfileOperations.setFriendRequestCallback(new ProfileOperations.SendFriendRequestCallback() {
+                @Override
+                public void onSuccess(boolean result) {
+                    addFriendBtn.setEnabled(true);
+                    if (result){
+                        addFriendBtn.setText(context.getResources().getString(R.string.cancel_friend_request));
+                        isFriend = true;
+                    } else {
+
+                    }
+                }
+
+                @Override
+                public void onError(int error) {
+                    addFriendBtn.setEnabled(true);
+                }
+            });
+        }
+
+        private void cancelDeleteFriendship(){
+            addFriendBtn.setEnabled(false);
+            ProfileOperations.cancelFriendRequest(loggedInUserId, userId);
+            ProfileOperations.setCancelDeleteFriendRequestCallback(new ProfileOperations.CancelDeleteFriendRequestCallback() {
+                @Override
+                public void onSuccess(boolean result) {
+                    addFriendBtn.setText(context.getString(R.string.add));
+                    addFriendBtn.setEnabled(true);
+                    isFriend = false;
+                }
+
+                @Override
+                public void onError(int error) {
+                    addFriendBtn.setEnabled(true);
                 }
             });
         }
@@ -397,10 +491,10 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 likeButton.setText(item.getLikes().length + " " + likeString);
                 Log.e("post_like ->> " + item.getPostText(), item.getLikes().length + " " + likeString);
 
-                //Log.e("loggedInUserId", userId);
+                //Log.e("loggedInUserId", loggedInUserId);
                 for (int id : item.getLikes()) {
                     //Log.e("likesUserId", String.valueOf(id));
-                    if (String.valueOf(id).contentEquals(String.valueOf(userId))){
+                    if (String.valueOf(id).contentEquals(String.valueOf(loggedInUserId))){
                         likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star,  0, 0, 0);
                         break;
                     } else {
@@ -436,7 +530,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
 
                     if (item.getLikes() != null) {
                         for (int i = 0; i < item.getLikes().length; i++) {
-                            if (item.getLikes()[i] == Integer.parseInt(userId)) {
+                            if (item.getLikes()[i] == Integer.parseInt(loggedInUserId)) {
 
                                 if (item.getLikes().length > 1) {
                                     likeButton.setText((item.getLikes().length - 1) + " " + likeString);
@@ -466,7 +560,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             usernameView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (item.getOwnerId().contentEquals(userId)) {
+                    if (item.getOwnerId().contentEquals(loggedInUserId)) {
                         //todo start profile activity
                     } else  {
                         startOtherProfile(item);
@@ -477,7 +571,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             ppView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (item.getOwnerId().contentEquals(userId)) {
+                    if (item.getOwnerId().contentEquals(loggedInUserId)) {
                         //todo start profile activity
                     } else  {
                         startOtherProfile(item);
@@ -488,7 +582,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             postSideMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(userId))) {
+                    if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(loggedInUserId))) {
                         showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
                     } else {
                         showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
@@ -504,7 +598,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
 
         private void performLike(final NewsFeedItem item){
             HomeOperations homeOperations = new HomeOperations();
-            homeOperations.postLike("add_like" ,userId, item.getOwnerId(), item.getPostId());
+            homeOperations.postLike("add_like" , loggedInUserId, item.getOwnerId(), item.getPostId());
             homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
                 @Override
                 public void onSuccess() {
@@ -513,7 +607,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                         likes[i] = item.getLikes()[i];
                     }
 
-                    likes[likes.length - 1] = Integer.parseInt(userId);
+                    likes[likes.length - 1] = Integer.parseInt(loggedInUserId);
                     item.setLikes(likes);
                 }
 
@@ -525,32 +619,32 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         }
 
         private void reverseLike(final NewsFeedItem item){
-           HomeOperations homeOperations = new HomeOperations();
-           homeOperations.postUnlike("remove_like", userId, item.getOwnerId(), item.getPostId());
-           homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
-               @Override
-               public void onSuccess() {
-                   ArrayList<Integer> likesList = new ArrayList<>();
-                   for (int id : item.getLikes()) {
-                       if (id != Integer.parseInt(userId)){
-                           likesList.add(id);
-                       }
-                   }
+            HomeOperations homeOperations = new HomeOperations();
+            homeOperations.postUnlike("remove_like", loggedInUserId, item.getOwnerId(), item.getPostId());
+            homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
+                @Override
+                public void onSuccess() {
+                    ArrayList<Integer> likesList = new ArrayList<>();
+                    for (int id : item.getLikes()) {
+                        if (id != Integer.parseInt(loggedInUserId)){
+                            likesList.add(id);
+                        }
+                    }
 
-                   int[] likes = new int[likesList.size()];
+                    int[] likes = new int[likesList.size()];
 
-                   for(int i = 0; i < likesList.size(); i++) {
-                       likes[i] = likesList.get(i);
-                   }
+                    for(int i = 0; i < likesList.size(); i++) {
+                        likes[i] = likesList.get(i);
+                    }
 
-                   item.setLikes(likes);
-               }
+                    item.setLikes(likes);
+                }
 
-               @Override
-               public void onError(int error) {
+                @Override
+                public void onError(int error) {
 
-               }
-           });
+                }
+            });
         }
     }
 
@@ -575,7 +669,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (String.valueOf(postOwnerId).contentEquals(String.valueOf(userId))){
+                if (String.valueOf(postOwnerId).contentEquals(String.valueOf(loggedInUserId))){
                     if (i == 0){
                         //todo edit post
                     } else if (i == 1){
@@ -623,7 +717,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 HashMap<String, String> map = new HashMap<>();
 
                 map.put("method", "remove_post");
-                map.put("user_id", userId);
+                map.put("user_id", loggedInUserId);
                 map.put("post_id", String.valueOf(postId));
 
                 return map;
@@ -651,7 +745,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 HashMap<String, String> map = new HashMap<>();
 
                 map.put("method", "save_post");
-                map.put("user_id", userId);
+                map.put("user_id", loggedInUserId);
                 map.put("post_id", String.valueOf(postId));
 
                 return map;
@@ -679,7 +773,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 HashMap<String, String> map = new HashMap<>();
 
                 map.put("method", "report_post");
-                map.put("user_id", userId);
+                map.put("user_id", loggedInUserId);
                 map.put("post_id", String.valueOf(postId));
 
                 return map;
