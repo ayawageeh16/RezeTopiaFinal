@@ -132,6 +132,9 @@
     <string name="secret">Secret</string>
     <string name="closed">Closed</string>
     <string name="public_">Public</string>
+    <string name="view">View</string>
+    <string name="update_pp">Update profile picture</string>
+    <string name="update_cover">Update cover photo</string>
     <string name="create_team">Create Team</string>
     <string name="owner">Owner</string>
     <string name="going">Going</string>

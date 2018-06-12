@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/public_"
+        android:id="@+id/publicId"
+        android:icon="@drawable/ic_earth_grey600_24dp"/>
+    <item android:title="@string/friends"
+        android:id="@+id/friendsId"
+        android:icon="@drawable/ic_account_check_grey600_24dp"
+        />
+    <item android:title="@string/friends_of_friends"
+        android:id="@+id/friends_of_friendsId"
+        android:icon="@drawable/ic_account_multiple_check_grey600_24dp"
+        />
+    <item android:title="@string/only_me"
+        android:id="@+id/only_meId"
+        android:icon="@drawable/ic_lock_grey600_24dp"
+        />
+</menu>

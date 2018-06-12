@@ -1,11 +1,14 @@
 package io.krito.com.rezetopia.models.pojo.news_feed;
 
+import java.io.Serializable;
+
 import io.krito.com.rezetopia.models.pojo.post.Attachment;
 
-public class NewsFeedItem {
+public class NewsFeedItem implements Serializable {
 
     public static final int PRODUCT_TYPE = 0;
     public static final int POST_TYPE = 1;
+    public static final int PP_TYPE = 2;
     public static final int VENDOR_POST_TYPE = 2;
     public static final int EVENT_TYPE = 3;
     public static final int GROUP_POSTS_TYPE = 4;

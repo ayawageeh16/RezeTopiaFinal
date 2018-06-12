@@ -64,7 +64,7 @@
     <string name="booking">حجز</string>
     <string name="privacy">الخصوصية</string>
     <string name="friends">الاصدقاء</string>
-    <string name="friends_of_friends">اصدقاءالاصدقاء</string>
+    <string name="friends_of_friends">اصدقاء الاصدقاء</string>
     <string name="only_me">انا فقط</string>
 
     <string name="photos">الصور</string>
@@ -160,10 +160,13 @@
     <string name="add_friend">اضافى صديق</string>
     <string name="secret">سري</string>
     <string name="closed">مغلق</string>
-    <string name="public_">عامة</string>
+    <string name="public_">عام</string>
     <string name="create_team">عمل فريق</string>
     <string name="owner">المالك</string>
-
+    <string name="view">عرض الصورة</string>
+    <string name="update_pp">تغيير الصورة</string>
+    <string name="update_cover">تغيير صورة الغلاف</string>
+    <string name="no_image">لا توجد صورة</string>
     <string name="vendors">البائعين</string>
     <string name="teams">الفرق</string>
     <string name="discussion">متاقشة</string>

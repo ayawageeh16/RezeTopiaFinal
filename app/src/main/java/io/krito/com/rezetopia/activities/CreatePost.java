@@ -19,6 +19,7 @@ import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -48,6 +49,7 @@ import com.tangxiaolv.telegramgallery.GalleryConfig;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -71,8 +73,12 @@ import io.krito.com.rezetopia.helper.ListPopupWindowAdapter;
 import io.krito.com.rezetopia.helper.MenuCustomItem;
 import io.krito.com.rezetopia.helper.Upload;
 import io.krito.com.rezetopia.helper.VolleyMultipartRequest;
+import io.krito.com.rezetopia.models.pojo.post.Attachment;
+import io.krito.com.rezetopia.models.pojo.post.Media;
 import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 import io.krito.com.rezetopia.views.CustomTextView;
+import ru.whalemare.sheetmenu.SheetMenu;
+
 public class CreatePost extends AppCompatActivity implements View.OnClickListener {
 
     private static final int TYPE_TEXT = 0;
@@ -172,6 +178,40 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         popupWindow.show();
     }
 
+    private void createSheet(){
+        SheetMenu.with(this)
+                .setMenu(R.menu.post_privacy_menu)
+                .setAutoCancel(true)
+                .setClick(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.publicId:
+                                privacy = "public";
+                                privacyText.setText(R.string.public_);
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.earth));
+                                break;
+                            case R.id.friendsId:
+                                privacy = "friends";
+                                privacyText.setText(R.string.friends);
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.account_check));
+                                break;
+                            case R.id.friends_of_friendsId:
+                                privacy = "friends_of_friends";
+                                privacyText.setText(R.string.friends_of_friends);
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.account_multiple_check));
+                                break;
+                            case R.id.only_meId:
+                                privacy = "only_me";
+                                privacyText.setText(R.string.only_me);
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                                break;
+                        }
+                        return false;
+                    }
+                }).show();
+    }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -189,10 +229,12 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 }
                 break;
             case R.id.privacy:
-                showPostPopupWindow(privacyText);
+                createSheet();
+                //showPostPopupWindow(privacyText);
                 break;
             case R.id.privacyIcon:
-                showPostPopupWindow(privacyText);
+                createSheet();
+                //showPostPopupWindow(privacyText);
                 break;
             case R.id.backView:
                 onBackPressed();
@@ -307,10 +349,36 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                     @Override
                     public void onResponse(String response) {
                         Log.i("volley response", "onResponse: " + response);
+                        PostResponse postResponse = new PostResponse();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            PostResponse postResponse = new PostResponse();
-                            //todo add
+
+                            if (jsonObject.getInt("post_id") > 0){
+                                postResponse.setUserId(userId);
+                                postResponse.setPostId(jsonObject.getInt("post_id"));
+                                postResponse.setUsername(jsonObject.getString("username"));
+                                postResponse.setCreatedAt(jsonObject.getString("createdAt"));
+                                if (jsonObject.getString("text") != null && !jsonObject.getString("text").isEmpty()){
+                                    postResponse.setText(jsonObject.getString("text"));
+                                }
+
+                                if (jsonObject.getJSONArray("urls") != null && jsonObject.getJSONArray("urls").length() > 0){
+                                    JSONArray urls = jsonObject.getJSONArray("urls");
+                                    Attachment attachmentResponse = new Attachment();
+                                    Media[] mediaArray = new Media[urls.length()];
+                                    for (int i = 0; i < urls.length(); i++) {
+                                        Media media = new Media();
+                                        media.setPath(urls.getString(i));
+                                        mediaArray[i] = media;
+                                    }
+                                    attachmentResponse.setImages(mediaArray);
+                                    postResponse.setAttachment(attachmentResponse);
+                                }
+                            } else {
+                                loader.stopProgress();
+                            }
+
+                            /*//todo add
                             postResponse.setPostId(jsonObject.getInt("post_id"));
                             postResponse.setUsername(jsonObject.getString("username"));
                             postResponse.setCreatedAt(jsonObject.getString("createdAt"));
@@ -319,12 +387,31 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                             if (postType == TYPE_TEXT) {
                                 postResponse.setText(jsonObject.getString("text"));
                             }
+                            if (jsonObject.getJSONArray("urls") != null && jsonObject.getJSONArray("urls").length() > 0){
+                                JSONArray urls = jsonObject.getJSONArray("urls");
+                                Media media = new Media();
+                                media.setPath(urls.getString(0));
+                                Attachment attachmentResponse = new Attachment();
+                                attachmentResponse.setImages(new Media[]{media});
+                                postResponse.setAttachment(attachmentResponse);
+                            }
+
+
                             Intent intent = new Intent();
                             intent.putExtra("post", response);
                             setResult(RESULT_OK, intent);
-                            onBackPressed();
+                            onBackPressed();*/
                         } catch (JSONException e) {
                             e.printStackTrace();
+                        }
+
+                        if (postResponse.getPostId() > 0){
+                            Intent intent = new Intent();
+                            intent.putExtra("post", postResponse);
+                            setResult(RESULT_OK, intent);
+                            onBackPressed();
+                        } else {
+                            loader.stopProgress();
                         }
                     }
                 }, new Response.ErrorListener() {

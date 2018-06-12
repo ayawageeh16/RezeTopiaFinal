@@ -374,6 +374,7 @@
             android:layout_weight="1"/>
 
         <io.krito.com.rezetopia.views.CustomTextView
+            android:id="@+id/skills"
             android:textAlignment="center"
             android:text="@string/skills"
             android:layout_width="0dp"

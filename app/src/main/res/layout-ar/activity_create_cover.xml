@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<FrameLayout
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.krito.com.rezetopia.activities.CreatePp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context="io.krito.com.rezetopia.activities.CreatePp">
+
+        <RelativeLayout
+            android:id="@+id/createPostNav"
+            android:background="@color/green7"
+            android:layout_width="match_parent"
+            android:layout_height="45dp">
+
+            <ImageView
+                android:id="@+id/backView"
+                android:layout_alignParentStart="true"
+                android:layout_marginLeft="@dimen/dimen_10"
+                android:layout_marginStart="@dimen/dimen_10"
+                android:layout_width="50dp"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_back_ar"/>
+
+            <TextView
+                android:textColor="@color/white"
+                android:layout_marginEnd="@dimen/dimen_20"
+                android:layout_marginRight="@dimen/dimen_20"
+                android:textSize="18sp"
+                android:layout_centerVertical="true"
+                android:layout_alignParentEnd="true"
+                android:id="@+id/createPostView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/post"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true">
+
+                <ImageView
+                    android:background="@drawable/earth"
+                    android:id="@+id/privacyIcon"
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20"
+                    android:padding="3dp"
+                    />
+
+                <TextView
+                    android:layout_marginStart="5dp"
+                    android:textColor="@color/white"
+                    android:textSize="15sp"
+                    android:id="@+id/privacy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/public_"/>
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_marginStart="@dimen/dimen_20"
+            android:layout_marginEnd="@dimen/dimen_20"
+            android:layout_marginTop="@dimen/dimen_20"
+            android:layout_width="match_parent"
+            android:layout_gravity="center"
+            android:layout_height="250dp">
+
+            <ImageView
+                android:id="@+id/ppView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"/>
+
+            <ImageView
+                android:id="@+id/removePpImage"
+                android:layout_margin="@dimen/dimen_10"
+                android:layout_gravity="top|end"
+                android:layout_width="@dimen/dimen_20"
+                android:layout_height="@dimen/dimen_20"
+                android:src="@drawable/ic_exit"
+                android:background="@drawable/roundone_green"/>
+        </FrameLayout>
+
+        <EditText
+            android:id="@+id/ppText"
+            android:layout_margin="@dimen/dimen_10"
+            android:padding="@dimen/dimen_10"
+            android:textSize="17sp"
+            android:background="@android:color/transparent"
+            android:hint="@string/tell_something"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <id.arieridwan.lib.PageLoader
+        android:layout_gravity="center"
+        android:id="@+id/pageLoader"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:setLoadingText="Please wait..."
+        app:setErrorText="Something happened"
+        app:setTextColor="@color/black"
+        app:setTextSize="16sp"
+        app:setLoadingImage="@drawable/rezetopia"
+        app:setLoadingAnimationMode="rotate"/>
+
+</FrameLayout>
+
+
+

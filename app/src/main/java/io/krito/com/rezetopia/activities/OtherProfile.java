@@ -12,15 +12,9 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.fragments.AlertFragment;
@@ -29,6 +23,7 @@ import io.krito.com.rezetopia.models.operations.ProfileOperations;
 import io.krito.com.rezetopia.models.pojo.User;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeed;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
+import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 
 public class OtherProfile extends AppCompatActivity implements View.OnClickListener {
 
@@ -37,9 +32,7 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
 
     private static final String USER_ID_EXTRA = "user_id";
 
-    CircleImageView ppView;
-    TextView usernameView;
-    ImageView coverView;
+
     TextView addFriendBtn;
 
     FrameLayout profileHeader;
@@ -49,9 +42,7 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
     String cursor = "0";
 
     NewsFeed newsFeed;
-    ArrayList<NewsFeedItem> tempItems;
     ProfileRecyclerAdapter adapter;
-    ProfileCallback profileCallback;
 
     int start = 0, end = 0;
     boolean loadingData = false;
@@ -83,7 +74,6 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
         progressBar.getIndeterminateDrawable().setColorFilter(getResources()
                 .getColor(R.color.colorAccent), PorterDuff.Mode.SRC_IN);
 
-        //fetchNewsFeed();
 
         getInfo();
 
@@ -123,15 +113,6 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
 //                super.onScrollStateChanged(recyclerView, newState);
             }
         });
-
-//        ppView = findViewById(R.id.ppView);
-//        usernameView = findViewById(R.id.usernameView);
-//        coverView = findViewById(R.id.coverView);
-//        addFriendBtn = findViewById(R.id.addFriendBtn);
-//
-//        addFriendBtn.setOnClickListener(this);
-//
-//        getInfo();
     }
 
     private void getInfo(){
@@ -148,13 +129,6 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
                         friendState = is_friend[1];
                         Log.e("IsFriendActivity", "onSuccess: " + String.valueOf(isFriend) + "-" + String.valueOf(friendState));
                         fetchNewsFeed();
-//                        if (isFriend && friendState){
-//                            addFriendBtn.setText(getResources().getString(R.string.remove_friend));
-//                        } else if (isFriend && !friendState){
-//                            addFriendBtn.setText(getResources().getString(R.string.cancel_friend_request));
-//                        } else {
-//                            addFriendBtn.setText(getResources().getString(R.string.add));
-//                        }
                     }
 
                     @Override
@@ -250,10 +224,8 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
                             adapter.removeLastItem();
                             adapter.notifyDataSetChanged();
                             recyclerView.scrollToPosition(lastItem);
-                            //adapter.notifyItemRangeInserted(Integer.parseInt(cursor) - 10, Integer.parseInt(cursor));
                         }
                     });
-                    //updateUi(0, 0);
                 } else {
                     newsFeed = feed;
                     updateUi(0, 0);
@@ -273,7 +245,9 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
 
             @Override
             public void onEmptyResult() {
-                adapter.removeLastItem();
+                if (adapter != null) {
+                    adapter.removeLastItem();
+                }
             }
         });
     }
@@ -316,6 +290,22 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
                 }
 
                 @Override
+                public void showSnackBar(String message) {
+                    Snackbar.make(recyclerView, message, Snackbar.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onStartPickPp() {
+                    CreatePp.skip = true;
+                    startActivity(new Intent(OtherProfile.this, CreatePp.class));
+                }
+
+                @Override
+                public void onStartPickCover() {
+                    startActivity(new Intent(OtherProfile.this, CreateCover.class));
+                }
+
+                @Override
                 public void onStartCreatePost() {
                     Intent intent = new Intent(OtherProfile.this, CreatePost.class);
                     startActivityForResult(intent, CREATE_POST_RESULT);
@@ -327,7 +317,31 @@ public class OtherProfile extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    public interface ProfileCallback{
-        void onScroll(boolean show);
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == COMMENT_ACTIVITY_RESULT){
+
+        } else if (requestCode == CREATE_POST_RESULT){
+            if (data != null){
+                PostResponse returnPost = (PostResponse) data.getSerializableExtra("post");
+                if (returnPost != null) {
+                    NewsFeedItem item = new NewsFeedItem();
+                    item.setId(returnPost.getPostId());
+                    item.setCreatedAt(returnPost.getCreatedAt());
+                    item.setOwnerId(returnPost.getUserId());
+                    item.setOwnerName(returnPost.getUsername());
+                    item.setPostText(returnPost.getText());
+                    item.setPostAttachment(returnPost.getAttachment());
+                    item.setLikes(null);
+                    item.setCommentSize(0);
+                    item.setType(NewsFeedItem.POST_TYPE);
+                    //todo add post to adapter
+                    adapter.addPostToRop(item);
+                    //adapter.addPostItem(item);
+                }
+            }
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

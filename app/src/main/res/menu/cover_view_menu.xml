@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/view"
+        android:id="@+id/viewImage"
+        android:icon="@drawable/ic_eye"/>
+    <item android:title="@string/update_cover"
+        android:id="@+id/updateCover"
+        android:icon="@drawable/ic_upload"
+        />
+</menu>

@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -38,11 +39,15 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.activities.ImageViewer;
 import io.krito.com.rezetopia.activities.OtherProfile;
+import io.krito.com.rezetopia.activities.Skills;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
 import io.krito.com.rezetopia.models.operations.ProfileOperations;
 import io.krito.com.rezetopia.models.pojo.User;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
+import io.krito.com.rezetopia.views.CustomTextView;
+import ru.whalemare.sheetmenu.SheetMenu;
 
 public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
 
@@ -123,6 +128,11 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         this.callback = adapterCallback;
     }
 
+    public void addPostToRop(NewsFeedItem item){
+        items.add(0, item);
+        callback.onItemAdded(1);
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -200,6 +210,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         TextView usernameView;
         ImageView coverView;
         TextView addFriendBtn;
+        CustomTextView skillsView;
 
 
         public HeaderViewHolder(View itemView) {
@@ -210,6 +221,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             usernameView = itemView.findViewById(R.id.usernameView);
             coverView = itemView.findViewById(R.id.coverView);
             addFriendBtn = itemView.findViewById(R.id.addFriendBtn);
+            skillsView = itemView.findViewById(R.id.skills);
 
             if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
                 Picasso.with(context).load("http://rezetopia.dev-krito.com/images/profileImgs/" + user.getImageUrl() + ".JPG").into(ppView);
@@ -246,6 +258,71 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                     } else {
                         sendFriendRequest();
                     }
+                }
+            });
+
+            skillsView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    context.startActivity(new Intent(context, Skills.class));
+                }
+            });
+
+            ppView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SheetMenu.with(context)
+                            .setMenu(R.menu.image_view_menu)
+                            .setAutoCancel(true)
+                            .setClick(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    switch (item.getItemId()){
+                                        case R.id.viewImage:
+                                            if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
+                                                Intent intent = ImageViewer.createIntent(user.getImageUrl(), ImageViewer.PP_MODE, context);
+                                                context.startActivity(intent);
+                                            } else {
+                                                callback.showSnackBar(context.getResources().getString(R.string.no_image));
+                                            }
+
+                                            return true;
+                                        case R.id.updatePp:
+                                            callback.onStartPickPp();
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            }).show();
+                }
+            });
+
+            coverView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SheetMenu.with(context)
+                            .setMenu(R.menu.cover_view_menu)
+                            .setAutoCancel(true)
+                            .setClick(new MenuItem.OnMenuItemClickListener() {
+                                @Override
+                                public boolean onMenuItemClick(MenuItem item) {
+                                    switch (item.getItemId()){
+                                        case R.id.viewImage:
+                                            /*if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
+                                                Intent intent = ImageViewer.createIntent(user.getImageUrl(), ImageViewer.PP_MODE, context);
+                                                context.startActivity(intent);
+                                            } else {
+                                                callback.showSnackBar(context.getResources().getString(R.string.no_image));
+                                            }
+*/
+                                            return true;
+                                        case R.id.updateCover:
+                                            callback.onStartPickCover();
+                                            return true;
+                                    }
+                                    return false;
+                                }
+                            }).show();
                 }
             });
         }
@@ -582,11 +659,12 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             postSideMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(loggedInUserId))) {
+                    /*if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(loggedInUserId))) {
                         showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
                     } else {
                         showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
-                    }
+                    }*/
+                    createSheetMenu(Integer.parseInt(item.getPostId()), item.getOwnerId());
                 }
             });
         }
@@ -690,6 +768,34 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         popupWindow.show();
     }
 
+    private void createSheetMenu( final int postId, final String postOwnerId){
+        int menu;
+        menu = (String.valueOf(postOwnerId).contentEquals(String.valueOf(userId))) ? R.menu.owner_post_menu : R.menu.viewer_post_menu;
+        SheetMenu.with(context)
+                .setMenu(menu)
+                .setAutoCancel(true)
+                .setClick(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.save_post_menu:
+                                savePost(postId);
+                                break;
+                            case R.id.edit_post_menu:
+                                //todo edit post
+                                break;
+                            case R.id.remove_post_menu:
+                                removePost(postId);
+                                break;
+                            case R.id.report_post_menu:
+                                reportPost(postId);
+                                break;
+                        }
+                        return false;
+                    }
+                }).show();
+    }
+
     private void removePost(final int postId){
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
@@ -788,5 +894,8 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         void onStartCreatePost();
         void onItemAdded(int position);
         void onItemRemoved(int position);
+        void showSnackBar(String message);
+        void onStartPickPp();
+        void onStartPickCover();
     }
 }

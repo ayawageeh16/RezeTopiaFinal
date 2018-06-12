@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -37,9 +38,11 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.activities.ImageViewer;
 import io.krito.com.rezetopia.activities.OtherProfile;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
+import ru.whalemare.sheetmenu.SheetMenu;
 
 public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
 
@@ -468,6 +471,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 public void onClick(View v) {
                     if (item.getOwnerId().contentEquals(userId)) {
                         //todo start profile activity
+                        startOtherProfile(item);
                     } else  {
                         startOtherProfile(item);
                     }
@@ -479,6 +483,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
                 public void onClick(View v) {
                     if (item.getOwnerId().contentEquals(userId)) {
                         //todo start profile activity
+                        startOtherProfile(item);
                     } else  {
                         startOtherProfile(item);
                     }
@@ -488,11 +493,13 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             postSideMenu.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(userId))) {
-                        showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
+                    createSheetMenu(Integer.parseInt(item.getPostId()), item.getOwnerId());
+                    /*if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(userId))) {
+                        //showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
+
                     } else {
-                        showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
-                    }
+                        //showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
+                    }*/
                 }
             });
         }
@@ -594,6 +601,34 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.View
             }
         });
         popupWindow.show();
+    }
+
+    private void createSheetMenu( final int postId, final String postOwnerId){
+        int menu;
+        menu = (String.valueOf(postOwnerId).contentEquals(String.valueOf(userId))) ? R.menu.owner_post_menu : R.menu.viewer_post_menu;
+        SheetMenu.with(context)
+                .setMenu(menu)
+                .setAutoCancel(true)
+                .setClick(new MenuItem.OnMenuItemClickListener() {
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item) {
+                        switch (item.getItemId()){
+                            case R.id.save_post_menu:
+                                savePost(postId);
+                                break;
+                            case R.id.edit_post_menu:
+                                //todo edit post
+                                break;
+                            case R.id.remove_post_menu:
+                                removePost(postId);
+                                break;
+                            case R.id.report_post_menu:
+                                reportPost(postId);
+                                break;
+                        }
+                        return false;
+                    }
+                }).show();
     }
 
     private void removePost(final int postId){
