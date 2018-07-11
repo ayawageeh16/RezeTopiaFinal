@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.krito.com.rezetopia.activities.Skills">
+
+    <RelativeLayout
+        android:id="@+id/aboutHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:id="@+id/about_progress"
+            android:layout_marginTop="260dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="@dimen/dimen_20"
+            android:layout_height="@dimen/dimen_20" />
+
+        <com.gao.jiefly.abilitychartlibrary.AbilityChatView
+            android:visibility="gone"
+            android:id="@+id/skillAbility"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            app:coverColor="@color/colorPrimary"
+            app:polygonColor="@color/green5"
+            app:lineColor="@android:color/transparent"
+            app:coverAlpha="100"
+            app:polygonAlpha="25"
+            app:lineWidth="0.2dp"/>
+
+        <io.krito.com.rezetopia.views.CustomButton
+            android:visibility="gone"
+            android:id="@+id/btnToggle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/skillAbility"
+            android:layout_marginBottom="0dp"
+            android:layout_marginTop="@dimen/small_margin"
+            android:background="@drawable/roundone_green"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/small_margin"
+            android:paddingTop="@dimen/small_margin"
+            android:text="@string/more"
+            android:textAllCaps="false"
+            android:textSize="@dimen/bigger_text_size" />
+
+        <com.github.aakira.expandablelayout.ExpandableRelativeLayout
+            android:visibility="gone"
+            android:layout_below="@id/btnToggle"
+            android:id="@+id/expandableLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:ael_expanded="false"
+            app:ael_duration="500"
+            app:ael_interpolator="bounce"
+            app:ael_orientation="vertical">
+
+
+            <TextView
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/attackText"
+                android:text="@string/attack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/attackText"
+                android:id="@+id/valueBar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/staminaText"
+                android:text="@string/stamina"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/staminaText"
+                android:id="@+id/valueBar1"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar1"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/defenceText"
+                android:text="@string/defence"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/defenceText"
+                android:id="@+id/valueBar2"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar2"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/speedText"
+                android:text="@string/speed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/speedText"
+                android:id="@+id/valueBar3"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar3"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/ball_controlText"
+                android:text="@string/ball_control"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/ball_controlText"
+                android:id="@+id/valueBar4"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar4"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/low_passText"
+                android:text="@string/low_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/low_passText"
+                android:id="@+id/valueBar5"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar5"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/lofted_passText"
+                android:text="@string/lofted_pass"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/lofted_passText"
+                android:id="@+id/valueBar6"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar6"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/shoot_accuracyText"
+                android:text="@string/shoot_accuracy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/shoot_accuracyText"
+                android:id="@+id/valueBar7"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar7"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/shoot_powerText"
+                android:text="@string/shoot_power"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/shoot_powerText"
+                android:id="@+id/valueBar8"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar8"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/free_kicksText"
+                android:text="@string/free_kicks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/free_kicksText"
+                android:id="@+id/valueBar9"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar9"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/headerText"
+                android:text="@string/header"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/headerText"
+                android:id="@+id/valueBar10"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+
+            <TextView
+                android:layout_below="@id/valueBar10"
+                android:layout_marginStart="5dp"
+                android:textColor="@color/black"
+                android:textSize="15sp"
+                android:id="@+id/jumpText"
+                android:text="@string/jump"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <com.philjay.valuebar.ValueBar
+                android:layout_below="@+id/jumpText"
+                android:id="@+id/valueBar11"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_margin="5dp" />
+        </com.github.aakira.expandablelayout.ExpandableRelativeLayout>
+
+    </RelativeLayout>
+
+</ScrollView>
+

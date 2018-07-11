@@ -63,6 +63,23 @@
 
                 </FrameLayout>
 
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/shareTextPartOneView"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shared_a"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/shareTextPartTwoView"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/post_small"
+                    android:textColor="@color/black"/>
+
 
             </LinearLayout>
 

@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    android:layout_margin="@dimen/dimen_20"
+    android:background="@drawable/post_background"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:id="@+id/shareProgressBar"
+            android:layout_width="20dp"
+            android:layout_height="20dp" />
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:id="@+id/shareHeader"
+                android:background="@color/colorAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:text="@string/timelineShare_hint"
+                    android:layout_margin="@dimen/dimen_10"
+                    android:layout_gravity="start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <ImageView
+                    android:id="@+id/closeShare"
+                    android:src="@drawable/ic_close_white"
+                    android:layout_margin="@dimen/dimen_10"
+                    android:layout_gravity="end"
+                    android:layout_width="@dimen/dimen_20"
+                    android:layout_height="@dimen/dimen_20" />
+            </FrameLayout>
+
+            <EditText
+                android:paddingRight="@dimen/dimen_10"
+                android:paddingEnd="@dimen/dimen_10"
+                android:paddingLeft="@dimen/dimen_10"
+                android:paddingStart="@dimen/dimen_10"
+                android:paddingTop="@dimen/dimen_10"
+                android:paddingBottom="@dimen/dimen_10"
+                android:hint="@string/tell_something"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:id="@+id/shareText"
+                android:background="@color/white"
+                android:layout_below="@id/shareHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <android.support.v7.widget.RecyclerView
+                android:visibility="gone"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_below="@id/shareText"
+                android:id="@+id/imagesRecView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:textSize="15sp"
+                android:id="@+id/postOwnerNameView"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_below="@id/imagesRecView"
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimary"
+                android:text="@string/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <LinearLayout
+                android:id="@+id/ownerDataHeader"
+                android:layout_below="@id/postOwnerNameView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_gravity="center"
+                    android:id="@+id/shareDateView"
+                    android:textSize="10sp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="june 23 at 2:18 AM"/>
+
+
+                <ImageView
+                    android:id="@+id/sharePrivacy"
+                    android:src="@drawable/ic_earth_grey600_24dp"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/ownerPostText"
+                android:layout_marginTop="@dimen/dimen_20"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_below="@id/ownerDataHeader"
+                android:textSize="13sp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="مصر كما لم تشاهدها من قبل فى 30 صورة" />
+            
+            <LinearLayout
+                android:layout_marginBottom="@dimen/dimen_10"
+                android:layout_marginTop="@dimen/dimen_10"
+                android:layout_below="@id/ownerPostText"
+                android:gravity="end"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <io.krito.com.rezetopia.views.CustomTextView
+                    android:id="@+id/cancel"
+                    android:layout_marginEnd="30dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/Cancel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <io.krito.com.rezetopia.views.CustomTextView
+                    android:id="@+id/share"
+                    android:layout_marginEnd="30dp"
+                    android:textSize="17sp"
+                    android:textColor="@color/colorPrimary"
+                    android:text="@string/post"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+        </RelativeLayout>
+    </FrameLayout>
+
+
+</ScrollView>

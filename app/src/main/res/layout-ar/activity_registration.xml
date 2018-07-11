@@ -34,6 +34,61 @@
         </LinearLayout>
 
 
+        <!--<LinearLayout-->
+            <!--android:orientation="vertical"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<ImageView-->
+                    <!--android:layout_width="30dp"-->
+                    <!--android:layout_height="30dp"-->
+                    <!--android:layout_gravity="center|center_horizontal|center_vertical"-->
+                    <!--android:layout_marginRight="@dimen/kasb_margin_top"-->
+                    <!--android:background="@drawable/namewhite" />-->
+                <!--<TextView-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/name"-->
+                    <!--android:layout_marginRight="@dimen/dividerlist"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:textColor="@color/colorPrimaryDark"/>-->
+            <!--</LinearLayout>-->
+            <!--<LinearLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content">-->
+                <!--<View-->
+                    <!--android:background="@color/green5"-->
+                    <!--android:layout_height="35dp"-->
+                    <!--android:layout_width="10dp"-->
+                    <!--android:layout_gravity="center|center_vertical|center_horizontal"-->
+                    <!--android:layout_marginRight="@dimen/medium_margin" />-->
+                <!--<io.krito.com.rezetopia.views.CustomEditText-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_marginBottom="@dimen/small_margin"-->
+                    <!--android:paddingTop="@dimen/lv_divider_height"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_marginLeft="@dimen/dimen_20"-->
+                    <!--android:paddingBottom="@dimen/lv_divider_height"-->
+                    <!--android:paddingLeft="@dimen/lv_divider_height"-->
+                    <!--android:imeOptions="actionNext"-->
+                    <!--android:inputType="textPersonName"-->
+                    <!--android:maxLines="1"-->
+                    <!--android:drawablePadding="@dimen/small_margin"-->
+                    <!--android:gravity="start|center_vertical"-->
+                    <!--android:layout_marginTop="@dimen/small_margin"-->
+                    <!--android:textColorHint="@color/gray"-->
+                    <!--android:textColor="@android:color/white"-->
+                    <!--android:layout_marginRight="0dp"-->
+                    <!--android:id="@+id/edName"-->
+                    <!--android:background="@drawable/roundtwo_green"/>-->
+            <!--</LinearLayout>-->
+
+
+        <!--</LinearLayout>-->
+
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -50,7 +105,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/name"
+                    android:text="الاسم الاول"
                     android:layout_marginRight="@dimen/dividerlist"
                     android:layout_gravity="center"
                     android:textColor="@color/colorPrimaryDark"/>
@@ -83,6 +138,61 @@
                     android:textColor="@android:color/white"
                     android:layout_marginRight="0dp"
                     android:id="@+id/edName"
+                    android:background="@drawable/roundtwo_green"/>
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="center|center_horizontal|center_vertical"
+                    android:layout_marginRight="@dimen/kasb_margin_top"
+                    android:background="@drawable/namewhite" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="الاسم الثانى"
+                    android:layout_marginRight="@dimen/dividerlist"
+                    android:layout_gravity="center"
+                    android:textColor="@color/colorPrimaryDark"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <View
+                    android:background="@color/green5"
+                    android:layout_height="35dp"
+                    android:layout_width="10dp"
+                    android:layout_gravity="center|center_vertical|center_horizontal"
+                    android:layout_marginRight="@dimen/medium_margin" />
+                <io.krito.com.rezetopia.views.CustomEditText
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_marginBottom="@dimen/small_margin"
+                    android:paddingTop="@dimen/lv_divider_height"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="@dimen/dimen_20"
+                    android:paddingBottom="@dimen/lv_divider_height"
+                    android:paddingLeft="@dimen/lv_divider_height"
+                    android:imeOptions="actionNext"
+                    android:inputType="textPersonName"
+                    android:maxLines="1"
+                    android:drawablePadding="@dimen/small_margin"
+                    android:gravity="start|center_vertical"
+                    android:layout_marginTop="@dimen/small_margin"
+                    android:textColorHint="@color/gray"
+                    android:textColor="@android:color/white"
+                    android:layout_marginRight="0dp"
+                    android:id="@+id/edName2"
                     android:background="@drawable/roundtwo_green"/>
             </LinearLayout>
 

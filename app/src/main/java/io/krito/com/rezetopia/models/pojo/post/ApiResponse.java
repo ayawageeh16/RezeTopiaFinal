@@ -17,6 +17,9 @@ public class ApiResponse {
     @Expose
     private Post[] posts;
 
+    @SerializedName("pps")
+    @Expose
+    private Pp[] pps;
 
     @SerializedName("now")
     @Expose
@@ -25,6 +28,14 @@ public class ApiResponse {
     @SerializedName("message")
     @Expose
     private String message;
+
+    public Pp[] getPps() {
+        return pps;
+    }
+
+    public void setPps(Pp[] pps) {
+        this.pps = pps;
+    }
 
     public String getMessage() {
         return message;

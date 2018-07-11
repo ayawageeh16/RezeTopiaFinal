@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:title="@string/copy"
+        android:id="@+id/copyComment"
+        android:icon="@drawable/ic_copy"/>
+
+    <item android:title="@string/edit"
+        android:id="@+id/editComment"
+        android:icon="@drawable/ic_edit"/>
+
+    <item android:title="@string/remove"
+        android:id="@+id/removeComment"
+        android:icon="@drawable/ic_remove"/>
+</menu>

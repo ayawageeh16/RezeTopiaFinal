@@ -25,6 +25,7 @@ import java.util.Map;
 
 import io.krito.com.rezetopia.models.operations.HomeOperations;
 import io.krito.com.rezetopia.models.operations.ProfileOperations;
+import io.krito.com.rezetopia.models.operations.SaveOperations;
 import io.krito.com.rezetopia.models.operations.UserOperations;
 import io.krito.com.rezetopia.receivers.ConnectivityReceiver;
 
@@ -34,6 +35,7 @@ public class RezetopiaApp extends Application {
 
     private static boolean sIsChatActivityOpen = false;
     private RequestQueue mRequestQueue;
+    private RequestQueue mSaveRequestQueue;
     private ConnectivityReceiver receiver;
     private static RezetopiaApp mInstance;
 
@@ -75,6 +77,7 @@ public class RezetopiaApp extends Application {
         UserOperations.setRequestQueue(getRequestQueue());
         HomeOperations.setRequestQueue(getRequestQueue());
         ProfileOperations.setRequestQueue(getRequestQueue());
+        SaveOperations.setRequestQueue(getSaveRequestQueue() );
     }
 
     public static synchronized RezetopiaApp getInstance() {
@@ -86,6 +89,14 @@ public class RezetopiaApp extends Application {
     }
 
     public RequestQueue getRequestQueue() {
+        if (mSaveRequestQueue == null) {
+            mSaveRequestQueue = Volley.newRequestQueue(getApplicationContext());
+        }
+
+        return mSaveRequestQueue;
+    }
+
+    public RequestQueue getSaveRequestQueue() {
         if (mRequestQueue == null) {
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
@@ -107,6 +118,10 @@ public class RezetopiaApp extends Application {
         if (mRequestQueue != null) {
             mRequestQueue.cancelAll(tag);
         }
+    }
+
+    public void removeQueue(){
+        mRequestQueue = null;
     }
 
     private void updateToken() {

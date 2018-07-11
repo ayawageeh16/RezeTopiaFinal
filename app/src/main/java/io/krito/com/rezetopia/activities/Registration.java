@@ -1,5 +1,6 @@
 package io.krito.com.rezetopia.activities;
 
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,7 @@ import android.widget.CheckBox;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.fragments.AlertFragment;
+import io.krito.com.rezetopia.helper.DateDialog;
 import io.krito.com.rezetopia.models.operations.UserOperations;
 import io.krito.com.rezetopia.models.pojo.User;
 import io.krito.com.rezetopia.views.CustomButton;
@@ -17,7 +19,7 @@ import io.rmiri.buttonloading.ButtonLoading;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
 
-    CustomEditText edtName, edtPhone, edtEmail, edtDate, edtPassword;
+    CustomEditText edtName, edtName2, edtPhone, edtEmail, edtDate, edtPassword;
     CustomButton btnLogin;
     ButtonLoading btnSignUp;
     CheckBox checkBox;
@@ -34,33 +36,53 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         btnLogin = findViewById(R.id.btnLogin);
         btnSignUp = findViewById(R.id.btnRegister);
         checkBox = findViewById(R.id.checkbox);
+        edtName2 = findViewById(R.id.edName2);
         //btnSignUp.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
+
+        edtDate.setOnFocusChangeListener(new View.OnFocusChangeListener(){
+            public void onFocusChange(View view, boolean hasfocus){
+                if(hasfocus){
+                    DateDialog dialog = new DateDialog(view);
+                    FragmentTransaction ft =getFragmentManager().beginTransaction();
+                    dialog.show(ft, "DatePicker");
+                }
+            }
+
+        });
         btnSignUp.setOnButtonLoadingListener(new ButtonLoading.OnButtonLoadingListener() {
             @Override
             public void onClick() {
                 if (checkData()) {
 
                     final User user = new User();
-                    user.setName(edtName.getText().toString());
-                    user.setEmail(edtEmail.getText().toString());
-                    user.setPassword(edtPassword.getText().toString());
+                    user.setName(edtName.getText().toString().trim() + " " + edtName2.getText().toString().trim());
+                    user.setFisrtName(edtName.getText().toString().trim());
+                    user.setLastName(edtName2.getText().toString().trim());
+                    user.setEmail(edtEmail.getText().toString().trim());
+                    user.setPassword(edtPassword.getText().toString().trim());
                     user.setBirthday(edtDate.getText().toString());
-                    user.setMobile(edtPassword.getText().toString());
+                    user.setMobile(edtPassword.getText().toString().trim());
                     UserOperations.Register(user);
                     UserOperations.setRegisterCallback(new UserOperations.RegisterCallback() {
                         @Override
                         public void onSuccess(String id) {
                             getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                                     .edit().putString(AppConfig.LOGGED_IN_USER_ID_SHARED, id).apply();
-                            startActivity(new Intent(Registration.this, Main.class));
+                            startActivity(new Intent(Registration.this, WelcomeSlider.class));
                             finish();
                         }
 
                         @Override
                         public void onError(int error) {
-                            String s = getResources().getString(error);
+                            String s;
+                            if (error == R.string.unknown_error){
+                                s = getResources().getString(R.string.invalid_email);
+                            } else {
+                                s = getResources().getString(error);
+                            }
+
                             AlertFragment.createFragment(s).show(getFragmentManager(), null);
                             btnSignUp.setProgress(false);
                         }
@@ -97,20 +119,29 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
 
 
     private Boolean checkData() {
-        String name, password, email, phone, dateOfBirth;
+        String name,fName, lName, password, email, phone, dateOfBirth;
         Boolean valid = true;
 
-        name = edtName.getText().toString();
+        //name = edtName.getText().toString();
         password = edtPassword.getText().toString();
         email = edtEmail.getText().toString();
         dateOfBirth = edtDate.getText().toString();
         phone = edtPhone.getText().toString();
+        fName = edtName.getText().toString();
+        lName = edtName2.getText().toString();
 
-        if (name.isEmpty() || name.length() < 3) {
+
+        if (fName.isEmpty() || fName.length() < 3) {
             edtName.setError("Must be at least 3 characters ");
             valid = false;
         } else
             edtName.setError(null);
+
+        if (lName.isEmpty() || lName.length() < 3) {
+            edtName2.setError("Must be at least 3 characters ");
+            valid = false;
+        } else
+            edtName2.setError(null);
 
         if (phone.isEmpty() || phone.length() < 11) {
             edtPhone.setError("Enter a Valid Mobile Number ");

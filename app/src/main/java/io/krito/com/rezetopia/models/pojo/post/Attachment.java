@@ -3,8 +3,10 @@ package io.krito.com.rezetopia.models.pojo.post;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 
-public class Attachment {
+
+public class Attachment implements Serializable {
 
     @SerializedName("videos")
     @Expose

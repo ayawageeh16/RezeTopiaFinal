@@ -1,7 +1,9 @@
 package io.krito.com.rezetopia.activities;
 
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -11,13 +13,16 @@ import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -25,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.zyyoona7.popup.EasyPopup;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -42,10 +48,12 @@ import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.helper.VolleyCustomRequest;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
+import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 import io.krito.com.rezetopia.models.pojo.post.ApiCommentResponse;
 import io.krito.com.rezetopia.models.pojo.post.Replay;
 import io.krito.com.rezetopia.views.CustomEditText;
 import io.krito.com.rezetopia.views.CustomTextView;
+import ru.whalemare.sheetmenu.SheetMenu;
 
 public class Comment extends AppCompatActivity implements View.OnClickListener{
 
@@ -224,12 +232,19 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
     private class CommentViewHolder extends RecyclerView.ViewHolder{
 
+        ColorStateList oldColor;
+
         TextView commentTextView;
         TextView createdAtView;
         TextView commenterView;
         TextView commentReplayView;
         TextView commentLikeView;
         TextView postingView;
+        EditText commentEditText;
+        LinearLayout editLayout;
+        TextView okEdit;
+        TextView cancelEdit;
+        LinearLayout likeLayout;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -240,6 +255,24 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             commentReplayView = itemView.findViewById(R.id.commentReplayView);
             commentLikeView = itemView.findViewById(R.id.commentLikeView);
             postingView = itemView.findViewById(R.id.postingView);
+            commentEditText = itemView.findViewById(R.id.commentEditText);
+            editLayout = itemView.findViewById(R.id.editLayout);
+            okEdit = itemView.findViewById(R.id.okEdit);
+            cancelEdit = itemView.findViewById(R.id.cancelEdit);
+            likeLayout = itemView.findViewById(R.id.likeLayout);
+
+            oldColor = commentLikeView.getTextColors();
+
+            commentEditText.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                    if (clipboard.getText() != null) {
+                        showCommentLongPressMenu();
+                    }
+                    return false;
+                }
+            });
         }
 
         public void bind(final io.krito.com.rezetopia.models.pojo.post.Comment comment, boolean pending, final int position){
@@ -247,7 +280,6 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                 postingView.setVisibility(View.VISIBLE);
             } else {
                 postingView.setVisibility(View.GONE);
-
                 commentTextView.setText(comment.getCommentText());
                 createdAtView.setText(comment.getCreatedAt());
                 commenterView.setText(comment.getCommenterName());
@@ -268,12 +300,12 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
                 String like = getResources().getString(R.string.like);
                 if (comment.getLikes() != null && comment.getLikes().length > 0) {
+                    Log.i("comment_like ->> " , comment.getLikes().length + " " + comment.getCommentId());
                     commentLikeView.setText(comment.getLikes().length + " " + like);
                     for (int i = 0; i < comment.getLikes().length; i++) {
                         if (comment.getLikes()[i] == Integer.parseInt(userId)) {
-                            if (comment.getLikes().length > 0) {
-                                commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
-                            }
+                            commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
+                            break;
                         }
                     }
                 } else {
@@ -291,6 +323,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                                 if (comment.getLikes()[i] == Integer.parseInt(userId)) {
 
                                     commentLikeView.setText((comment.getLikes().length - 1) + " " + likeString);
+                                    commentLikeView.setTextColor(getResources().getColor(R.color.colorAccent));
                                     if (!(comment.getLikes().length > 1)) {
                                         commentLikeView.setText(likeString);
                                     }
@@ -303,6 +336,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
 
                         commentLikeView.setText((comment.getLikes().length + 1) + " " + likeString);
+                        commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
                         performLike(comment, position);
                     }
                 });
@@ -331,6 +365,33 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
                         startActivityForResult(intent, REPLAY_REQUEST_CODE);
                         //startActivity(intent);
+                    }
+                });
+
+                itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        Log.i("CommentLongClick", "onLongClick: ");
+                        showCommentMenu(comment, position);
+                        return false;
+                    }
+                });
+
+                okEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        editComment(comment, position);
+                        likeLayout.setVisibility(View.VISIBLE);
+                    }
+                });
+
+                cancelEdit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        commentTextView.setVisibility(View.VISIBLE);
+                        commentEditText.setVisibility(View.GONE);
+                        editLayout.setVisibility(View.GONE);
+                        likeLayout.setVisibility(View.VISIBLE);
                     }
                 });
             }
@@ -439,6 +500,133 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             };
 
             Volley.newRequestQueue(Comment.this).add(stringRequest);
+        }
+
+        private void removeComment(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("remove_comment", "onResponse: " + response);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    comments.remove(position);
+                                    adapter.notifyItemRemoved(position + 1);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("remove_comment_params", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    Log.i("remove_comment_params", "getParams: " + userId + " " + postId + " " + comment.getCommentId());
+                    map.put("method", "remove_comment");
+                    map.put("userId", userId);
+                    map.put("comment_id", String.valueOf(comment.getCommentId()));
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(Comment.this).add(stringRequest);
+        }
+
+        private void editComment(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Log.i("edit_comment", "onResponse: " + response);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response);
+                                if (!jsonObject.getBoolean("error")){
+                                    comment.setCommentText(commentEditText.getText().toString());
+                                    comments.set(position, comment);
+                                    adapter.notifyItemChanged(position + 1);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("edit_comment_params", "onErrorResponse: " + error.getMessage());
+                }
+            }){
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> map = new HashMap<>();
+
+                    Log.i("edit_comment_params", "getParams: " + userId + " " + commentEditText.getText().toString() + " " + comment.getCommentId());
+                    map.put("method", "edit_comment");
+                    map.put("userId", userId);
+                    map.put("comment_id", String.valueOf(comment.getCommentId()));
+                    map.put("comment", commentEditText.getText().toString());
+
+                    return map;
+                }
+            };
+
+            Volley.newRequestQueue(Comment.this).add(stringRequest);
+        }
+
+        private void showCommentMenu(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position) {
+            int menu;
+            menu = (String.valueOf(comment.getCommenterId()).contentEquals(String.valueOf(userId))) ? R.menu.comment_owner_menu : R.menu.comment_viewer_menu;
+            SheetMenu.with(Comment.this)
+                    .setMenu(menu)
+                    .setAutoCancel(true)
+                    .setClick(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem it) {
+                            switch (it.getItemId()) {
+                                case R.id.copyComment:
+                                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                    clipboard.setText(comment.getCommentText());
+                                    Toast.makeText(Comment.this, R.string.text_saved, Toast.LENGTH_SHORT).show();
+                                    break;
+                                case R.id.editComment:
+                                    commentEditText.setText(commentTextView.getText().toString());
+                                    commentTextView.setVisibility(View.GONE);
+                                    commentEditText.setVisibility(View.VISIBLE);
+                                    editLayout.setVisibility(View.VISIBLE);
+                                    likeLayout.setVisibility(View.GONE);
+                                    break;
+                                case R.id.removeComment:
+                                    removeComment(comment, position);
+                                    break;
+                            }
+                            return false;
+                        }
+                    }).show();
+        }
+
+        private void showCommentLongPressMenu() {
+             SheetMenu.with(Comment.this)
+                    .setMenu(R.menu.long_press_menu)
+                    .setAutoCancel(true)
+                    .setClick(new MenuItem.OnMenuItemClickListener() {
+                        @Override
+                        public boolean onMenuItemClick(MenuItem it) {
+                            switch (it.getItemId()) {
+                                case R.id.paste:
+                                    ClipboardManager clipboard = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                                    commentEditText.setText(clipboard.getText().toString());
+                                    break;
+                            }
+                            return false;
+                        }
+                    }).show();
         }
     }
 
@@ -603,44 +791,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                 }
             }
         });
-        /*VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/rezetopia/user_post.php",
-                ApiCommentResponse.class,
-                new Response.Listener<ApiCommentResponse>() {
-                    @Override
-                    public void onResponse(ApiCommentResponse response) {
-                        commentProgressView.setVisibility(View.GONE);
-                        if (!response.isError()){
-                            if (response.getComments() != null) {
-                                Log.i("commentResponse", "onResponse: " + response.getComments()[0].getCommentText());
-                                comments = new ArrayList<>(Arrays.asList(response.getComments()));
-                                for (io.krito.com.rezetopia.models.pojo.post.Comment Comment:comments) {
-                                    Comment.setPending(false);
-                                }
-                                updateUi();
-                            } else {
-                                Log.i("commentResponse", "onResponse: " + response.isError());
-                            }
-                        } else {
-                            Log.i("commentResponse", "onResponse: " + response.isError());
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.i("volley error", "onErrorResponse: " + error.getMessage());
-            }
-        }){
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("method", "get_comments");
-                map.put("post_id", String.valueOf(postId));
-                map.put("cursor", "0");
-                Log.i("post_id", "getParams: " + postId);
-                return map;
-            }
-        };
-        Volley.newRequestQueue(this).add(stringRequest);*/
+
     }
 
     private void updateUi(){
@@ -662,4 +813,5 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     public static void setLoadMoreCallback(LoadMoreCallback callback){
         loadMoreCallback = callback;
     }
+
 }

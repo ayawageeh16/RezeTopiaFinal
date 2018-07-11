@@ -7,6 +7,7 @@
     <string name="like">اعجبني</string>
     <string name="comment">تعليق</string>
     <string name="share">مشاركة</string>
+    <string name="accept">موافقة</string>
     <string name="slide_1_title">تقدر تعمل ايه معانا</string>
     <string name="slide_1_desc">RezeTopia اول موقع الكترونى اتاسس فى مارس 2018 بالتعاون مع مدربين, حكام, اندية, ملاعب كرة و وكلاء لاعيبة علشان تساعد كل الناس اللى بتحب تلعب كرة قدم كهوايه انهم يعرفوا بعض و يتحدوا بعض فى اللعب </string>
     <string name="username">اسم المستخدم</string>
@@ -59,6 +60,7 @@
     <string name="accept_friend_request">تاكيد</string>
     <string name="remove_friend">حذف</string>
     <string name="cancel_friend_request">حذف الطلب</string>
+    <string name="respond_friend_request">رد</string>
     <string name="unfriend">حذف</string>
     <string name="search">بحث</string>
     <string name="booking">حجز</string>
@@ -113,7 +115,31 @@
 
     <string name="tell_something">&#8230;اخبرنا بشئ</string>
     <string name="load_more">&#8230;المزيد</string>
-
+    <string name="more">المزيد</string>
+    <string name="less">اخفاء</string>
+    
+    <string name="attack">الهجوم</string>
+    <string name="stamina">قوة التحمل</string>
+    <string name="defence">الدفاع</string>
+    <string name="speed">السرعة</string>
+    <string name="ball_control">التحكم بالكرة</string>
+    <string name="low_pass">التمريرات القصيرة</string>
+    <string name="lofted_pass">التمريرات الطولية</string>
+    <string name="shoot_accuracy">دقة التسديد</string>
+    <string name="shoot_power">قوة التسديد</string>
+    <string name="free_kicks">الركلات الحرة</string>
+    <string name="header">الرأسيات</string>
+    <string name="jump">القفز</string>
+    <string name="empty_skills">لا يمتلك مهارات حاليا</string>
+    <string name="my_profile">صفحتى الشخصية</string>
+    <string name="change_pp">غير صورته الشخصية</string>
+    <string name="change_cover">غير صورة الغلاف</string>
+    <string name="like_header_message"> اعجب بمنشور </string>
+    <string name="you">لك</string>
+    <string name="comment_header_message"> علق على منشور </string>
+    <string name="shared_a">شارك</string>
+    <string name="post_small">منشور</string>
+    <string name="invalid_email">هذا البريد الالكترونى محجوز</string>
 
     <string name="follow">متابعة</string>
     <string name="schedule">الجدول</string>
@@ -137,8 +163,14 @@
 
     <string name="search_result">لا توجد نتائج</string>
     <string name="edit">تعديل</string>
+    <string name="paste">لصق</string>
+    <string name="dont_have_posts">ليس لديك منشورات حتى الأن</string>
+    <string name="welcome_page">العب مع ريزيتوبيا</string>
     <string name="remove">ازالة</string>
+    <string name="text_saved">تم النسخ</string>
     <string name="save_post">حفظ المنشور</string>
+    <string name="unsave_post">ازالة</string>
+    <string name="copy">نسخ</string>
     <string name="report_post">ابلاغ</string>
 
     <string name="product">المنتج</string>
@@ -175,12 +207,17 @@
     <string name="create_event">عمل حدث</string>
     <string name="my_event">احداثي</string>
     <string name="to">الي</string>
+    <string name="Cancel">الغاء</string>
 
     <string name="create_store">عمل منجر</string>
     <string name="my_store">متجري</string>
     <string name="explore">استكشاف</string>
     <string name="address">العنوان</string>
     <string name="beta">الإصدار بيتا</string>
+
+    <string name="share_to_pp">مشاركة</string>
+    <string name="share_to_friend">مشاركة مع صديق</string>
+    <string name="timelineShare_hint">مشاركة على صفحتك</string>
 
     <string-array name="object_array">
 

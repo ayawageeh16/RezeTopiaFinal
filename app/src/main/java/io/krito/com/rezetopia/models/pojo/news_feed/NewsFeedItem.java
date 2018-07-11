@@ -37,6 +37,96 @@ public class NewsFeedItem implements Serializable {
     private int commentSize;
     private int storeId;
     private int nextCursor;
+    private int ppPostId;
+    private String ppUrl;
+    private String coverUrl;
+    private String message;
+    private int likerId;
+    private String likerName;
+    private String sharerUsername;
+    private int sharerId;
+    private String shareTimestamp;
+    private int privacyId;
+
+    public String getCoverUrl() {
+        return coverUrl;
+    }
+
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
+    }
+
+    public int getPrivacyId() {
+        return privacyId;
+    }
+
+    public void setPrivacyId(int privacyId) {
+        this.privacyId = privacyId;
+    }
+
+    public String getSharerUsername() {
+        return sharerUsername;
+    }
+
+    public void setSharerUsername(String sharerUsername) {
+        this.sharerUsername = sharerUsername;
+    }
+
+    public int getSharerId() {
+        return sharerId;
+    }
+
+    public void setSharerId(int sharerId) {
+        this.sharerId = sharerId;
+    }
+
+    public String getShareTimestamp() {
+        return shareTimestamp;
+    }
+
+    public void setShareTimestamp(String shareTimestamp) {
+        this.shareTimestamp = shareTimestamp;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public int getLikerId() {
+        return likerId;
+    }
+
+    public void setLikerId(int likerId) {
+        this.likerId = likerId;
+    }
+
+    public String getLikerName() {
+        return likerName;
+    }
+
+    public void setLikerName(String likerName) {
+        this.likerName = likerName;
+    }
+
+    public String getPpUrl() {
+        return ppUrl;
+    }
+
+    public void setPpUrl(String ppUrl) {
+        this.ppUrl = ppUrl;
+    }
+
+    public int getPpPostId() {
+        return ppPostId;
+    }
+
+    public void setPpPostId(int ppPostId) {
+        this.ppPostId = ppPostId;
+    }
 
     public int getNextCursor() {
         return nextCursor;

@@ -84,4 +84,43 @@ dependencies {
 
     //radarChart
     implementation 'com.gao.jiefly:abilitychartlibrary:1.0.1'
+
+    //flashBar
+    implementation 'com.andrognito.flashbar:flashbar:1.0.2'
+
+    //omega recycler view
+    implementation 'com.github.Omega-R:OmegaRecyclerView:1.6.15@aar'
+
+    //expandable-layout
+    implementation 'com.github.aakira:expandable-layout:1.6.0@aar'
+
+    //value-bar
+    implementation 'com.github.PhilJay:ValueBar:v1.0.2'
+
+    //push down button
+    implementation('com.github.thekhaeng:pushdown-anim-click:1.1.1') {
+        exclude group: 'com.android.support'
+    }
+
+    //pop up menu
+    implementation 'com.github.zawadz88.materialpopupmenu:material-popup-menu:2.1.0'
+
+    // connectivity receiver
+    implementation 'com.keiferstone:nonet:2.0.4'
+
+    // connectivity receiver
+    implementation 'com.novoda:merlin-rxjava:1.1.7'
+
+    //rx-java
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+    implementation 'com.zplesac:connectionbuddy:2.0.0-beta1@aar'
+
+    implementation 'com.isupatches:wisefy:2.0.1'
+    implementation 'com.github.zyyoona7:EasyPopup:1.1.1'
+
+    //image slider
+    implementation 'com.github.therealshabi:AutoImageFlipper:v1.4.1'
+
 }

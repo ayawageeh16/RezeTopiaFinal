@@ -39,9 +39,10 @@ import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.activities.AboutProfile;
+import io.krito.com.rezetopia.activities.Albums;
 import io.krito.com.rezetopia.activities.ImageViewer;
-import io.krito.com.rezetopia.activities.OtherProfile;
-import io.krito.com.rezetopia.activities.Skills;
+import io.krito.com.rezetopia.activities.Profile;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
 import io.krito.com.rezetopia.models.operations.ProfileOperations;
 import io.krito.com.rezetopia.models.pojo.User;
@@ -49,7 +50,7 @@ import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 import io.krito.com.rezetopia.views.CustomTextView;
 import ru.whalemare.sheetmenu.SheetMenu;
 
-public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.ViewHolder>{
+public class ProfileRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private static final int VIEW_HEADER = 1;
     private static final int VIEW_POST_1 = 2;
@@ -58,35 +59,48 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
     private static final int VIEW_POST_3 = 5;
     private static final int VIEW_POST_4 = 6;
     private static final int VIEW_POST_5 = 7;
+    private static final int VIEW_PP = 8;
 
     private Context context;
     private ArrayList<NewsFeedItem> items;
     private long now;
     private String loggedInUserId;
     private AdapterCallback callback;
-    private String userId;
+    private String profileOwnerUserId;
     private boolean isFriend;
-    private boolean friendState ;
+    private boolean friendState;
     private User user;
+    private boolean updatePp = false;
+    private boolean updateCover = false;
+    private boolean havePosts = true;
 
 
     public ProfileRecyclerAdapter(Context context, ArrayList<NewsFeedItem> items, long now, String loggedInUserId, String profileOwnerId,
-                                  boolean isFriend, boolean friendState, User user) {
+                                  boolean isFriend, boolean friendState, User user, boolean havePosts) {
         this.context = context;
         this.items = items;
         this.now = now;
         this.loggedInUserId = loggedInUserId;
-        this.userId  = profileOwnerId;
+        this.profileOwnerUserId = profileOwnerId;
         this.isFriend = isFriend;
         this.friendState = friendState;
         this.user = user;
+        this.havePosts = havePosts;
     }
 
     public ArrayList<NewsFeedItem> getItems() {
         return items;
     }
 
-    public void addItem(){
+    public void setItem(NewsFeedItem item, int index) {
+        items.set(index, item);
+        notifyDataSetChanged();
+        //callback.onSetItem(index);
+    }
+
+
+
+    public void addItem() {
         NewsFeedItem item = new NewsFeedItem();
         item.setType(1009);
         items.add(item);
@@ -94,7 +108,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         callback.onItemAdded(items.size());
     }
 
-    public int removeLastItem(){
+    public int removeLastItem() {
         //items.remove(items.size() - 1);
         //notifyItemRemoved(items.size() - 1);
 
@@ -111,10 +125,10 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         return 0;
     }
 
-    public void addCommentItem(int postId, int commentSize){
+    public void addCommentItem(int postId, int commentSize) {
         for (int i = 0; i < items.size(); i++) {
             Log.e("feed_size", String.valueOf(items.size()));
-            Log.e("postIDs", String.valueOf(items.get(i).getId()) );
+            Log.e("postIDs", String.valueOf(items.get(i).getId()));
             if (items.get(i).getType() == NewsFeedItem.POST_TYPE) {
                 if (items.get(i).getId() == postId) {
                     items.get(i).setCommentSize(commentSize);
@@ -124,39 +138,66 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         }
     }
 
-    public void setCallback(AdapterCallback adapterCallback){
+    public void setCallback(AdapterCallback adapterCallback) {
         this.callback = adapterCallback;
     }
 
-    public void addPostToRop(NewsFeedItem item){
+    public void addPostToTop(NewsFeedItem item) {
         items.add(0, item);
+        /*if (item.getPostAttachment().getImages() != null){
+            Log.i("Post_Images", "addPostToTop: " + item.getPostAttachment().getImages()[0].getPath());
+        }*/
+        //callback.onItemAdded(1);
+        if (!havePosts){
+            havePosts = true;
+            notifyItemChanged(0);
+        }
+        notifyDataSetChanged();
+    }
+
+    public void addPpToTop(NewsFeedItem item) {
+        items.add(0, item);
+
         callback.onItemAdded(1);
+    }
+
+    public void updatePp(String url) {
+        user.setImageUrl(url);
+        updatePp = true;
+        notifyItemChanged(0);
+    }
+
+    public void updateCover(String url) {
+        user.setCover(url);
+        updateCover = true;
+        notifyItemChanged(0);
     }
 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if (viewType == VIEW_HEADER){
+        if (viewType == VIEW_HEADER) {
             View view = LayoutInflater.from(context).inflate(R.layout.profile_header, parent, false);
             return new HeaderViewHolder(view);
-        } else if (viewType == VIEW_POST_1){
+        } else if (viewType == VIEW_POST_1) {
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_1, parent, false);
             return new PostViewHolder(view);
-        } else if (viewType == VIEW_POST_2){
+        } else if (viewType == VIEW_POST_2) {
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_2, parent, false);
             return new PostViewHolder(view);
-        } else if (viewType == VIEW_POST_3){
+        } else if (viewType == VIEW_POST_3) {
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_3, parent, false);
             return new PostViewHolder(view);
-        } else if (viewType == VIEW_POST_4){
+        } else if (viewType == VIEW_POST_4) {
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_4, parent, false);
             return new PostViewHolder(view);
-        } else if (viewType == VIEW_POST_5){
+        } else if (viewType == VIEW_POST_5) {
             View view = LayoutInflater.from(context).inflate(R.layout.post_card_5, parent, false);
             return new PostViewHolder(view);
-        }
-
-        else {
+        } else if (viewType == VIEW_PP) {
+            View view = LayoutInflater.from(context).inflate(R.layout.pp_card, parent, false);
+            return new PpViewHolder(view);
+        } else {
             View view = LayoutInflater.from(context).inflate(R.layout.progress, parent, false);
             return new ProgressViewHolder(view);
         }
@@ -166,7 +207,10 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (holder instanceof PostViewHolder) {
             PostViewHolder pHolder = (PostViewHolder) holder;
-            pHolder.bind(items.get(position-1), position-1);
+            pHolder.bind(items.get(position - 1), position - 1);
+        } else if (holder instanceof PpViewHolder) {
+            PpViewHolder pHolder = (PpViewHolder) holder;
+            pHolder.bind(items.get(position - 1), position - 1);
         }
     }
 
@@ -177,21 +221,22 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
-        if (isPositionHeader(position)){
+        if (isPositionHeader(position)) {
             return VIEW_HEADER;
-        }
-        else if (items.get(position - 1).getType() == 1009){
+        } else if (items.get(position - 1).getType() == 1009) {
             return VIEW_PROGRESS;
-        }
-
-        else if (items.get(position - 1).getPostAttachment() != null && items.get(position - 1).getPostAttachment().getImages() != null && items.get(position - 1).getPostAttachment().getImages().length > 0){
-            if (items.get(position - 1).getPostAttachment().getImages().length == 2){
+        } else if (items.get(position - 1).getPpUrl() != null) {
+            return VIEW_PP;
+        } else if (items.get(position - 1).getCoverUrl() != null) {
+            return VIEW_PP;
+        } else if (items.get(position - 1).getPostAttachment() != null && items.get(position - 1).getPostAttachment().getImages() != null && items.get(position - 1).getPostAttachment().getImages().length > 0) {
+            if (items.get(position - 1).getPostAttachment().getImages().length == 2) {
                 return VIEW_POST_2;
-            } else if (items.get(position - 1).getPostAttachment().getImages().length == 3){
+            } else if (items.get(position - 1).getPostAttachment().getImages().length == 3) {
                 return VIEW_POST_3;
-            } else if (items.get(position - 1).getPostAttachment().getImages().length == 4){
+            } else if (items.get(position - 1).getPostAttachment().getImages().length == 4) {
                 return VIEW_POST_4;
-            } else if (items.get(position - 1).getPostAttachment().getImages().length == 5){
+            } else if (items.get(position - 1).getPostAttachment().getImages().length == 5) {
                 return VIEW_POST_5;
             }
         }
@@ -203,14 +248,18 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         return position == 0;
     }
 
-    private class HeaderViewHolder extends RecyclerView.ViewHolder{
+    private class HeaderViewHolder extends RecyclerView.ViewHolder {
 
         RelativeLayout createPostLayout;
         CircleImageView ppView;
         TextView usernameView;
         ImageView coverView;
         TextView addFriendBtn;
-        CustomTextView skillsView;
+        //CustomTextView skillsView;
+        CustomTextView photosView;
+        CustomTextView aboutView;
+        RelativeLayout operationsLayout;
+        TextView dontHavePosts;
 
 
         public HeaderViewHolder(View itemView) {
@@ -221,24 +270,73 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             usernameView = itemView.findViewById(R.id.usernameView);
             coverView = itemView.findViewById(R.id.coverView);
             addFriendBtn = itemView.findViewById(R.id.addFriendBtn);
-            skillsView = itemView.findViewById(R.id.skills);
+            //skillsView = itemView.findViewById(R.id.skills);
+            photosView = itemView.findViewById(R.id.profilePhotos);
+            aboutView = itemView.findViewById(R.id.about);
+            operationsLayout = itemView.findViewById(R.id.operationsLayout);
+            dontHavePosts = itemView.findViewById(R.id.dontHavePosts);
 
-            if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
-                Picasso.with(context).load("http://rezetopia.dev-krito.com/images/profileImgs/" + user.getImageUrl() + ".JPG").into(ppView);
+            if (havePosts){
+                dontHavePosts.setVisibility(View.GONE);
+            } else {
+                dontHavePosts.setVisibility(View.VISIBLE);
             }
 
-            if (user.getCover() != null && !user.getCover().isEmpty()){
-                Picasso.with(context).load(user.getCover()).into(coverView);
+            if (loggedInUserId.contentEquals(profileOwnerUserId)) {
+                operationsLayout.setVisibility(View.GONE);
+            } else {
+                createPostLayout.setVisibility(View.GONE);
+            }
+
+            aboutView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Intent intent = AboutProfile.createIntent(context, profileOwnerUserId);
+                    Intent intent = new Intent(context, AboutProfile.class);
+                    intent.putExtra("id", profileOwnerUserId);
+                    intent.putExtra("name", user.getName());
+                    context.startActivity(intent);
+                }
+            });
+
+            photosView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //Intent intent = Albums.createIntent(context, profileOwnerUserId);
+                    Intent intent = new Intent(context, Albums.class);
+                    intent.putExtra("id", profileOwnerUserId);
+                    intent.putExtra("name", user.getName());
+                    context.startActivity(intent);
+                }
+            });
+
+            if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
+                if (!updatePp) {
+                    Picasso.with(context).load("http://rezetopia.dev-krito.com/images/profileImgs/" + user.getImageUrl() + ".JPG").into(ppView);
+                } else {
+                    Picasso.with(context).load(user.getImageUrl()).into(ppView);
+                }
+                Log.i("updatePp", "HeaderViewHolder: " + user.getImageUrl());
+            }
+
+            if (user.getCover() != null && !user.getCover().isEmpty()) {
+                if (!updateCover) {
+                    Picasso.with(context).load("http://rezetopia.dev-krito.com/images/coverImgs/" + user.getCover() + ".JPG").into(coverView);
+                } else {
+                    Picasso.with(context).load(user.getCover()).into(coverView);
+                }
+
+                Log.i("updateCover", "HeaderViewHolder: " + user.getCover());
             } else {
                 coverView.setBackground(context.getResources().getDrawable(R.drawable.cover));
             }
 
             usernameView.setText(user.getName());
 
-            if (isFriend && friendState){
+            if (isFriend && friendState) {
                 addFriendBtn.setText(context.getResources().getString(R.string.remove_friend));
-            } else if (isFriend && !friendState){
-                addFriendBtn.setText(context.getResources().getString(R.string.cancel_friend_request));
+            } else if (isFriend && !friendState) {
+                addFriendBtn.setText(context.getResources().getString(R.string.respond_friend_request));
             } else {
                 addFriendBtn.setText(context.getResources().getString(R.string.add));
             }
@@ -253,61 +351,88 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             addFriendBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (isFriend){
-                        cancelDeleteFriendship();
+                    if (isFriend) {
+                        if (friendState) {
+                            cancelDeleteFriendship();
+                        } else {
+                             SheetMenu.with(context)
+                                    .setMenu(R.menu.respond_friend_request)
+                                    .setAutoCancel(true)
+                                    .setClick(new MenuItem.OnMenuItemClickListener() {
+                                        @Override
+                                        public boolean onMenuItemClick(MenuItem item) {
+                                            switch (item.getItemId()) {
+                                                case R.id.acceptFriendRequest:
+                                                    acceptFriendship();
+                                                    break;
+                                                case R.id.removeFriendRequest:
+                                                    cancelDeleteFriendship();
+                                                    break;
+                                            }
+                                            return false;
+                                        }
+                                    }).show();
+                        }
+
                     } else {
                         sendFriendRequest();
                     }
                 }
             });
 
-            skillsView.setOnClickListener(new View.OnClickListener() {
+            /*skillsView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     context.startActivity(new Intent(context, Skills.class));
                 }
-            });
+            });*/
 
             ppView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SheetMenu.with(context)
-                            .setMenu(R.menu.image_view_menu)
-                            .setAutoCancel(true)
-                            .setClick(new MenuItem.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    switch (item.getItemId()){
-                                        case R.id.viewImage:
-                                            if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
-                                                Intent intent = ImageViewer.createIntent(user.getImageUrl(), ImageViewer.PP_MODE, context);
-                                                context.startActivity(intent);
-                                            } else {
-                                                callback.showSnackBar(context.getResources().getString(R.string.no_image));
-                                            }
+                    if (profileOwnerUserId.contentEquals(loggedInUserId)) {
+                        SheetMenu.with(context)
+                                .setMenu(R.menu.image_view_menu_owner)
+                                .setAutoCancel(true)
+                                .setClick(new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        switch (item.getItemId()) {
+                                            case R.id.viewImage:
+                                                if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
+                                                    Intent intent = ImageViewer.createIntent(user.getImageUrl(), ImageViewer.PP_MODE, context);
+                                                    context.startActivity(intent);
+                                                } else {
+                                                    callback.showSnackBar(context.getResources().getString(R.string.no_image));
+                                                }
 
-                                            return true;
-                                        case R.id.updatePp:
-                                            callback.onStartPickPp();
-                                            return true;
+                                                return true;
+                                            case R.id.updatePp:
+                                                callback.onStartPickPp();
+                                                return true;
+                                        }
+                                        return false;
                                     }
-                                    return false;
-                                }
-                            }).show();
+                                }).show();
+                    } else {
+                        Intent intent = ImageViewer.createIntent(user.getImageUrl(), ImageViewer.PP_MODE, context);
+                        context.startActivity(intent);
+                    }
                 }
             });
 
             coverView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SheetMenu.with(context)
-                            .setMenu(R.menu.cover_view_menu)
-                            .setAutoCancel(true)
-                            .setClick(new MenuItem.OnMenuItemClickListener() {
-                                @Override
-                                public boolean onMenuItemClick(MenuItem item) {
-                                    switch (item.getItemId()){
-                                        case R.id.viewImage:
+                    if (profileOwnerUserId.contentEquals(loggedInUserId)) {
+                        SheetMenu.with(context)
+                                .setMenu(R.menu.cover_view_menu_owner)
+                                .setAutoCancel(true)
+                                .setClick(new MenuItem.OnMenuItemClickListener() {
+                                    @Override
+                                    public boolean onMenuItemClick(MenuItem item) {
+                                        switch (item.getItemId()) {
+                                            case R.id.viewImage:
                                             /*if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()){
                                                 Intent intent = ImageViewer.createIntent(user.getImageUrl(), ImageViewer.PP_MODE, context);
                                                 context.startActivity(intent);
@@ -315,26 +440,29 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                                                 callback.showSnackBar(context.getResources().getString(R.string.no_image));
                                             }
 */
-                                            return true;
-                                        case R.id.updateCover:
-                                            callback.onStartPickCover();
-                                            return true;
+                                                return true;
+                                            case R.id.updateCover:
+                                                callback.onStartPickCover();
+                                                return true;
+                                        }
+                                        return false;
                                     }
-                                    return false;
-                                }
-                            }).show();
+                                }).show();
+                    } else {
+
+                    }
                 }
             });
         }
 
-        private void sendFriendRequest(){
+        private void sendFriendRequest() {
             addFriendBtn.setEnabled(false);
-            ProfileOperations.sendFriendRequest(loggedInUserId, userId);
+            ProfileOperations.sendFriendRequest(loggedInUserId, profileOwnerUserId);
             ProfileOperations.setFriendRequestCallback(new ProfileOperations.SendFriendRequestCallback() {
                 @Override
                 public void onSuccess(boolean result) {
                     addFriendBtn.setEnabled(true);
-                    if (result){
+                    if (result) {
                         addFriendBtn.setText(context.getResources().getString(R.string.cancel_friend_request));
                         isFriend = true;
                     } else {
@@ -349,9 +477,9 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             });
         }
 
-        private void cancelDeleteFriendship(){
+        private void cancelDeleteFriendship() {
             addFriendBtn.setEnabled(false);
-            ProfileOperations.cancelFriendRequest(loggedInUserId, userId);
+            ProfileOperations.cancelFriendRequest(loggedInUserId, profileOwnerUserId);
             ProfileOperations.setCancelDeleteFriendRequestCallback(new ProfileOperations.CancelDeleteFriendRequestCallback() {
                 @Override
                 public void onSuccess(boolean result) {
@@ -366,9 +494,27 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                 }
             });
         }
+
+        private void acceptFriendship() {
+            addFriendBtn.setEnabled(false);
+            ProfileOperations.acceptFriendRequest(loggedInUserId, profileOwnerUserId);
+            ProfileOperations.setAcceptCallback(new ProfileOperations.AcceptFriendRequestCallback() {
+                @Override
+                public void onSuccess(boolean result) {
+                    addFriendBtn.setText(context.getString(R.string.remove_friend));
+                    addFriendBtn.setEnabled(true);
+                    isFriend = false;
+                }
+
+                @Override
+                public void onError(int error) {
+                    addFriendBtn.setEnabled(true);
+                }
+            });
+        }
     }
 
-    private class ProgressViewHolder extends RecyclerView.ViewHolder{
+    private class ProgressViewHolder extends RecyclerView.ViewHolder {
 
         private ProgressBar progressBar;
 
@@ -382,7 +528,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         }
     }
 
-    private class PostViewHolder extends RecyclerView.ViewHolder{
+    private class PostViewHolder extends RecyclerView.ViewHolder {
 
         TextView postTextView;
         Button likeButton;
@@ -418,63 +564,44 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             image5 = itemView.findViewById(R.id.postImage5);
 
 
-            postShareButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    AlertFragment fragment = AlertFragment.createFragment("Post share is coming soon");
-//                    fragment.show(context.getFragmentManager(), null);
-                }
-            });
+
         }
 
         public void bind(final NewsFeedItem item, final int pos) {
 
-            if (item.getItemImage() != null){
+            if (item.getItemImage() != null) {
                 Picasso.with(context).load(item.getItemImage()).into(ppView);
             } else {
                 ppView.setImageDrawable(context.getResources().getDrawable(R.drawable.default_avatar));
             }
 
+            postShareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onStartShare(item);
+                }
+            });
+
             if (item.getPostAttachment() != null && item.getPostAttachment().getImages() != null && item.getPostAttachment().getImages().length > 0) {
-                if (item.getPostAttachment().getImages().length == 1){
+                if (item.getPostAttachment().getImages().length == 1) {
+                    Log.i("IMAGE1_POST_1", "bind: " + item.getPostAttachment().getImages()[0].getPath());
                     image1.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
-                } else {
-                    image1.setVisibility(View.GONE);
-                }
-
-                if (item.getPostAttachment().getImages().length == 2){
+                } else if (item.getPostAttachment().getImages().length == 2) {
                     Log.i("IMAGE1", "bind: " + item.getPostAttachment().getImages()[0].getPath());
                     Log.i("IMAGE2", "bind: " + item.getPostAttachment().getImages()[1].getPath());
                     image1.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
                     image2.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[1].getPath()).into(image2);
-                } else {
-                    image1.setVisibility(View.GONE);
-                    if (image2 != null){
-                        image2.setVisibility(View.GONE);
-                    }
-                }
-
-                if (item.getPostAttachment().getImages().length == 3){
+                } else if (item.getPostAttachment().getImages().length == 3) {
                     image1.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
                     image2.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[1].getPath()).into(image2);
                     image3.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[2].getPath()).into(image3);
-                } else {
-                    image1.setVisibility(View.GONE);
-                    if (image2 != null){
-                        image2.setVisibility(View.GONE);
-                    }
-                    if (image3 != null){
-                        image3.setVisibility(View.GONE);
-                    }
-                }
-
-                if (item.getPostAttachment().getImages().length == 4){
+                } else if (item.getPostAttachment().getImages().length == 4) {
                     image1.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
                     image2.setVisibility(View.VISIBLE);
@@ -483,20 +610,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                     Picasso.with(context).load(item.getPostAttachment().getImages()[2].getPath()).into(image3);
                     image4.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[3].getPath()).into(image4);
-                } else {
-                    image1.setVisibility(View.GONE);
-                    if (image2 != null){
-                        image2.setVisibility(View.GONE);
-                    }
-                    if (image3 != null){
-                        image3.setVisibility(View.GONE);
-                    }
-                    if (image4 != null){
-                        image4.setVisibility(View.GONE);
-                    }
-                }
-
-                if (item.getPostAttachment().getImages().length == 5){
+                } else if (item.getPostAttachment().getImages().length >= 5) {
                     image1.setVisibility(View.VISIBLE);
                     Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
                     image2.setVisibility(View.VISIBLE);
@@ -509,44 +623,43 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                     Picasso.with(context).load(item.getPostAttachment().getImages()[4].getPath()).into(image5);
                 } else {
                     image1.setVisibility(View.GONE);
-                    if (image2 != null){
+                    if (image2 != null) {
                         image2.setVisibility(View.GONE);
                     }
-                    if (image3 != null){
+
+                    if (image3 != null) {
                         image3.setVisibility(View.GONE);
                     }
-                    if (image4 != null){
+
+                    if (image4 != null) {
                         image4.setVisibility(View.GONE);
                     }
-                    if (image5 != null){
+
+                    if (image5 != null) {
                         image5.setVisibility(View.GONE);
                     }
                 }
-
-//                if (item.getPostAttachment().getImages()[0].getPath() != null) {
-//                    image1.setVisibility(View.VISIBLE);
-//                    Picasso.with(context).load(item.getPostAttachment().getImages()[0].getPath()).into(image1);
-//                } else {
-//                    image1.setVisibility(View.GONE);
-//                }
             } else {
                 image1.setVisibility(View.GONE);
-                if (image2 != null){
+                if (image2 != null) {
                     image2.setVisibility(View.GONE);
                 }
-                if (image3 != null){
+
+                if (image3 != null) {
                     image3.setVisibility(View.GONE);
                 }
-                if (image4 != null){
+
+                if (image4 != null) {
                     image4.setVisibility(View.GONE);
                 }
-                if (image5 != null){
+
+                if (image5 != null) {
                     image5.setVisibility(View.GONE);
                 }
             }
 
             String postText = null;
-            if (item.getOwnerName() != null){
+            if (item.getOwnerName() != null) {
                 usernameView.setText(item.getOwnerName());
             }
 
@@ -560,10 +673,14 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             long millisecondsFromNow = milliseconds - now;
             dateView.setText(DateUtils.getRelativeDateTimeString(context, milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
 
-            postTextView.setText(item.getPostText());
+            if (!(item.getPostText() == null || item.getPostText().contentEquals("null"))){
+                postTextView.setText(item.getPostText());
+            } else {
+                postTextView.setText("");
+            }
 
             String likeString = context.getResources().getString(R.string.like);
-            if (item.getLikes() != null && item.getLikes().length > 0){
+            if (item.getLikes() != null && item.getLikes().length > 0) {
 
                 likeButton.setText(item.getLikes().length + " " + likeString);
                 Log.e("post_like ->> " + item.getPostText(), item.getLikes().length + " " + likeString);
@@ -571,19 +688,19 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                 //Log.e("loggedInUserId", loggedInUserId);
                 for (int id : item.getLikes()) {
                     //Log.e("likesUserId", String.valueOf(id));
-                    if (String.valueOf(id).contentEquals(String.valueOf(loggedInUserId))){
-                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star,  0, 0, 0);
+                    if (String.valueOf(id).contentEquals(String.valueOf(loggedInUserId))) {
+                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star, 0, 0, 0);
                         break;
                     } else {
-                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
+                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
                     }
                 }
             } else {
                 likeButton.setText(likeString);
-                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star,  0, 0, 0);
+                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
             }
             String commentString = context.getResources().getString(R.string.comment);
-            if (item.getCommentSize() > 0){
+            if (item.getCommentSize() > 0) {
 
                 commentButton.setText(item.getCommentSize() + " " + commentString);
                 Log.e("post_comment ->> " + item.getPostText(), (item.getCommentSize() + " " + commentString));
@@ -622,13 +739,13 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                     }
 
 
-                    if (item.getLikes() != null && item.getLikes().length > 0){
+                    if (item.getLikes() != null && item.getLikes().length > 0) {
                         likeButton.setText((item.getLikes().length + 1) + " " + likeString);
                     } else {
                         likeButton.setText(("1 " + likeString));
                     }
 
-                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star,  0, 0, 0);
+                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star, 0, 0, 0);
                     performLike(item);
 
                 }
@@ -639,7 +756,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                 public void onClick(View v) {
                     if (item.getOwnerId().contentEquals(loggedInUserId)) {
                         //todo start profile activity
-                    } else  {
+                    } else {
                         startOtherProfile(item);
                     }
                 }
@@ -650,7 +767,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                 public void onClick(View v) {
                     if (item.getOwnerId().contentEquals(loggedInUserId)) {
                         //todo start profile activity
-                    } else  {
+                    } else {
                         startOtherProfile(item);
                     }
                 }
@@ -664,19 +781,20 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                     } else {
                         showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
                     }*/
-                    createSheetMenu(Integer.parseInt(item.getPostId()), item.getOwnerId());
+                    Log.i("invalidPostId", "onClick: "+  item.getId() + "-" + pos);
+                    createSheetMenu(item, Integer.parseInt(item.getPostId()), item.getOwnerId(), pos);
                 }
             });
         }
 
-        private void startOtherProfile(NewsFeedItem item){
-            Intent intent = OtherProfile.createIntent(item.getOwnerId(), context);
+        private void startOtherProfile(NewsFeedItem item) {
+            Intent intent = Profile.createIntent(item.getOwnerId(), context);
             context.startActivity(intent);
         }
 
-        private void performLike(final NewsFeedItem item){
+        private void performLike(final NewsFeedItem item) {
             HomeOperations homeOperations = new HomeOperations();
-            homeOperations.postLike("add_like" , loggedInUserId, item.getOwnerId(), item.getPostId());
+            homeOperations.postLike("add_like", loggedInUserId, item.getOwnerId(), item.getPostId());
             homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
                 @Override
                 public void onSuccess() {
@@ -696,7 +814,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             });
         }
 
-        private void reverseLike(final NewsFeedItem item){
+        private void reverseLike(final NewsFeedItem item) {
             HomeOperations homeOperations = new HomeOperations();
             homeOperations.postUnlike("remove_like", loggedInUserId, item.getOwnerId(), item.getPostId());
             homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
@@ -704,14 +822,260 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                 public void onSuccess() {
                     ArrayList<Integer> likesList = new ArrayList<>();
                     for (int id : item.getLikes()) {
-                        if (id != Integer.parseInt(loggedInUserId)){
+                        if (id != Integer.parseInt(loggedInUserId)) {
                             likesList.add(id);
                         }
                     }
 
                     int[] likes = new int[likesList.size()];
 
-                    for(int i = 0; i < likesList.size(); i++) {
+                    for (int i = 0; i < likesList.size(); i++) {
+                        likes[i] = likesList.get(i);
+                    }
+
+                    item.setLikes(likes);
+                }
+
+                @Override
+                public void onError(int error) {
+
+                }
+            });
+        }
+    }
+
+    private class PpViewHolder extends RecyclerView.ViewHolder {
+
+        TextView postTextView;
+        Button likeButton;
+        Button commentButton;
+        TextView dateView;
+        TextView usernameView;
+        ImageView ppView;
+        ImageView postSideMenu;
+        Button postShareButton;
+        ImageView verifyView;
+        ImageView image1;
+        TextView ppCoverHint;
+
+        public PpViewHolder(final View itemView) {
+            super(itemView);
+
+            postTextView = itemView.findViewById(R.id.postTextView);
+            likeButton = itemView.findViewById(R.id.postLikeButton);
+            commentButton = itemView.findViewById(R.id.postCommentButton);
+            dateView = itemView.findViewById(R.id.postDateView);
+            usernameView = itemView.findViewById(R.id.postUserName);
+            ppView = itemView.findViewById(R.id.ppView);
+            postSideMenu = itemView.findViewById(R.id.postSideMenu);
+            postShareButton = itemView.findViewById(R.id.postShareButton);
+            verifyView = itemView.findViewById(R.id.verifyView);
+            image1 = itemView.findViewById(R.id.postImage1);
+            ppCoverHint = itemView.findViewById(R.id.pp_cover_hint);
+
+
+            postShareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    AlertFragment fragment = AlertFragment.createFragment("Post share is coming soon");
+//                    fragment.show(context.getFragmentManager(), null);
+                }
+            });
+        }
+
+        public void bind(final NewsFeedItem item, final int pos) {
+
+            if (item.getItemImage() != null) {
+                Picasso.with(context).load(item.getItemImage()).into(ppView);
+            } else {
+                ppView.setImageDrawable(context.getResources().getDrawable(R.drawable.default_avatar));
+            }
+
+            if (item.getPpUrl() != null) {
+                Picasso.with(context).load(item.getPpUrl()).into(image1);
+                image1.setVisibility(View.VISIBLE);
+                ppCoverHint.setText(R.string.change_pp);
+            }
+
+            if (item.getCoverUrl() != null){
+                Picasso.with(context).load(item.getCoverUrl()).into(image1);
+                image1.setVisibility(View.VISIBLE);
+                ppCoverHint.setText(R.string.change_cover);
+            }
+
+
+            String postText = null;
+            if (item.getOwnerName() != null) {
+                usernameView.setText(item.getOwnerName());
+            }
+
+            Date date = null;
+            try {
+                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            long milliseconds = date.getTime();
+            long millisecondsFromNow = milliseconds - now;
+            dateView.setText(DateUtils.getRelativeDateTimeString(context, milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
+
+            if (item.getPostText() != null && !item.getPostText().isEmpty()) {
+                postTextView.setText(item.getPostText());
+            } else {
+                postTextView.setText("");
+            }
+
+
+            String likeString = context.getResources().getString(R.string.like);
+            if (item.getLikes() != null && item.getLikes().length > 0) {
+
+                likeButton.setText(item.getLikes().length + " " + likeString);
+                Log.e("post_like ->> " + item.getPostText(), item.getLikes().length + " " + likeString);
+
+                //Log.e("loggedInUserId", loggedInUserId);
+                for (int id : item.getLikes()) {
+                    //Log.e("likesUserId", String.valueOf(id));
+                    if (String.valueOf(id).contentEquals(String.valueOf(loggedInUserId))) {
+                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star, 0, 0, 0);
+                        break;
+                    } else {
+                        likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
+                    }
+                }
+            } else {
+                likeButton.setText(likeString);
+                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
+            }
+            String commentString = context.getResources().getString(R.string.comment);
+            if (item.getCommentSize() > 0) {
+
+                commentButton.setText(item.getCommentSize() + " " + commentString);
+                Log.e("post_comment ->> " + item.getPostText(), (item.getCommentSize() + " " + commentString));
+            } else {
+                commentButton.setText(commentString);
+            }
+
+            commentButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    callback.onStartComment(item, now);
+                }
+            });
+
+            //todo
+            likeButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    String likeString = context.getResources().getString(R.string.like);
+
+                    if (item.getLikes() != null) {
+                        for (int i = 0; i < item.getLikes().length; i++) {
+                            if (item.getLikes()[i] == Integer.parseInt(loggedInUserId)) {
+
+                                if (item.getLikes().length > 1) {
+                                    likeButton.setText((item.getLikes().length - 1) + " " + likeString);
+                                } else {
+                                    likeButton.setText(likeString);
+                                }
+                                likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_star, 0, 0, 0);
+                                reverseLike(item);
+                                return;
+                            }
+                        }
+                    }
+
+
+                    if (item.getLikes() != null && item.getLikes().length > 0) {
+                        likeButton.setText((item.getLikes().length + 1) + " " + likeString);
+                    } else {
+                        likeButton.setText(("1 " + likeString));
+                    }
+
+                    likeButton.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_holo_star, 0, 0, 0);
+                    performLike(item);
+
+                }
+            });
+
+            usernameView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getOwnerId().contentEquals(loggedInUserId)) {
+                        //todo start profile activity
+                    } else {
+                        startProfile(item);
+                    }
+                }
+            });
+
+            ppView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (item.getOwnerId().contentEquals(loggedInUserId)) {
+                        //todo start profile activity
+                    } else {
+                        startProfile(item);
+                    }
+                }
+            });
+
+            postSideMenu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*if (String.valueOf(item.getOwnerId()).contentEquals(String.valueOf(loggedInUserId))) {
+                        showPostPopupWindow(postSideMenu, true, item.getId(), item.getOwnerId());
+                    } else {
+                        showPostPopupWindow(postSideMenu, false, item.getId(), item.getOwnerId());
+                    }*/
+                    createSheetMenu(item, Integer.parseInt(item.getPostId()), item.getOwnerId(), pos);
+                }
+            });
+        }
+
+        private void startProfile(NewsFeedItem item) {
+            Intent intent = Profile.createIntent(item.getOwnerId(), context);
+            context.startActivity(intent);
+        }
+
+        private void performLike(final NewsFeedItem item) {
+            HomeOperations homeOperations = new HomeOperations();
+            homeOperations.postLike("add_like", loggedInUserId, item.getOwnerId(), item.getPostId());
+            homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
+                @Override
+                public void onSuccess() {
+                    int[] likes = new int[item.getLikes().length + 1];
+                    for (int i = 0; i < item.getLikes().length; i++) {
+                        likes[i] = item.getLikes()[i];
+                    }
+
+                    likes[likes.length - 1] = Integer.parseInt(loggedInUserId);
+                    item.setLikes(likes);
+                }
+
+                @Override
+                public void onError(int error) {
+
+                }
+            });
+        }
+
+        private void reverseLike(final NewsFeedItem item) {
+            HomeOperations homeOperations = new HomeOperations();
+            homeOperations.postUnlike("remove_like", loggedInUserId, item.getOwnerId(), item.getPostId());
+            homeOperations.setLikeCallback(new HomeOperations.LikeCallback() {
+                @Override
+                public void onSuccess() {
+                    ArrayList<Integer> likesList = new ArrayList<>();
+                    for (int id : item.getLikes()) {
+                        if (id != Integer.parseInt(loggedInUserId)) {
+                            likesList.add(id);
+                        }
+                    }
+
+                    int[] likes = new int[likesList.size()];
+
+                    for (int i = 0; i < likesList.size(); i++) {
                         likes[i] = likesList.get(i);
                     }
 
@@ -730,7 +1094,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         final ListPopupWindow popupWindow = new ListPopupWindow(context);
 
         List<MenuCustomItem> itemList = new ArrayList<>();
-        if (owner){
+        if (owner) {
             itemList.add(new MenuCustomItem(context.getResources().getString(R.string.edit), R.drawable.ic_edit));
             itemList.add(new MenuCustomItem(context.getResources().getString(R.string.save_post), R.drawable.ic_save));
             itemList.add(new MenuCustomItem(context.getResources().getString(R.string.remove), R.drawable.ic_remove));
@@ -747,18 +1111,18 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         popupWindow.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                if (String.valueOf(postOwnerId).contentEquals(String.valueOf(loggedInUserId))){
-                    if (i == 0){
+                if (String.valueOf(postOwnerId).contentEquals(String.valueOf(loggedInUserId))) {
+                    if (i == 0) {
                         //todo edit post
-                    } else if (i == 1){
+                    } else if (i == 1) {
                         savePost(postId);
-                    } else if (i == 2){
+                    } else if (i == 2) {
                         removePost(postId);
                     }
                 } else {
-                    if (i == 0){
+                    if (i == 0) {
                         savePost(postId);
-                    } else if (i == 1){
+                    } else if (i == 1) {
                         reportPost(postId);
                     }
                 }
@@ -768,21 +1132,22 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         popupWindow.show();
     }
 
-    private void createSheetMenu( final int postId, final String postOwnerId){
+    private void createSheetMenu(final NewsFeedItem it, final int postId, final String postOwnerId, final int index) {
         int menu;
-        menu = (String.valueOf(postOwnerId).contentEquals(String.valueOf(userId))) ? R.menu.owner_post_menu : R.menu.viewer_post_menu;
+        Log.i("ownerAndViewer", "createSheetMenu: " + postOwnerId + "-" + profileOwnerUserId);
+        menu = (String.valueOf(postOwnerId).contentEquals(String.valueOf(loggedInUserId))) ? R.menu.profile_menu : R.menu.viewer_post_menu;
         SheetMenu.with(context)
                 .setMenu(menu)
                 .setAutoCancel(true)
                 .setClick(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
+                        switch (item.getItemId()) {
                             case R.id.save_post_menu:
                                 savePost(postId);
                                 break;
                             case R.id.edit_post_menu:
-                                //todo edit post
+                                callback.onStartEditPost(it, index);
                                 break;
                             case R.id.remove_post_menu:
                                 removePost(postId);
@@ -796,7 +1161,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                 }).show();
     }
 
-    private void removePost(final int postId){
+    private void removePost(final int postId) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
@@ -804,10 +1169,11 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
                         Log.i("remove_post", response);
                         for (int i = 0; i < items.size(); i++) {
                             if (items.get(i).getPostId().contentEquals(String.valueOf(postId))
-                                    && items.get(i).getType() == NewsFeedItem.POST_TYPE){
+                                    && items.get(i).getType() == NewsFeedItem.POST_TYPE) {
                                 items.remove(i);
                                 items = new ArrayList<NewsFeedItem>(items);
                                 //adapter.notifyDataSetChanged();
+                                callback.onItemRemoved(i + 1);
                                 break;
                             }
                         }
@@ -817,7 +1183,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
@@ -833,7 +1199,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         Volley.newRequestQueue(context).add(stringRequest);
     }
 
-    private void savePost(final int postId){
+    private void savePost(final int postId) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
@@ -845,7 +1211,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
@@ -861,7 +1227,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         Volley.newRequestQueue(context).add(stringRequest);
     }
 
-    private void reportPost(final int postId){
+    private void reportPost(final int postId) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
@@ -873,7 +1239,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }){
+        }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 HashMap<String, String> map = new HashMap<>();
@@ -889,13 +1255,23 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter< RecyclerView.V
         Volley.newRequestQueue(context).add(stringRequest);
     }
 
-    public interface AdapterCallback{
+    public interface AdapterCallback {
         void onStartComment(NewsFeedItem item, long now);
+
         void onStartCreatePost();
+
         void onItemAdded(int position);
+
         void onItemRemoved(int position);
+
         void showSnackBar(String message);
+
         void onStartPickPp();
+
         void onStartPickCover();
+
+        void onStartEditPost(NewsFeedItem item, int index);
+
+        void onStartShare(NewsFeedItem item);
     }
 }

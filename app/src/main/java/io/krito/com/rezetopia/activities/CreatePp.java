@@ -103,7 +103,7 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
         pickPpImage();
     }
 
-    private void pickPpImage(){
+    private void pickPpImage() {
         Dexter.withActivity(this).withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
                     @Override
@@ -127,7 +127,7 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                 }).check();
     }
 
-    private void uploadPp(final String path){
+    private void uploadPp(final String path) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
@@ -138,19 +138,23 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                         try {
                             JSONObject jsonObject = new JSONObject(response);
 
-                            if (jsonObject.getInt("post_id") > 0){
+                            if (jsonObject.getInt("post_id") > 0) {
                                 item.setOwnerId(userId);
                                 item.setPostId(jsonObject.getString("post_id"));
                                 item.setOwnerName(jsonObject.getString("username"));
                                 item.setCreatedAt(jsonObject.getString("createdAt"));
-                                if (jsonObject.getString("text") != null && !jsonObject.getString("text").isEmpty()){
+                                if (jsonObject.getString("text") != null && !jsonObject.getString("text").isEmpty()) {
                                     item.setPostText(jsonObject.getString("text"));
                                 }
 
-                                if (jsonObject.getString("url") != null && !jsonObject.getString("url").isEmpty()){
+                                if (jsonObject.getString("url") != null && !jsonObject.getString("url").isEmpty()) {
                                     String ppUrl = jsonObject.getString("url");
-                                    item.setItemImage(ppUrl);
+                                    item.setPpUrl(ppUrl);
                                 }
+                                item.setPpPostId(jsonObject.getInt("pp_post_id"));
+                                item.setLikes(new int[0]);
+                                item.setCommentSize(0);
+                                item.setType(NewsFeedItem.PP_TYPE);
 
                             } else {
                                 pageLoader.stopProgress();
@@ -159,7 +163,7 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                             e.printStackTrace();
                         }
 
-                        if (Integer.parseInt(item.getPostId()) > 0){
+                        if (Integer.parseInt(item.getPostId()) > 0) {
                             Intent intent = new Intent();
                             intent.putExtra("post", item);
                             setResult(RESULT_OK, intent);
@@ -176,17 +180,17 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                 //Log.i("volley error", "onErrorResponse: " + error.getMessage());
 
                 if (error instanceof NetworkError) {
-                    Log.i("CreateError",  getResources().getString(R.string.connection_error));
+                    Log.i("CreateError", getResources().getString(R.string.connection_error));
                 } else if (error instanceof ServerError) {
-                    Log.i("CreateError",  getResources().getString(R.string.server_error));
+                    Log.i("CreateError", getResources().getString(R.string.server_error));
                 } else if (error instanceof AuthFailureError) {
-                    Log.i("CreateError",  getResources().getString(R.string.connection_error));
+                    Log.i("CreateError", getResources().getString(R.string.connection_error));
                 } else if (error instanceof ParseError) {
-                    Log.i("CreateError",  getResources().getString(R.string.parsing_error));
+                    Log.i("CreateError", getResources().getString(R.string.parsing_error));
                 } else if (error instanceof NoConnectionError) {
-                    Log.i("CreateError",  getResources().getString(R.string.connection_error));
+                    Log.i("CreateError", getResources().getString(R.string.connection_error));
                 } else if (error instanceof TimeoutError) {
-                    Log.i("CreateError",  getResources().getString(R.string.time_out));
+                    Log.i("CreateError", getResources().getString(R.string.time_out));
                 }
             }
         }) {
@@ -222,19 +226,23 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (ImagePicker.shouldHandle(requestCode, resultCode, data)){
+        if (ImagePicker.shouldHandle(requestCode, resultCode, data)) {
             image = ImagePicker.getFirstImageOrNull(data);
             createPostView.setEnabled(true);
 
-            Bitmap bm = null;
-            bm = BitmapFactory.decodeFile(image.getPath());
-            ppView.setImageBitmap(bm);
+            if (image.getPath() != null) {
+                Bitmap bm = null;
+                bm = BitmapFactory.decodeFile(image.getPath());
+                ppView.setImageBitmap(bm);
+            } else {
+                onBackPressed();
+            }
         }
     }
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.privacy:
                 //showPostPopupWindow(privacy);
                 createSheet();
@@ -255,14 +263,14 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
         }
     }
 
-    private void createSheet(){
+    private void createSheet() {
         SheetMenu.with(this)
                 .setMenu(R.menu.post_privacy_menu)
                 .setAutoCancel(true)
                 .setClick(new MenuItem.OnMenuItemClickListener() {
                     @Override
                     public boolean onMenuItemClick(MenuItem item) {
-                        switch (item.getItemId()){
+                        switch (item.getItemId()) {
                             case R.id.publicId:
                                 privacyText = "public";
                                 privacy.setText(R.string.public_);

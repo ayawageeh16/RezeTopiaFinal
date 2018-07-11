@@ -12,23 +12,38 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.activities.Login;
+import io.krito.com.rezetopia.activities.Profile;
+import io.krito.com.rezetopia.activities.SavedPosts;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.receivers.ConnectivityReceiver;
 
 public class SideMenu extends Fragment implements ConnectivityReceiver.ConnectivityReceiverListener, View.OnClickListener{
 
+    String userId;
+
     TextView logoutView;
+    TextView myProfileView;
+    TextView savedPosts;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_side_menu, container, false);
 
+        userId = getActivity().getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
+                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
         logoutView = view.findViewById(R.id.logoutView);
+        myProfileView = view.findViewById(R.id.myProfile);
+        savedPosts = view.findViewById(R.id.sideSavedPostsView);
+        myProfileView.setOnClickListener(this);
         logoutView.setOnClickListener(this);
+        savedPosts.setOnClickListener(this);
         return view;
     }
 
@@ -55,6 +70,14 @@ public class SideMenu extends Fragment implements ConnectivityReceiver.Connectiv
                 } else {
                     Snackbar.make(v, R.string.connection_error, Snackbar.LENGTH_INDEFINITE).show();
                 }
+                break;
+            case R.id.myProfile:
+                Intent intent = Profile.createIntent(userId, getActivity());
+                startActivity(intent);
+                break;
+            case R.id.sideSavedPostsView:
+                Intent intent1 = new Intent(getActivity(), SavedPosts.class);
+                startActivity(intent1);
                 break;
         }
     }

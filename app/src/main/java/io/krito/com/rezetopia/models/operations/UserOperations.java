@@ -122,6 +122,8 @@ public class UserOperations {
                     Map<String, String>  params = new HashMap<>();
                     // the POST parameters:
                     params.put("name", user.getName());
+                    params.put("f_name", user.getFisrtName());
+                    params.put("l_name", user.getLastName());
                     params.put("address", "empty");
                     params.put("mobile", user.getMobile());
                     params.put("mail", user.getEmail());

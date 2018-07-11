@@ -27,6 +27,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
+
             <TextView
                 android:id="@+id/commenterView"
                 android:layout_marginTop="5dp"
@@ -38,17 +39,16 @@
                 android:textColor="@android:color/black"/>
 
             <!--<ImageView-->
-                <!--android:layout_marginStart="5dp"-->
-                <!--android:layout_gravity="center"-->
-                <!--android:layout_width="8dp"-->
-                <!--android:layout_height="8dp"-->
-                <!--android:background="@drawable/online_circle"/>-->
+            <!--android:layout_marginStart="5dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_width="8dp"-->
+            <!--android:layout_height="8dp"-->
+            <!--android:background="@drawable/online_circle"/>-->
 
         </LinearLayout>
 
 
         <TextView
-            android:layout_marginBottom="@dimen/dimen_10"
             android:layout_below="@id/userDataLayout"
             android:id="@+id/commentTextView"
             android:textColor="@color/black"
@@ -58,55 +58,96 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dimen_20"
             android:text="@string/tell_something"/>
+
+        <EditText
+            android:visibility="gone"
+            android:background="@android:color/transparent"
+            android:textSize="13sp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dimen_20"
+            android:layout_below="@id/userDataLayout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/replayEditText"/>
+
+        <RelativeLayout
+            android:layout_below="@id/commentTextView"
+            android:id="@+id/likeHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="@dimen/dimen_20">
+
+            <TextView
+                android:layout_centerVertical="true"
+                android:visibility="gone"
+                android:id="@+id/postingView"
+                android:layout_marginStart="@dimen/dimen_40"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:text="@string/posting"
+                />
+
+            <LinearLayout
+                android:layout_alignParentEnd="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/commentCreatedAtView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="1د"
+                    android:layout_marginEnd="@dimen/dimen_20"/>
+
+
+                <TextView
+                    android:id="@+id/commentLikeView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="13sp"
+                    android:text="@string/like"
+                    android:layout_marginEnd="@dimen/dimen_10"/>
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
     </RelativeLayout>
 
-    <RelativeLayout
-        android:layout_marginTop="@dimen/dimen_40"
-        android:layout_width="match_parent"
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/editLayout"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/commentPPView"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="@dimen/dimen_20">
+        android:layout_marginEnd="@dimen/dimen_20"
+        android:orientation="horizontal"
+        android:layout_below="@id/commentLayout">
 
         <TextView
-            android:layout_centerVertical="true"
-            android:visibility="gone"
-            android:id="@+id/postingView"
-            android:layout_marginStart="@dimen/dimen_40"
-            android:layout_alignParentStart="true"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="@dimen/dimen_10"
+            android:textSize="13sp"
+            android:text="@string/Cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="12sp"
-            android:text="@string/posting"
-            />
+            android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:layout_alignParentEnd="true"
+        <TextView
+            android:textSize="13sp"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="@dimen/dimen_10"
+            android:text="@string/ef_ok"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="wrap_content" />
 
-            <TextView
-                android:id="@+id/commentCreatedAtView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="1m"
-                android:layout_marginEnd="@dimen/dimen_20"/>
-
-
-            <TextView
-                android:id="@+id/replayLikeView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13sp"
-                android:text="@string/like"
-                android:layout_marginEnd="@dimen/dimen_10"/>
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

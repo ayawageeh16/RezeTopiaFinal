@@ -6,190 +6,220 @@
     <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
+        <TextView
+            android:id="@+id/myProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/dimen_10"
+            android:text="@string/my_profile"
+            android:textColor="@color/green7"
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/sideSavedPostsView"
+            android:layout_margin="@dimen/dimen_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:text="@string/saved_posts"
+            android:textSize="15sp"
+            android:layout_below="@id/myProfile"
+            android:textColor="@color/green7"/>
 
-            <TextView
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/groups"
-                android:textSize="15sp"
-                android:id="@+id/txt_groups"
-                android:textColor="@color/green7"/>
+        <TextView
+            android:id="@+id/logoutView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sideSavedPostsView"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="@dimen/dimen_10"
+            android:text="@string/log_out"
+            android:textColor="@color/green5"
+            android:textSize="15sp" />
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
 
-            <TextView
-                android:id="@+id/sideEventsView"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/events"
-                android:textSize="15sp"
-                android:textColor="@color/green7"/>
+            <!--<TextView-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/groups"-->
+                <!--android:textSize="15sp"-->
+                <!--android:id="@+id/txt_groups"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <TextView
-                android:id="@+id/sideStoreView"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/stores"
-                android:textSize="15sp"
-                android:textColor="@color/green7"/>
+            <!--<TextView-->
+                <!--android:id="@+id/sideEventsView"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/events"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <TextView
-                android:id="@+id/myTeamView"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/my_teams"
-                android:textSize="15sp"
-                android:textColor="@color/green7"/>
+            <!--<TextView-->
+                <!--android:id="@+id/sideStoreView"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/stores"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <TextView
-                android:enabled="false"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/my_coins"
-                android:textSize="15sp"
-                android:textColor="@color/green7"/>
+            <!--<TextView-->
+                <!--android:id="@+id/myTeamView"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/my_teams"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <TextView
-                android:enabled="false"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/setting"
-                android:textSize="15sp"
-                android:id="@+id/txt_setting"
-                android:textColor="@color/green7"/>
+            <!--<TextView-->
+                <!--android:enabled="false"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/my_coins"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <TextView
-                android:id="@+id/sideSavedPostsView"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/saved_posts"
-                android:textSize="15sp"
-                android:textColor="@color/green7"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <ImageView
-                android:enabled="false"
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<TextView-->
+                <!--android:enabled="false"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/setting"-->
+                <!--android:textSize="15sp"-->
+                <!--android:id="@+id/txt_setting"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <TextView
-                android:enabled="false"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/report_to_rezetopia"
-                android:textSize="15sp"
-                android:id="@+id/txt_report"
-                android:textColor="@color/green7"/>
+            <!--<TextView-->
+                <!--android:id="@+id/sideSavedPostsView"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/saved_posts"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
-            <TextView
-                android:id="@+id/policy"
-                android:layout_marginTop="@dimen/dimen_10"
-                android:layout_marginBottom="@dimen/dimen_10"
-                android:layout_marginStart="@dimen/dimen_10"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/terms_and_conditions"
-                android:textSize="15sp"
-                android:textColor="@color/green7"/>
+            <!--<ImageView-->
+                <!--android:enabled="false"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<TextView-->
+                <!--android:enabled="false"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/report_to_rezetopia"-->
+                <!--android:textSize="15sp"-->
+                <!--android:id="@+id/txt_report"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <TextView
-                android:id="@+id/logoutView"
-                android:layout_gravity="center"
-                android:layout_margin="@dimen/dimen_10"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/log_out"
-                android:textSize="15sp"
-                android:textColor="@color/green5"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
+            <!--<TextView-->
+                <!--android:id="@+id/policy"-->
+                <!--android:layout_marginTop="@dimen/dimen_10"-->
+                <!--android:layout_marginBottom="@dimen/dimen_10"-->
+                <!--android:layout_marginStart="@dimen/dimen_10"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/terms_and_conditions"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green7"/>-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-            <LinearLayout
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+            <!--<TextView-->
+                <!--android:id="@+id/logoutView"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:layout_margin="@dimen/dimen_10"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/log_out"-->
+                <!--android:textSize="15sp"-->
+                <!--android:textColor="@color/green5"/>-->
 
-                <TextView
-                    android:enabled="false"
-                    android:layout_marginTop="@dimen/dimen_10"
-                    android:layout_marginBottom="@dimen/dimen_10"
-                    android:layout_marginEnd="@dimen/dimen_20"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/english"
-                    android:textSize="15sp"
-                    android:id="@+id/eng"
-                    android:textColor="@color/green7"/>
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
 
-                <TextView
-                    android:enabled="false"
-                    android:layout_marginTop="@dimen/dimen_10"
-                    android:layout_marginBottom="@dimen/dimen_10"
-                    android:layout_marginStart="@dimen/dimen_20"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/arabic"
-                    android:textSize="15sp"
-                    android:id="@+id/ar"
-                    android:textColor="@color/green7"/>
-            </LinearLayout>
+            <!--<LinearLayout-->
+                <!--android:layout_gravity="center_horizontal"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:orientation="horizontal">-->
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="0.1dp"
-                android:background="@color/colorAccent"/>
+                <!--<TextView-->
+                    <!--android:enabled="false"-->
+                    <!--android:layout_marginTop="@dimen/dimen_10"-->
+                    <!--android:layout_marginBottom="@dimen/dimen_10"-->
+                    <!--android:layout_marginEnd="@dimen/dimen_20"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/english"-->
+                    <!--android:textSize="15sp"-->
+                    <!--android:id="@+id/eng"-->
+                    <!--android:textColor="@color/green7"/>-->
 
-        </LinearLayout>
+                <!--<TextView-->
+                    <!--android:enabled="false"-->
+                    <!--android:layout_marginTop="@dimen/dimen_10"-->
+                    <!--android:layout_marginBottom="@dimen/dimen_10"-->
+                    <!--android:layout_marginStart="@dimen/dimen_20"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="@string/arabic"-->
+                    <!--android:textSize="15sp"-->
+                    <!--android:id="@+id/ar"-->
+                    <!--android:textColor="@color/green7"/>-->
+            <!--</LinearLayout>-->
+
+            <!--<ImageView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0.1dp"-->
+                <!--android:background="@color/colorAccent"/>-->
+
+        <!--</LinearLayout>-->
 
 
 

@@ -36,11 +36,21 @@
         <activity android:name=".activities.Replay" />
         <activity android:name=".activities.CreatePost" />
         <activity android:name="com.tangxiaolv.telegramgallery.GalleryActivity" />
-        <activity android:name=".activities.OtherProfile" />
+        <activity android:name=".activities.Profile" />
         <activity android:name=".activities.ImageViewer" />
         <activity android:name=".activities.CreatePp" />
         <activity android:name=".activities.CreateCover" />
-        <activity android:name=".activities.Skills"></activity>
+        <activity android:name=".activities.Skills" />
+        <activity android:name=".activities.Albums" />
+        <activity android:name=".activities.AboutProfile" />
+        <activity android:name=".activities.EditPost" />
+
+        <service
+            android:name="com.novoda.merlin.service.MerlinService"
+            android:exported="false" />
+
+        <activity android:name=".activities.SavedPosts" />
+        <activity android:name=".activities.WelcomeSlider"></activity>
     </application>
 
 </manifest>

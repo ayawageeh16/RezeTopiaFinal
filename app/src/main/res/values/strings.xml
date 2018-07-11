@@ -59,6 +59,7 @@
     <string name="like">Like</string>
     <string name="comment">Comment</string>
     <string name="share">Share</string>
+    <string name="accept">Accept</string>
     <string name="replay">Replay</string>
     <string name="matches">Matches</string>
     <string name="points">points</string>
@@ -68,6 +69,8 @@
     <string name="add">Add +</string>
     <string name="unfriend">Unfriend</string>
     <string name="load_more">Load more&#8230;</string>
+    <string name="more">More</string>
+    <string name="less">Less</string>
     <string name="empty_post">Empty Post</string>
     <string name="no_posts">there are no posts</string>
     <string name="follow">Follow</string>
@@ -100,8 +103,13 @@
     <string name="log_out">Logout</string>
     <string name="search_result">No result</string>
     <string name="edit">Edit</string>
+    <string name="paste">Paste</string>
+    <string name="dont_have_posts">You do not have posts yet</string>
+    <string name="welcome_page">Play With Rezetopia</string>
     <string name="remove">Remove</string>
+    <string name="text_saved">Copied to Clipboard</string>
     <string name="save_post">Save post</string>
+    <string name="unsave_post">Remove</string>
     <string name="report_post">Report</string>
     <string name="image">Image</string>
     <string name="photos">Photos</string>
@@ -133,6 +141,7 @@
     <string name="closed">Closed</string>
     <string name="public_">Public</string>
     <string name="view">View</string>
+    <string name="copy">Copy</string>
     <string name="update_pp">Update profile picture</string>
     <string name="update_cover">Update cover photo</string>
     <string name="create_team">Create Team</string>
@@ -165,7 +174,33 @@
     <string name="friends_of_friends">Friends of Friends</string>
     <string name="only_me">Only me</string>
     <string name="cancel_friend_request">cancel request</string>
+    <string name="respond_friend_request">respond</string>
     <string name="remove_friend">remove</string>
+    <string name="attack">Attack</string>
+    <string name="stamina">Stamina</string>
+    <string name="defence">Defence</string>
+    <string name="speed">Speed</string>
+    <string name="ball_control">Ball Control</string>
+    <string name="low_pass">Low Pass</string>
+    <string name="lofted_pass">Lofted Pass</string>
+    <string name="shoot_accuracy">Shoot Accuracy</string>
+    <string name="shoot_power">shoot Power</string>
+    <string name="free_kicks">Free Kicks</string>
+    <string name="header">Header</string>
+    <string name="jump">Jump</string>
+    <string name="empty_skills">does not have skills yet</string>
+    <string name="my_profile">My Profile</string>
+    <string name="change_pp">Updated his profile picture</string>
+    <string name="change_cover">Updated his cover image</string>
+    <string name="like_header_message"> liked post of </string>
+    <string name="you">You</string>
+    <string name="comment_header_message"> commented post of </string>
+    <string name="shared_a">shared a</string>
+    <string name="post_small">post</string>
+    <string name="invalid_email">This email already taken</string>
+    <string name="share_to_pp">Share</string>
+    <string name="share_to_friend">Share to friend</string>
+    <string name="timelineShare_hint">Share on Your Timeline</string>
     <string-array name="object_array">
 
         <item>010</item>

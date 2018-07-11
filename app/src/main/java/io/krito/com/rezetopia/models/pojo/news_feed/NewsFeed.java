@@ -1,8 +1,9 @@
 package io.krito.com.rezetopia.models.pojo.news_feed;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class NewsFeed {
+public class NewsFeed implements Serializable{
 
     ArrayList<NewsFeedItem> items;
     String nextCursor;

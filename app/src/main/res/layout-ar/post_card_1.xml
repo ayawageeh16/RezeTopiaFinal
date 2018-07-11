@@ -1,14 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout
-    android:layout_margin="5dp"
+<RelativeLayout android:layout_margin="5dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/post_background"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:visibility="gone"
+        android:layout_marginTop="@dimen/dimen_10"
+        android:id="@+id/likeCommentHeaderLayout"
+        android:layout_marginStart="@dimen/dimen_20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/likerCommenterNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="username"
+            android:textColor="@color/black"
+            android:textStyle="bold"/>
+        <TextView
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:id="@+id/likeCommentMessageView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text=" like-comment post of "
+            />
+        <TextView
+            android:id="@+id/postLikeCommentOwnerNameView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="username"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_below="@id/likeCommentHeaderLayout"
         android:id="@+id/ppView"
         android:layout_width="30dp"
         android:layout_height="30dp"
@@ -18,6 +53,7 @@
         android:layout_marginBottom="@dimen/dimen_10"/>
 
     <LinearLayout
+        android:layout_below="@id/likeCommentHeaderLayout"
         android:id="@+id/headerLayout"
         android:weightSum="2"
         android:layout_marginTop="10dp"
@@ -63,6 +99,22 @@
 
                 </FrameLayout>
 
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/shareTextPartOneView"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/shared_a"/>
+
+                <TextView
+                    android:visibility="gone"
+                    android:id="@+id/shareTextPartTwoView"
+                    android:layout_marginStart="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/post_small"
+                    android:textColor="@color/black"/>
 
             </LinearLayout>
 

@@ -24,12 +24,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.helper.VolleyCasheRequest;
 import io.krito.com.rezetopia.helper.VolleyCustomRequest;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeed;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 import io.krito.com.rezetopia.models.pojo.post.ApiCommentResponse;
 import io.krito.com.rezetopia.models.pojo.post.ApiResponse;
 import io.krito.com.rezetopia.models.pojo.post.Post;
+import io.krito.com.rezetopia.models.pojo.post.Pp;
 
 /**
  * Created by Ahmed Ali on 5/19/2018.
@@ -44,6 +46,11 @@ public class HomeOperations {
     private LikeCallback likeCallback;
     private static FetchCommentsCallback fetchCommentsCallback;
     private static String homeCursor = "0";
+
+
+    public static void setCursor(String homeCursor) {
+        HomeOperations.homeCursor = homeCursor;
+    }
 
     public static void setRequestQueue(RequestQueue queue){
         requestQueue = queue;
@@ -87,11 +94,11 @@ public class HomeOperations {
                     new Response.Listener<ApiResponse>() {
                 @Override
                 public void onResponse(ApiResponse response) {
-                    if (!response.isError()){
-                        if (response.getPosts() != null && response.getPosts().length > 0){
-                            NewsFeed newsFeed = new NewsFeed();
-                            ArrayList<NewsFeedItem> items = new ArrayList<>();
+                    NewsFeed newsFeed = new NewsFeed();
 
+                    if (!response.isError()){
+                        ArrayList<NewsFeedItem> items = new ArrayList<>();
+                        if (response.getPosts() != null && response.getPosts().length > 0){
                             for (Post post:response.getPosts()) {
                                 NewsFeedItem item = new NewsFeedItem();
                                 item.setPostId(post.getPostId());
@@ -103,6 +110,21 @@ public class HomeOperations {
                                 item.setOwnerName(post.getUsername());
                                 item.setPostText(post.getText());
                                 item.setPostAttachment(post.getAttachment());
+                                item.setPrivacyId(post.getPrivacyId());
+                                if (post.getMessage() != null && !post.getMessage().isEmpty()){
+                                    item.setMessage(post.getMessage());
+                                    if (post.getMessage().contentEquals("like_friends_of_friends")){
+                                        Log.i("like_friends_of_friends", "onResponse: " + "like_friends_of_friends");
+                                        item.setLikerId(post.getLikerId());
+                                        item.setLikerName(post.getLikerName());
+                                    } else if (post.getMessage().contentEquals("friend_share")){
+                                        Log.i("friend_share", "onResponse: " + "friend_share");
+                                        item.setSharerId(post.getSharerId());
+                                        item.setSharerUsername(post.getSharerUsername());
+                                        item.setShareTimestamp(post.getShareTimestamp());
+                                    }
+
+                                }
                                 item.setType(NewsFeedItem.POST_TYPE);
                                 items.add(item);
                             }
@@ -110,9 +132,30 @@ public class HomeOperations {
                             newsFeed.setItems(items);
                             newsFeed.setNextCursor(response.getNextCursor());
                             newsFeed.setNow(response.getNow());
-                            feedCallback.onSuccess(newsFeed);
                             homeCursor = String.valueOf(Integer.parseInt(homeCursor) + 11);
                             Log.i("response_cursor", "onResponse: " + homeCursor);
+                        }
+
+                        if (response.getPps() != null && response.getPps().length > 0){
+                            Log.i("response_pps_size", "onResponse: " + response.getPps().length);
+                            for (Pp pp:response.getPps()) {
+                                NewsFeedItem item = new NewsFeedItem();
+                                item.setPostId(pp.getPostId());
+                                item.setCreatedAt(pp.getCreatedAt());
+                                item.setCommentSize(pp.getCommentSize());
+                                item.setItemImage(pp.getImageUrl());
+                                item.setLikes(pp.getLikes());
+                                item.setOwnerId(pp.getUserId());
+                                item.setOwnerName(pp.getUsername());
+                                item.setPostText(pp.getText());
+                                item.setPpUrl(pp.getPpUrl());
+                                item.setType(NewsFeedItem.PP_TYPE);
+                                items.add(item);
+                            }
+                        }
+
+                        if (newsFeed.getItems().size() > 0){
+                            feedCallback.onSuccess(newsFeed);
                         }
                     } else {
                         feedCallback.onError(R.string.unknown_error);
@@ -146,7 +189,7 @@ public class HomeOperations {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> map = new HashMap<>();
-                        map.put("method", "get_news_feed");
+                        map.put("method", "get_relative_news_feed");
                     map.put("userId", strings[0]);
                     map.put("cursor", homeCursor);
                     return map;
@@ -235,7 +278,7 @@ public class HomeOperations {
         }
     }
 
-    public static class FetchCommentsTask extends AsyncTask<String, Void, Void>{
+    public static class     FetchCommentsTask extends AsyncTask<String, Void, Void>{
 
         @Override
         protected Void doInBackground(final String... strings) {

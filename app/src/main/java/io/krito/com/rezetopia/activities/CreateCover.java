@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -156,8 +157,8 @@ public class CreateCover extends AppCompatActivity implements View.OnClickListen
                                 }
 
                                 if (jsonObject.getString("url") != null && !jsonObject.getString("url").isEmpty()){
-                                    String ppUrl = jsonObject.getString("url");
-                                    item.setItemImage(ppUrl);
+                                    String coverUrl = jsonObject.getString("url");
+                                    item.setItemImage(coverUrl);
                                 }
 
                             } else {
@@ -232,11 +233,21 @@ public class CreateCover extends AppCompatActivity implements View.OnClickListen
         super.onActivityResult(requestCode, resultCode, data);
         if (ImagePicker.shouldHandle(requestCode, resultCode, data)){
             image = ImagePicker.getFirstImageOrNull(data);
-            createPostView.setEnabled(true);
+
 
             Bitmap bm = null;
             bm = BitmapFactory.decodeFile(image.getPath());
-            ppView.setImageBitmap(bm);
+            Log.i("WidthHeight", "onActivityResult: " + bm.getWidth() + "-" + bm.getHeight());
+            if (bm.getWidth() >= 399  && bm.getWidth() <= 3600){
+                createPostView.setEnabled(true);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+                ppView.setImageBitmap(bm);
+            } else {
+                Toast.makeText(this, "no", Toast.LENGTH_SHORT).show();
+                createPostView.setEnabled(false);
+            }
+
         }
     }
 

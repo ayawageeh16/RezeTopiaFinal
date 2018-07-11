@@ -45,7 +45,12 @@ public class ProfileOperations {
     private static SendFriendRequestCallback friendRequestCallback;
     private static CancelDeleteFriendRequestCallback cancelDeleteFriendRequestCallback;
     private static NewsFeedCallback feedCallback;
+    private static AcceptFriendRequestCallback acceptCallback;
     private static String profileCursor = "0";
+
+    public static void setCursor(String profileCursor) {
+        ProfileOperations.profileCursor = profileCursor;
+    }
 
     public static void setFriendRequestCallback(SendFriendRequestCallback friendRequestCallback) {
         ProfileOperations.friendRequestCallback = friendRequestCallback;
@@ -59,36 +64,44 @@ public class ProfileOperations {
         feedCallback = call;
     }
 
-    public static void setInfoCallback(UserInfoCallback callback){
+    public static void setInfoCallback(UserInfoCallback callback) {
         infoCallback = callback;
     }
 
-    public static void setIsFriendCallback(IsFriendCallback callback){
+    public static void setAcceptCallback(AcceptFriendRequestCallback callback){
+        acceptCallback = callback;
+    }
+
+    public static void setIsFriendCallback(IsFriendCallback callback) {
         isFriendCallback = callback;
     }
 
-    public static void setRequestQueue(RequestQueue queue){
+    public static void setRequestQueue(RequestQueue queue) {
         requestQueue = queue;
     }
 
-    public static void getInfo(String id){
+    public static void getInfo(String id) {
         new GetInfoTask().execute(id);
     }
 
-    public static void isFriend(String from, String to){
+    public static void isFriend(String from, String to) {
         new IsFriendTask().execute(from, to);
     }
 
-    public static void sendFriendRequest(String from, String to){
+    public static void sendFriendRequest(String from, String to) {
         new SendFriendRequestTask().execute(from, to);
     }
 
-    public static void cancelFriendRequest(String from, String to){
+    public static void cancelFriendRequest(String from, String to) {
         new CancelDeleteFriendRequestTask().execute(from, to);
     }
 
-    public static void fetchNewsFeed(String userId, String cursor){
+    public static void fetchNewsFeed(String userId, String cursor) {
         new FetchNewsFeedTask().execute(userId, cursor);
+    }
+
+    public static void acceptFriendRequest(String from, String to){
+        new AcceptFriendRequestTask().execute(from, to);
     }
 
     private static class GetInfoTask extends AsyncTask<String, String, Void> {
@@ -102,7 +115,7 @@ public class ProfileOperations {
                 public void onResponse(String response) {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
-                        if (!jsonResponse.getBoolean("error")){
+                        if (!jsonResponse.getBoolean("error")) {
                             Log.e("getInfo", response);
                             User user = new User();
                             user.setId(jsonResponse.getInt("id"));
@@ -153,10 +166,10 @@ public class ProfileOperations {
                     infoCallback.onError(R.string.time_out);
                 }
             }
-            ){
+            ) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String>  params = new HashMap<>();
+                    Map<String, String> params = new HashMap<>();
                     // the POST parameters:
                     params.put("getInfo", "getInfo");
                     params.put("id", strings[0]);
@@ -180,7 +193,7 @@ public class ProfileOperations {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         Log.e("addfriend", response);
-                        if (!jsonResponse.getBoolean("error")){
+                        if (!jsonResponse.getBoolean("error")) {
                             boolean state = (jsonResponse.getInt("state") == 1);
                             isFriendCallback.onSuccess(new boolean[]{true, state});
                         } else {
@@ -223,10 +236,10 @@ public class ProfileOperations {
                     isFriendCallback.onError(R.string.time_out);
                 }
             }
-            ){
+            ) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String>  params = new HashMap<>();
+                    Map<String, String> params = new HashMap<>();
                     // the POST parameters:
                     Log.i("isFriendParams", "getParams: " + strings[0] + "-" + strings[1]);
                     params.put("isFriend", "isFriend");
@@ -252,7 +265,7 @@ public class ProfileOperations {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         Log.e("add", response);
-                        if (!jsonResponse.getBoolean("error")){
+                        if (!jsonResponse.getBoolean("error")) {
                             friendRequestCallback.onSuccess(true);
                         } else {
                             friendRequestCallback.onSuccess(false);
@@ -294,10 +307,10 @@ public class ProfileOperations {
                     friendRequestCallback.onError(R.string.time_out);
                 }
             }
-            ){
+            ) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String>  params = new HashMap<>();
+                    Map<String, String> params = new HashMap<>();
                     // the POST parameters:
                     Log.i("addParams", "getParams: " + strings[0] + "-" + strings[1]);
                     params.put("add", "add");
@@ -323,7 +336,7 @@ public class ProfileOperations {
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         Log.e("unFriend", response);
-                        if (!jsonResponse.getBoolean("error")){
+                        if (!jsonResponse.getBoolean("error")) {
                             cancelDeleteFriendRequestCallback.onSuccess(true);
                         } else {
                             cancelDeleteFriendRequestCallback.onSuccess(false);
@@ -365,10 +378,10 @@ public class ProfileOperations {
                     cancelDeleteFriendRequestCallback.onError(R.string.time_out);
                 }
             }
-            ){
+            ) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String>  params = new HashMap<>();
+                    Map<String, String> params = new HashMap<>();
                     // the POST parameters:
                     Log.i("unFriendParams", "getParams: " + strings[0] + "-" + strings[1]);
                     params.put("unFriend", "add");
@@ -382,7 +395,78 @@ public class ProfileOperations {
         }
     }
 
-    public static class FetchNewsFeedTask extends AsyncTask<String, Void, Void>{
+    private static class AcceptFriendRequestTask extends AsyncTask<String, String, Void> {
+
+        @Override
+        protected Void doInBackground(final String... strings) {
+            String url = baseUrl + "addfriend.php";
+
+            StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    try {
+                        JSONObject jsonResponse = new JSONObject(response);
+                        Log.e("accept", response);
+                        if (!jsonResponse.getBoolean("error")) {
+                            acceptCallback.onSuccess(true);
+                        } else {
+                            acceptCallback.onSuccess(false);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    String message = null;
+                    Log.i("volley error", "onErrorResponse: " + error.getMessage());
+                    if (error instanceof NetworkError) {
+                        //message = String.valueOf();
+                        acceptCallback.onError(R.string.checkingNetwork);
+                        return;
+                    } else if (error instanceof ServerError) {
+                        message = "The server could not be found. Please try again after some time!!";
+                        acceptCallback.onError(R.string.server_error);
+                        return;
+                    } else if (error instanceof AuthFailureError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        acceptCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof ParseError) {
+                        message = "Parsing error! Please try again after some time!!";
+                        acceptCallback.onError(R.string.parsing_error);
+                        return;
+                    } else if (error instanceof NoConnectionError) {
+                        message = "Cannot connect to Internet...Please check your connection!";
+                        acceptCallback.onError(R.string.connection_error);
+                        return;
+                    } else if (error instanceof TimeoutError) {
+                        message = "Connection TimeOut! Please check your internet connection.";
+                        acceptCallback.onError(R.string.time_out);
+                        return;
+                    }
+                    acceptCallback.onError(R.string.time_out);
+                }
+            }
+            ) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    // the POST parameters:
+                    Log.i("acceptParams", "getParams: " + strings[0] + "-" + strings[1]);
+                    params.put("accept", "accept");
+                    params.put("from", strings[0]);
+                    params.put("to", strings[1]);
+                    return params;
+                }
+            };
+            requestQueue.add(post);
+            return null;
+        }
+    }
+
+    public static class FetchNewsFeedTask extends AsyncTask<String, Void, Void> {
 
         @Override
         protected Void doInBackground(final String... strings) {
@@ -392,12 +476,12 @@ public class ProfileOperations {
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
-                            if (!response.isError()){
-                                if (response.getPosts() != null && response.getPosts().length > 0){
+                            if (!response.isError()) {
+                                if (response.getPosts() != null && response.getPosts().length > 0) {
                                     NewsFeed newsFeed = new NewsFeed();
                                     ArrayList<NewsFeedItem> items = new ArrayList<>();
 
-                                    for (Post post:response.getPosts()) {
+                                    for (Post post : response.getPosts()) {
                                         NewsFeedItem item = new NewsFeedItem();
                                         item.setPostId(post.getPostId());
                                         item.setCreatedAt(post.getCreatedAt());
@@ -407,7 +491,10 @@ public class ProfileOperations {
                                         item.setOwnerId(post.getUserId());
                                         item.setOwnerName(post.getUsername());
                                         item.setPostText(post.getText());
+                                        item.setPrivacyId(post.getPrivacyId());
                                         item.setPostAttachment(post.getAttachment());
+                                        item.setPpUrl(post.getPpUrl());
+                                        item.setCoverUrl(post.getCoverUrl());
                                         item.setType(NewsFeedItem.POST_TYPE);
                                         items.add(item);
                                     }
@@ -419,7 +506,7 @@ public class ProfileOperations {
                                     profileCursor = String.valueOf(Integer.parseInt(profileCursor) + 11);
                                     Log.i("response_cursor", "onResponse: " + profileCursor);
                                 }
-                            } else if (response.isError() && response.getMessage().contentEquals("there are no posts")){
+                            } else if (response.isError() && response.getMessage().contentEquals("there are no posts")) {
                                 feedCallback.onEmptyResult();
                             } else {
                                 feedCallback.onError(R.string.unknown_error);
@@ -469,29 +556,37 @@ public class ProfileOperations {
         }
     }
 
-    public interface UserInfoCallback{
+    public interface UserInfoCallback {
         void onSuccess(User user);
+
         void onError(int error);
     }
 
-    public interface IsFriendCallback{
+    public interface IsFriendCallback {
         void onSuccess(boolean[] isFriend);
+
         void onError(int error);
     }
 
-    public interface SendFriendRequestCallback{
+    public interface SendFriendRequestCallback {
         void onSuccess(boolean result);
         void onError(int error);
     }
 
-    public interface CancelDeleteFriendRequestCallback{
+    public interface CancelDeleteFriendRequestCallback {
         void onSuccess(boolean result);
+
         void onError(int error);
     }
 
-    public interface NewsFeedCallback{
+    public interface NewsFeedCallback {
         void onSuccess(NewsFeed newsFeed);
         void onError(int error);
         void onEmptyResult();
+    }
+
+    public interface AcceptFriendRequestCallback {
+        void onSuccess(boolean result);
+        void onError(int error);
     }
 }

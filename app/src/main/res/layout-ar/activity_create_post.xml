@@ -132,6 +132,7 @@
             <!--android:layout_height="wrap_content"/>-->
 
             <io.krito.com.rezetopia.views.CustomTextView
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/ic_tag"
                 android:textSize="15sp"
@@ -155,6 +156,7 @@
                 android:layout_height="wrap_content"/>
 
             <io.krito.com.rezetopia.views.CustomTextView
+                android:visibility="gone"
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/ic_location"
                 android:textSize="15sp"
