@@ -3,6 +3,7 @@ package io.krito.com.rezetopia.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.NetworkInfo;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,8 +15,18 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
+import com.github.pwittchen.reactivenetwork.library.rx2.Connectivity;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
+import com.jakewharton.rxbinding.view.RxView;
+import com.jakewharton.rxbinding.widget.RxTextView;
+import com.philjay.valuebar.ValueBar;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
@@ -24,6 +35,10 @@ import io.krito.com.rezetopia.helper.SaveRecyclerAdapter;
 import io.krito.com.rezetopia.models.operations.SaveOperations;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeed;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 public class SavedPosts extends AppCompatActivity {
 
@@ -54,7 +69,8 @@ public class SavedPosts extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_saved_posts);
 
-       
+        networkListener();
+
         homeHeader = findViewById(R.id.homeHeader);
         recyclerView = findViewById(R.id.homePostsRecyclerView);
         progressBar = findViewById(R.id.homeProgress);
@@ -63,7 +79,8 @@ public class SavedPosts extends AppCompatActivity {
 
         dontHavePosts = findViewById(R.id.dontHavePosts);
         savedSwipeView = findViewById(R.id.savedSwipeView);
-        backView = findViewById(R.id.searchBackView);
+        //backView = findViewById(R.id.searchBackView);
+        //backView.setVisibility(View.VISIBLE);
 
 
         userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, Context.MODE_PRIVATE)
@@ -100,12 +117,12 @@ public class SavedPosts extends AppCompatActivity {
             }
         });
 
-        backView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onBackPressed();
-            }
-        });
+//        backView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
 
         registerScrollListener();
     }
@@ -273,7 +290,6 @@ public class SavedPosts extends AppCompatActivity {
         void onScroll(boolean show);
     }
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -281,5 +297,27 @@ public class SavedPosts extends AppCompatActivity {
             outState.putSerializable("feed", newsFeed);
             outState.putInt("last", pastVisibleItems);
         }
+    }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(SavedPosts.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
     }
 }

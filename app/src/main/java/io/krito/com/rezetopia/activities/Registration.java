@@ -2,10 +2,16 @@ package io.krito.com.rezetopia.activities;
 
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
@@ -15,6 +21,8 @@ import io.krito.com.rezetopia.models.operations.UserOperations;
 import io.krito.com.rezetopia.models.pojo.User;
 import io.krito.com.rezetopia.views.CustomButton;
 import io.krito.com.rezetopia.views.CustomEditText;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.rmiri.buttonloading.ButtonLoading;
 
 public class Registration extends AppCompatActivity implements View.OnClickListener {
@@ -40,6 +48,7 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
         //btnSignUp.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
 
+        networkListener();
 
         edtDate.setOnFocusChangeListener(new View.OnFocusChangeListener(){
             public void onFocusChange(View view, boolean hasfocus){
@@ -171,5 +180,27 @@ public class Registration extends AppCompatActivity implements View.OnClickListe
             checkBox.setError(null);
 
         return valid;
+    }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(Registration.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
     }
 }

@@ -171,6 +171,5 @@ public class RezetopiaApp extends Application {
         super.onTerminate();
         unregisterReceiver(receiver);
     }
-
 }
 

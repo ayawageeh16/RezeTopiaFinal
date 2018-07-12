@@ -2,10 +2,13 @@ package io.krito.com.rezetopia.activities;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -17,6 +20,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.gao.jiefly.abilitychartlibrary.AbilityChatView;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -30,6 +34,8 @@ import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.models.pojo.User;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class Skills extends AppCompatActivity {
 
@@ -41,6 +47,8 @@ public class Skills extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_skills);
+
+        networkListener();
 
         userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
@@ -235,5 +243,27 @@ public class Skills extends AppCompatActivity {
             }
         };
         RezetopiaApp.getInstance().getRequestQueue().add(post);
+    }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(Skills.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
     }
 }

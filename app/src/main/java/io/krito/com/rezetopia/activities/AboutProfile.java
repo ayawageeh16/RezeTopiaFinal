@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
 import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
@@ -25,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.gao.jiefly.abilitychartlibrary.AbilityChatView;
 import com.github.aakira.expandablelayout.ExpandableRelativeLayout;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.philjay.valuebar.ValueBar;
 import com.philjay.valuebar.colors.GreenToRedFormatter;
 import com.thekhaeng.pushdownanim.PushDownAnim;
@@ -40,6 +43,8 @@ import java.util.Map;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.thekhaeng.pushdownanim.PushDownAnim.MODE_SCALE;
 
@@ -79,6 +84,8 @@ public class AboutProfile extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about_profile);
+
+        networkListener();
 
         userId = getIntent().getExtras().getString("id");
         Log.i(USER_ID_EXTRA, "onCreate: " + userId);
@@ -299,4 +306,27 @@ public class AboutProfile extends AppCompatActivity {
             }
         }, 1000);*/
     }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(AboutProfile.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
+    }
+
 }

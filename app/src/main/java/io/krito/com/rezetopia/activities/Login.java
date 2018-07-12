@@ -1,11 +1,17 @@
 package io.krito.com.rezetopia.activities;
 
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
+
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
@@ -16,6 +22,8 @@ import io.krito.com.rezetopia.receivers.ConnectivityReceiver;
 import io.krito.com.rezetopia.views.CustomButton;
 import io.krito.com.rezetopia.views.CustomEditText;
 import io.krito.com.rezetopia.views.CustomTextView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import io.rmiri.buttonloading.ButtonLoading;
 
 public class Login extends AppCompatActivity implements View.OnClickListener, ConnectivityReceiver.ConnectivityReceiverListener{
@@ -33,6 +41,8 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        networkListener();
 
         loginLayout = findViewById(R.id.loginLayout);
         sign_up = findViewById(R.id.btnRegister);
@@ -130,5 +140,27 @@ public class Login extends AppCompatActivity implements View.OnClickListener, Co
     @Override
     public void onNetworkConnectionChanged(boolean isConnected) {
         connected = isConnected;
+    }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(Login.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
     }
 }

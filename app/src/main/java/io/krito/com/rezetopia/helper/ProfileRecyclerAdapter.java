@@ -150,7 +150,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
         //callback.onItemAdded(1);
         if (!havePosts){
             havePosts = true;
-            notifyItemChanged(0);
+            notifyItemChanged(1);
         }
         notifyDataSetChanged();
     }
@@ -276,11 +276,12 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
             operationsLayout = itemView.findViewById(R.id.operationsLayout);
             dontHavePosts = itemView.findViewById(R.id.dontHavePosts);
 
-            if (havePosts){
-                dontHavePosts.setVisibility(View.GONE);
-            } else {
-                dontHavePosts.setVisibility(View.VISIBLE);
-            }
+//            if (havePosts){
+//                dontHavePosts.setVisibility(View.GONE);
+//                usernameView.setText("حسبالاه");
+//            } else {
+//                dontHavePosts.setVisibility(View.VISIBLE);
+//            }
 
             if (loggedInUserId.contentEquals(profileOwnerUserId)) {
                 operationsLayout.setVisibility(View.GONE);

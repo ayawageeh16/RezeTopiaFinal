@@ -10,6 +10,8 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+        android.compileOptions.sourceCompatibility 1.8
+        android.compileOptions.targetCompatibility 1.8
     }
     buildTypes {
         release {
@@ -111,9 +113,9 @@ dependencies {
     // connectivity receiver
     implementation 'com.novoda:merlin-rxjava:1.1.7'
 
-    //rx-java
-    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
-    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+//    //rx-java
+//    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+//    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
 
     implementation 'com.zplesac:connectionbuddy:2.0.0-beta1@aar'
 
@@ -122,5 +124,24 @@ dependencies {
 
     //image slider
     implementation 'com.github.therealshabi:AutoImageFlipper:v1.4.1'
+
+    // rxFamily
+    //rxJava
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.16'
+
+    //rxAndroid
+    implementation 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+    //rxBinding
+    implementation 'com.jakewharton.rxbinding:rxbinding:0.4.0'
+
+    //rxConnect
+    implementation 'com.github.pwittchen:reactivenetwork-rx2:1.0.0'
+
+    //rxPermissions
+    implementation 'com.github.tbruyelle:rxpermissions:0.10.2'
+
+    //rxRecyclerView
+    implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
 
 }

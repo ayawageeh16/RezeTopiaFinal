@@ -4,6 +4,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.PorterDuff;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -22,12 +23,15 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,6 +51,8 @@ import io.krito.com.rezetopia.helper.VolleyCustomRequest;
 import io.krito.com.rezetopia.models.pojo.post.ApiReplayResponse;
 import io.krito.com.rezetopia.views.CustomEditText;
 import io.krito.com.rezetopia.views.CustomTextView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ru.whalemare.sheetmenu.SheetMenu;
 
 public class Replay extends AppCompatActivity implements View.OnClickListener {
@@ -90,6 +96,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_replay);
+
+        networkListener();
 
         userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
                 .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, "0");
@@ -680,5 +688,27 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
 
     public static void setLoadMoreCallback(LoadMoreCallback callback) {
         loadMoreCallback = callback;
+    }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(Replay.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
     }
 }

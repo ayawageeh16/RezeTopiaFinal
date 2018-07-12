@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,12 +25,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.zyyoona7.popup.EasyPopup;
 
 import org.json.JSONException;
@@ -53,6 +57,8 @@ import io.krito.com.rezetopia.models.pojo.post.ApiCommentResponse;
 import io.krito.com.rezetopia.models.pojo.post.Replay;
 import io.krito.com.rezetopia.views.CustomEditText;
 import io.krito.com.rezetopia.views.CustomTextView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import ru.whalemare.sheetmenu.SheetMenu;
 
 public class Comment extends AppCompatActivity implements View.OnClickListener{
@@ -117,6 +123,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
+        networkListener();
 
         comments = new ArrayList<>();
 
@@ -814,4 +821,25 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         loadMoreCallback = callback;
     }
 
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(Comment.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
+    }
 }

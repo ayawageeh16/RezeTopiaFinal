@@ -2,21 +2,26 @@ package io.krito.com.rezetopia.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.NetworkInfo;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.andrognito.flashbar.Flashbar;
+import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -31,6 +36,8 @@ import io.krito.com.rezetopia.helper.VolleyCustomRequest;
 import io.krito.com.rezetopia.models.pojo.post.Album;
 import io.krito.com.rezetopia.models.pojo.post.ApiAlbums;
 import io.krito.com.rezetopia.views.CustomTextView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 public class Albums extends AppCompatActivity {
 
@@ -51,6 +58,8 @@ public class Albums extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_albums);
+
+        networkListener();
 
         userId = getIntent().getExtras().getString("id");
 
@@ -142,5 +151,27 @@ public class Albums extends AppCompatActivity {
         } else {
 
         }
+    }
+
+    private void networkListener(){
+        ReactiveNetwork.observeNetworkConnectivity(this)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(connectivity -> {
+                    if (connectivity.getState() == NetworkInfo.State.CONNECTED){
+                        Log.i("internetC", "onNext: " + "Connected");
+                    } else if (connectivity.getState() == NetworkInfo.State.SUSPENDED){
+                        Log.i("internetC", "onNext: " + "LowNetwork");
+                    } else {
+                        Log.i("internetC", "onNext: " + "NoInternet");
+                        Flashbar.Builder builder = new Flashbar.Builder(this);
+                        builder.gravity(Flashbar.Gravity.BOTTOM)
+                                .backgroundColor(R.color.red2)
+                                .enableSwipeToDismiss()
+                                .message(R.string.checkingNetwork)
+                                .enterAnimation(new FlashAnimBarBuilder(Albums.this).slideFromRight().duration(200))
+                                .build().show();
+                    }
+                });
     }
 }
