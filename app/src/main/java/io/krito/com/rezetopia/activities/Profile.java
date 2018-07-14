@@ -154,14 +154,18 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
 
                     @Override
                     public void onError(int error) {
-                        AlertFragment.createFragment(getResources().getString(error)).show(getFragmentManager(), null);
+                        if (!Profile.this.isDestroyed()) {
+                            AlertFragment.createFragment(getResources().getString(error)).show(getFragmentManager(), null);
+                        }
                     }
                 });
             }
 
             @Override
             public void onError(int error) {
-                AlertFragment.createFragment(getResources().getString(error)).show(getFragmentManager(), null);
+                if (!Profile.this.isDestroyed()) {
+                    AlertFragment.createFragment(getResources().getString(error)).show(getFragmentManager(), null);
+                }
             }
         });
     }

@@ -95,16 +95,24 @@ public class Main extends AppCompatActivity implements Home.HomeCallback {
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-//                int tabIconColor = ContextCompat.getColor(Main.this, R.color.colorPrimaryDark);
-//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                int tabIconColor = ContextCompat.getColor(Main.this, R.color.colorPrimaryDark);
+                if (tab.getIcon() != null) {
+                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                } else {
+                    View customBackground = tab.getCustomView();
+                }
                 viewPager.setCurrentItem(tab.getPosition());
                 tab.select();
             }
 
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
-//                int tabIconColor = ContextCompat.getColor(Main.this, R.color.tabs);
-//                tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                int tabIconColor = ContextCompat.getColor(Main.this, R.color.tabs);
+                if (tab.getIcon() != null) {
+                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                } else {
+                    View customBackground = tab.getCustomView();
+                }
             }
 
             @Override
