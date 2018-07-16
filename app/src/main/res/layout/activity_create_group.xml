@@ -140,7 +140,7 @@
              android:layout_height="wrap_content"
              android:layout_margin="5dp"
              android:text="@string/open_group_label"
-             android:drawableLeft="@drawable/ic_worldsign"/>
+             android:drawableLeft="@drawable/ic_open_group_icon"/>
          <RadioButton
              android:id="@+id/closed_group"
              android:layout_width="wrap_content"
@@ -154,7 +154,7 @@
              android:layout_height="wrap_content"
              android:layout_margin="5dp"
              android:text="@string/secret_group_label"
-             android:drawableLeft="@drawable/lock"/>
+             android:drawableLeft="@drawable/ic_secret"/>
 
      </RadioGroup>
 
@@ -164,6 +164,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
+            android:text="@string/createGroupLabel"
             android:layout_marginStart="50dp"
             android:layout_marginEnd="50dp"/>
     </LinearLayout>

@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -64,57 +65,12 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
         fab = findViewById(R.id.fab);
         viewPager = findViewById(R.id.pager);
 
+        createGroupButton.setOnClickListener(this);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-            }
-        });
-
-        requestView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
-        notificationView = LayoutInflater.from(this).inflate(R.layout.notification_tab_icon, null);
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
-        tabLayout.addTab(tabLayout.newTab().setCustomView(notificationView));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));
-        tabLayout.addTab(tabLayout.newTab().setCustomView(requestView));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_side_menu));
-
-
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.getTabAt(0).getIcon().
-                setColorFilter(ContextCompat.getColor(CreateGroup.this, R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
-
-        viewPager = findViewById(R.id.pager);
-        adapter = new MainPagerAdapter(getSupportFragmentManager(), tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(CreateGroup.this, R.color.colorPrimaryDark);
-                if (tab.getIcon() != null) {
-                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                } else {
-                    View customBackground = tab.getCustomView();
-                }
-                viewPager.setCurrentItem(tab.getPosition());
-                tab.select();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(CreateGroup.this, R.color.tabs);
-                if (tab.getIcon() != null) {
-                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                } else {
-                    View customBackground = tab.getCustomView();
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
             }
         });
 
@@ -134,22 +90,23 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
             @Override
             public void onResponse(String response) {
                 Toast.makeText(CreateGroup.this, response, Toast.LENGTH_LONG).show();
+                Log.i("request response", response);
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(CreateGroup.this, error.toString(), Toast.LENGTH_LONG).show();
+                Toast.makeText(CreateGroup.this, "failed", Toast.LENGTH_LONG).show();
             }
         }) {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> params = new HashMap<>();
-                String groub_name = name.getText().toString();
+                String group_name = name.getText().toString();
                 String user_name = userName.getText().toString();
                 String about_group = about.getText().toString();
 
-                params.put("name", groub_name);
+                params.put("name", group_name);
                 params.put("username", user_name);
                 params.put("about", about_group);
 
