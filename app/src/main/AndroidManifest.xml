@@ -50,7 +50,8 @@
             android:exported="false" />
 
         <activity android:name=".activities.SavedPosts" />
-        <activity android:name=".activities.WelcomeSlider"></activity>
+        <activity android:name=".activities.WelcomeSlider" />
+        <activity android:name=".activities.CreateGroup"></activity>
     </application>
 
 </manifest>

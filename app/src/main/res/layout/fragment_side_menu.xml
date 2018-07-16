@@ -27,15 +27,27 @@
             android:textColor="@color/green7"/>
 
         <TextView
+            android:id="@+id/createGroupView"
+            android:layout_below="@+id/sideSavedPostsView"
+            android:text="@string/createGroupLabel"
+            android:layout_margin="@dimen/dimen_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:textColor="@color/green7" />
+
+        <TextView
             android:id="@+id/logoutView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/sideSavedPostsView"
+            android:layout_below="@id/createGroupView"
             android:layout_centerHorizontal="true"
             android:layout_margin="@dimen/dimen_10"
             android:text="@string/log_out"
             android:textColor="@color/green5"
             android:textSize="15sp" />
+
+
 
         <!--<LinearLayout-->
         <!--android:layout_width="match_parent"-->

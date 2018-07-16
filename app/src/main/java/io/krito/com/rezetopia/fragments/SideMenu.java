@@ -12,9 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.activities.CreateGroup;
 import io.krito.com.rezetopia.activities.Login;
 import io.krito.com.rezetopia.activities.Profile;
 import io.krito.com.rezetopia.activities.SavedPosts;
@@ -29,6 +28,7 @@ public class SideMenu extends Fragment implements ConnectivityReceiver.Connectiv
     TextView logoutView;
     TextView myProfileView;
     TextView savedPosts;
+    TextView createGroupView;
 
     @Nullable
     @Override
@@ -41,9 +41,11 @@ public class SideMenu extends Fragment implements ConnectivityReceiver.Connectiv
         logoutView = view.findViewById(R.id.logoutView);
         myProfileView = view.findViewById(R.id.myProfile);
         savedPosts = view.findViewById(R.id.sideSavedPostsView);
+        createGroupView = view.findViewById(R.id.createGroupView);
         myProfileView.setOnClickListener(this);
         logoutView.setOnClickListener(this);
         savedPosts.setOnClickListener(this);
+        createGroupView.setOnClickListener(this);
         return view;
     }
 
@@ -78,6 +80,10 @@ public class SideMenu extends Fragment implements ConnectivityReceiver.Connectiv
             case R.id.sideSavedPostsView:
                 Intent intent1 = new Intent(getActivity(), SavedPosts.class);
                 startActivity(intent1);
+                break;
+            case  R.id.createGroupView:
+                Intent intent2 = new Intent(getActivity(), CreateGroup.class);
+                startActivity(intent2);
                 break;
         }
     }
