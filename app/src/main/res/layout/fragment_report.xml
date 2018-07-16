@@ -1,0 +1,70 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.krito.com.rezetopia.fragments.ReportFragment">
+
+   <LinearLayout
+       android:id="@+id/report"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="horizontal">
+
+       <ImageView
+           android:layout_centerVertical="true"
+           android:id="@+id/tellSomethingPPView"
+           android:background="@drawable/pp_circle"
+           android:layout_width="50dp"
+           android:layout_height="50dp"
+           android:layout_marginEnd="@dimen/dimen_10"
+           android:layout_marginStart="10dp"
+           android:layout_marginTop="10dp"/>
+
+       <LinearLayout
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:orientation="vertical">
+
+           <TextView
+               android:id="@+id/user_name_tv"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               tools:text="User name"
+               android:layout_marginTop="15dp"/>
+           <TextView
+               android:id="@+id/post_time_tv"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               tools:text="12 min"
+              />
+
+       </LinearLayout>
+
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:src="@drawable/ic_active_dot"
+           android:scaleType="fitXY"
+           android:layout_marginTop="20dp"/>
+
+       <Button
+           android:layout_width="70dp"
+           android:layout_height="30dp"
+           android:text="@string/message"
+           android:textColor="@color/white"
+           android:background="@drawable/round_green_btn"
+           android:layout_marginTop="15dp"
+           android:layout_marginStart="3dp"/>
+   </LinearLayout>
+
+    <TextView
+        android:id="@+id/post_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/report"
+        android:background="@drawable/post_background"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginTop="10dp"/>
+
+</RelativeLayout>

@@ -74,6 +74,56 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
             }
         });
 
+        requestView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
+        notificationView = LayoutInflater.from(this).inflate(R.layout.notification_tab_icon, null);
+
+
+        tabLayout = findViewById(R.id.tablayout);
+
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(notificationView));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));
+        tabLayout.addTab(tabLayout.newTab().setCustomView(requestView));
+        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_side_menu));
+
+
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+        tabLayout.getTabAt(0).getIcon().
+                setColorFilter(ContextCompat.getColor(CreateGroup.this, R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
+
+        viewPager = findViewById(R.id.pager);
+        adapter = new MainPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                int tabIconColor = ContextCompat.getColor(CreateGroup.this, R.color.colorPrimaryDark);
+                if (tab.getIcon() != null) {
+                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                } else {
+                    View customBackground = tab.getCustomView();
+                }
+                viewPager.setCurrentItem(tab.getPosition());
+                tab.select();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+                int tabIconColor = ContextCompat.getColor(CreateGroup.this, R.color.tabs);
+                if (tab.getIcon() != null) {
+                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
+                } else {
+                    View customBackground = tab.getCustomView();
+                }
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
     }
 
 

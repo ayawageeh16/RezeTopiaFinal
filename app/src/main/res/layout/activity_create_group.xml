@@ -132,27 +132,28 @@
 
      <RadioGroup
          android:layout_width="wrap_content"
-         android:layout_height="wrap_content">
+         android:layout_height="wrap_content"
+         android:orientation="vertical">
 
          <RadioButton
              android:id="@+id/open_group"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_margin="5dp"
+             android:layout_marginStart="5dp"
              android:text="@string/open_group_label"
              android:drawableLeft="@drawable/ic_open_group_icon"/>
          <RadioButton
              android:id="@+id/closed_group"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_margin="5dp"
+             android:layout_marginStart="5dp"
              android:text="@string/closed_group_label"
              android:drawableLeft="@drawable/lock"/>
          <RadioButton
              android:id="@+id/secret_group"
              android:layout_width="wrap_content"
              android:layout_height="wrap_content"
-             android:layout_margin="5dp"
+             android:layout_marginStart="5dp"
              android:text="@string/secret_group_label"
              android:drawableLeft="@drawable/ic_secret"/>
 
@@ -160,17 +161,19 @@
 
         <Button
             android:id="@+id/create_group_btn"
-            android:layout_width="wrap_content"
+            android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:text="@string/createGroupLabel"
-            android:layout_marginStart="50dp"
-            android:layout_marginEnd="50dp"/>
+            android:textColor="@color/white"
+            android:background="@drawable/round_green_btn"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"
+            />
     </LinearLayout>
-
-
-
 
 </LinearLayout>
     </RelativeLayout>
@@ -184,7 +187,8 @@
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_fir_ball"
-        app:backgroundTint="@color/colorPrimary"/>
+        app:backgroundTint="@color/colorPrimary"
+        />
 
 </RelativeLayout>
 </ScrollView>
