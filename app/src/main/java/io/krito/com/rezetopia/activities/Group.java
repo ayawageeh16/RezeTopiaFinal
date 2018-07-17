@@ -51,13 +51,6 @@ public class Group extends AppCompatActivity {
         if (extras != null) {
             groupId = extras.getInt("groupId");
         }
-
-
     }
 
-    private void addTabs(ViewPager viewPager) {
-
-
-        viewPager.setAdapter(adapter);
-    }
 }

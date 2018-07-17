@@ -95,7 +95,6 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v == createGroupButton) {
             sendGroupData();
-            getData();
 
         }
     }
@@ -142,24 +141,6 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
             }
         };
         requestQueue.add(stringRequest);
-    }
-
-    private void getData(){
-
-        StringRequest request = new StringRequest(Request.Method.POST, BACK_END, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-              //  Toast.makeText(CreateGroup.this, response, Toast.LENGTH_LONG).show();
-                Log.i("request response", response);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-               // Toast.makeText(CreateGroup.this, error.toString(), Toast.LENGTH_LONG).show();
-                Log.i("request response", error.toString());
-            }
-        });
-        requestQueue.add(request);
     }
 
     public String checkRadioButton (View v){
