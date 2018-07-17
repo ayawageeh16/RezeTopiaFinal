@@ -1,6 +1,7 @@
 package io.krito.com.rezetopia.activities;
 
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -25,10 +26,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
 import io.krito.com.rezetopia.R;
+import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.helper.MainPagerAdapter;
 
 public class CreateGroup extends AppCompatActivity implements View.OnClickListener {
@@ -48,6 +53,10 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
     private MainPagerAdapter adapter;
     private StringRequest stringRequest;
     private String BACK_END = "https://rezetopia.com/Apis/groups/create";
+    private String userId;
+    private String privacy;
+    private RequestQueue requestQueue ;
+    private int groupId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +75,10 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
         viewPager = findViewById(R.id.pager);
 
         createGroupButton.setOnClickListener(this);
+
+         userId = getSharedPreferences(AppConfig.SHARED_PREFERENCE_NAME, MODE_PRIVATE)
+                .getString(AppConfig.LOGGED_IN_USER_ID_SHARED, null);
+
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -74,56 +87,7 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
             }
         });
 
-        requestView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
-        notificationView = LayoutInflater.from(this).inflate(R.layout.notification_tab_icon, null);
-
-
-        tabLayout = findViewById(R.id.tablayout);
-
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_home_tab));
-        tabLayout.addTab(tabLayout.newTab().setCustomView(notificationView));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_store));
-        tabLayout.addTab(tabLayout.newTab().setCustomView(requestView));
-        tabLayout.addTab(tabLayout.newTab().setIcon(R.drawable.ic_side_menu));
-
-
-        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
-        tabLayout.getTabAt(0).getIcon().
-                setColorFilter(ContextCompat.getColor(CreateGroup.this, R.color.colorPrimaryDark), PorterDuff.Mode.SRC_IN);
-
-        viewPager = findViewById(R.id.pager);
-        adapter = new MainPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
-        viewPager.setAdapter(adapter);
-        viewPager.setOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(CreateGroup.this, R.color.colorPrimaryDark);
-                if (tab.getIcon() != null) {
-                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                } else {
-                    View customBackground = tab.getCustomView();
-                }
-                viewPager.setCurrentItem(tab.getPosition());
-                tab.select();
-            }
-
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {
-                int tabIconColor = ContextCompat.getColor(CreateGroup.this, R.color.tabs);
-                if (tab.getIcon() != null) {
-                    tab.getIcon().setColorFilter(tabIconColor, PorterDuff.Mode.SRC_IN);
-                } else {
-                    View customBackground = tab.getCustomView();
-                }
-            }
-
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {
-
-            }
-        });
-
+        requestQueue = Volley.newRequestQueue(this);
     }
 
 
@@ -131,6 +95,8 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v == createGroupButton) {
             sendGroupData();
+            getData();
+
         }
     }
 
@@ -139,14 +105,21 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
         stringRequest = new StringRequest(Request.Method.POST, BACK_END, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Toast.makeText(CreateGroup.this, response, Toast.LENGTH_LONG).show();
-                Log.i("request response", response);
-
+                try {
+                    JSONObject jsonObject = new JSONObject(response);
+                    groupId = jsonObject.getInt("groupid");
+                    Intent intent = new Intent(CreateGroup.this, Group.class);
+                    intent.putExtra("groupId",groupId);
+                    startActivity(intent);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(CreateGroup.this, "failed", Toast.LENGTH_LONG).show();
+                Log.i("request response", error.toString());
             }
         }) {
             @Override
@@ -159,12 +132,47 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
                 params.put("name", group_name);
                 params.put("username", user_name);
                 params.put("about", about_group);
+                params.put("privacy",privacy);
+
+                if (userId == null || userId.isEmpty()){
+                    params.put("userid",userId);
+                }
 
                 return params;
             }
         };
-
-        RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
+    }
+
+    private void getData(){
+
+        StringRequest request = new StringRequest(Request.Method.POST, BACK_END, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+              //  Toast.makeText(CreateGroup.this, response, Toast.LENGTH_LONG).show();
+                Log.i("request response", response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+               // Toast.makeText(CreateGroup.this, error.toString(), Toast.LENGTH_LONG).show();
+                Log.i("request response", error.toString());
+            }
+        });
+        requestQueue.add(request);
+    }
+
+    public String checkRadioButton (View v){
+
+        if (v == open){
+            privacy= open.getText().toString();
+        }
+        else if (v == closed){
+            privacy= closed.getText().toString();
+        }
+        else if (v == secret){
+            privacy= closed.getText().toString();
+        }
+      return privacy;
     }
 }

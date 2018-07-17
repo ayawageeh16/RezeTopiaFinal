@@ -3,6 +3,8 @@ package io.krito.com.rezetopia.activities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import io.krito.com.rezetopia.R;
+
 public class Settings extends AppCompatActivity {
 
     @Override

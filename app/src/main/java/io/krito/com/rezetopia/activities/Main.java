@@ -40,7 +40,6 @@ public class Main extends AppCompatActivity implements Home.HomeCallback {
     TabLayout tabLayout;
     ViewPager viewPager;
     MainPagerAdapter adapter;
-
     String userId;
 
     @Override

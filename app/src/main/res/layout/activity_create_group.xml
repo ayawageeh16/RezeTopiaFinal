@@ -16,26 +16,6 @@
         <include layout="@layout/action_bar" />
     </LinearLayout>
 
-    <android.support.design.widget.TabLayout
-        android:layout_below="@id/searchHeader"
-        android:id="@+id/tablayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/tabs"
-        app:tabIndicatorColor="@null"
-        android:minHeight="100dp"
-        app:tabTextColor="#bababa"/>
-
-
-    <android.support.v4.view.ViewPager
-        android:layout_below="@id/tablayout"
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/fragment"
-        android:paddingTop="5dp"
-        app:layout_constraintTop_toBottomOf="@+id/tablayout"
-        tools:layout_marginTop="0dp"/>
 
 
     <RelativeLayout
@@ -43,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:background="@drawable/post_background"
-        android:layout_below="@+id/pager">
+        android:layout_below="@+id/searchHeader">
 
 
 
@@ -141,6 +121,7 @@
              android:layout_height="wrap_content"
              android:layout_marginStart="5dp"
              android:text="@string/open_group_label"
+             android:onClick="checkRadioButton"
              android:drawableLeft="@drawable/ic_open_group_icon"/>
          <RadioButton
              android:id="@+id/closed_group"
@@ -148,6 +129,7 @@
              android:layout_height="wrap_content"
              android:layout_marginStart="5dp"
              android:text="@string/closed_group_label"
+             android:onClick="checkRadioButton"
              android:drawableLeft="@drawable/lock"/>
          <RadioButton
              android:id="@+id/secret_group"
@@ -155,6 +137,7 @@
              android:layout_height="wrap_content"
              android:layout_marginStart="5dp"
              android:text="@string/secret_group_label"
+             android:onClick="checkRadioButton"
              android:drawableLeft="@drawable/ic_secret"/>
 
      </RadioGroup>

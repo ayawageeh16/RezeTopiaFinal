@@ -32,6 +32,7 @@
             android:layout_below="@+id/cover_image">
 
             <TextView
+                android:id="@+id/group_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="group name"
@@ -52,6 +53,7 @@
                 />
 
             <TextView
+                android:id="@+id/group_members_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="500 member"
@@ -88,27 +90,6 @@
             android:paddingTop="5dp"
             app:layout_constraintTop_toBottomOf="@+id/tablayout"
             android:layout_marginTop="0dp"/>
-
-
-        <LinearLayout
-            android:id="@+id/create_post"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tablayout">
-            <include layout="@layout/create_post_header" />
-        </LinearLayout>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/post_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/create_post"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="@dimen/dimen_10">
-        </android.support.v7.widget.RecyclerView>
 
     </RelativeLayout>
 </ScrollView>
