@@ -48,9 +48,6 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
     TabLayout tabLayout;
     FloatingActionButton fab;
     ViewPager viewPager;
-    View requestView;
-    View notificationView;
-    private MainPagerAdapter adapter;
     private StringRequest stringRequest;
     private String BACK_END = "https://rezetopia.com/Apis/groups/create";
     private String userId;
@@ -95,7 +92,6 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
     public void onClick(View v) {
         if (v == createGroupButton) {
             sendGroupData();
-
         }
     }
 
