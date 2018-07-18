@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView  xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.krito.com.rezetopia.activities.CreateGroup">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/searchHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <include layout="@layout/action_bar" />
+    </LinearLayout>
+
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:background="@drawable/post_background"
+        android:layout_below="@+id/searchHeader">
+
+
+
+        <LinearLayout
+            android:id="@+id/createGroupId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+           <ImageView
+               android:layout_width="50dp"
+               android:layout_height="50dp"
+               android:scaleType="fitXY"
+               android:src="@drawable/ic_groubicon"
+               android:layout_marginStart="15dp"
+               android:layout_marginTop="15dp"
+               android:layout_marginBottom="30dp"/>
+
+            <TextView
+                android:text="@string/createTeamLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="30dp"
+                android:textSize="15sp"/>
+
+        </LinearLayout>
+
+   <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_below="@id/createGroupId">
+
+        <EditText
+            android:id="@+id/group_name_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createGroupId"
+            android:background="@drawable/rounded_rect_shape"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="10dp"
+            android:hint="name of your group"
+            android:padding="@dimen/dimen_10"
+
+            />
+
+        <EditText
+            android:id="@+id/userName_et"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/createGroupId"
+            android:background="@drawable/rounded_rect_shape"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="@dimen/dimen_10"
+            android:hint="user name"
+            android:padding="@dimen/dimen_10"
+
+            />
+
+       <EditText
+           android:id="@+id/about_et"
+           android:layout_width="match_parent"
+           android:layout_height="80dp"
+           android:layout_below="@id/createGroupId"
+           android:background="@drawable/rounded_rect_shape"
+           android:layout_marginStart="15dp"
+           android:layout_marginEnd="15dp"
+           android:layout_marginBottom="30dp"
+           android:hint="about"
+           android:padding="@dimen/dimen_10"
+           />
+    <TextView
+     android:layout_width="wrap_content"
+     android:layout_height="wrap_content"
+     android:text="@string/privacy"
+     android:layout_marginStart="15dp"/>
+
+    <LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+        android:paddingBottom="5dp">
+
+     <RadioGroup
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:orientation="vertical">
+
+         <RadioButton
+             android:id="@+id/open_group"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="5dp"
+             android:text="@string/open_group_label"
+             android:onClick="checkRadioButton"
+             android:drawableLeft="@drawable/ic_open_group_icon"/>
+         <RadioButton
+             android:id="@+id/closed_group"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="5dp"
+             android:text="@string/closed_group_label"
+             android:onClick="checkRadioButton"
+             android:drawableLeft="@drawable/lock"/>
+         <RadioButton
+             android:id="@+id/secret_group"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_marginStart="5dp"
+             android:text="@string/secret_group_label"
+             android:onClick="checkRadioButton"
+             android:drawableLeft="@drawable/ic_secret"/>
+
+     </RadioGroup>
+
+        <Button
+            android:id="@+id/create_group_btn"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:text="@string/createGroupLabel"
+            android:textColor="@color/white"
+            android:background="@drawable/round_green_btn"
+            android:layout_marginStart="100dp"
+            android:layout_marginEnd="100dp"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="20dp"
+            />
+    </LinearLayout>
+
+</LinearLayout>
+    </RelativeLayout>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/fab_margin"
+        android:src="@drawable/ic_fir_ball"
+        app:backgroundTint="@color/colorPrimary"
+        />
+
+</RelativeLayout>
+</ScrollView>

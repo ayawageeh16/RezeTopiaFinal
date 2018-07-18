@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="io.krito.com.rezetopia.activities.Group">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/searchHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <include layout="@layout/action_bar" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/cover_image"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:src="@color/colorPrimary"
+            android:layout_below="@+id/searchHeader"/>
+
+        <LinearLayout
+            android:id="@+id/group_header"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@+id/cover_image">
+
+            <TextView
+                android:id="@+id/group_name_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="group name"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="2dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_group_icon"/>
+
+            <ImageView
+                android:id="@+id/settings_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_group_settings"
+                android:scaleType="fitXY"
+                android:visibility="gone"
+                />
+
+            <TextView
+                android:id="@+id/group_members_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="500 member"
+                android:layout_gravity="right"
+                android:layout_marginStart="100dp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/group_privacy_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/group_header"
+            android:layout_marginStart="45dp"
+            tools:text="open"
+            android:layout_marginBottom="10dp"/>
+
+        <android.support.design.widget.TabLayout
+            android:layout_below="@id/group_privacy_tv"
+            android:id="@+id/tablayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/gray"
+            app:tabIndicatorColor="@null"
+            android:minHeight="100dp"
+            app:tabTextColor="#bababa"/>
+
+        <android.support.v4.view.ViewPager
+            android:layout_below="@id/tablayout"
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fragment"
+            android:paddingTop="5dp"
+            app:layout_constraintTop_toBottomOf="@+id/tablayout"
+            android:layout_marginTop="0dp"/>
+
+    </RelativeLayout>
+</ScrollView>

@@ -40,7 +40,6 @@ public class Main extends AppCompatActivity implements Home.HomeCallback {
     TabLayout tabLayout;
     ViewPager viewPager;
     MainPagerAdapter adapter;
-
     String userId;
 
     @Override
@@ -74,6 +73,7 @@ public class Main extends AppCompatActivity implements Home.HomeCallback {
 
         requestView = LayoutInflater.from(this).inflate(R.layout.request_tab_icon, null);
         notificationView = LayoutInflater.from(this).inflate(R.layout.notification_tab_icon, null);
+
 
         tabLayout = findViewById(R.id.tablayout);
 
