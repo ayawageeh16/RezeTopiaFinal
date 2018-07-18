@@ -15,7 +15,7 @@ public class ApiCommentResponse implements Serializable {
     @Expose
     private Comment[] comments;
 
-    @SerializedName("nextCursor")
+    @SerializedName("next_cursor")
     @Expose
     private String nextCursor;
 

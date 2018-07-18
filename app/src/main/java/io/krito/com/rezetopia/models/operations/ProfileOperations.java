@@ -110,7 +110,8 @@ public class ProfileOperations {
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "getInfo.php";
 
-            StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            url = "https://rezetopia.com/Apis/profile/info?user_id=" + strings[0];
+            StringRequest post = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
@@ -118,7 +119,7 @@ public class ProfileOperations {
                         if (!jsonResponse.getBoolean("error")) {
                             Log.e("getInfo", response);
                             User user = new User();
-                            user.setId(jsonResponse.getInt("id"));
+                            user.setId(Integer.valueOf(strings[0]));
                             user.setName(jsonResponse.getString("name"));
                             user.setCity(jsonResponse.getString("city"));
                             user.setEmail(jsonResponse.getString("email"));
@@ -166,7 +167,11 @@ public class ProfileOperations {
                     infoCallback.onError(R.string.time_out);
                 }
             }
-            ) {
+            );
+
+
+            /*
+            * {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
@@ -175,7 +180,7 @@ public class ProfileOperations {
                     params.put("id", strings[0]);
                     return params;
                 }
-            };
+            }*/
             requestQueue.add(post);
             return null;
         }
@@ -186,8 +191,8 @@ public class ProfileOperations {
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "addfriend.php";
-
-            StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            url = "https://rezetopia.com/Apis/profile/is/friend?from=" + strings[0] + "&to=" + strings[1];
+            StringRequest post = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     try {
@@ -236,7 +241,10 @@ public class ProfileOperations {
                     isFriendCallback.onError(R.string.time_out);
                 }
             }
-            ) {
+            );
+
+            /*
+            * {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String> params = new HashMap<>();
@@ -247,7 +255,7 @@ public class ProfileOperations {
                     params.put("to", strings[1]);
                     return params;
                 }
-            };
+            }*/
             requestQueue.add(post);
             return null;
         }
@@ -472,7 +480,8 @@ public class ProfileOperations {
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "reze/user_post.php";
 
-            VolleyCustomRequest request = new VolleyCustomRequest(Request.Method.POST, url, ApiResponse.class,
+            url = "https://rezetopia.com/Apis/profile?userId=" + strings[0] + "&cursor=" + profileCursor;
+            VolleyCustomRequest request = new VolleyCustomRequest(Request.Method.GET, url, ApiResponse.class,
                     new Response.Listener<ApiResponse>() {
                         @Override
                         public void onResponse(ApiResponse response) {
@@ -503,10 +512,10 @@ public class ProfileOperations {
                                     newsFeed.setNextCursor(response.getNextCursor());
                                     newsFeed.setNow(response.getNow());
                                     feedCallback.onSuccess(newsFeed);
-                                    profileCursor = String.valueOf(Integer.parseInt(profileCursor) + 11);
+                                    profileCursor = String.valueOf(Integer.parseInt(profileCursor) + 1);
                                     Log.i("response_cursor", "onResponse: " + profileCursor);
                                 }
-                            } else if (response.isError() && response.getMessage().contentEquals("there are no posts")) {
+                            } else if (response.isError() && response.getMessage() != null && response.getMessage().contentEquals("there are no posts")) {
                                 feedCallback.onEmptyResult();
                             } else {
                                 feedCallback.onError(R.string.unknown_error);

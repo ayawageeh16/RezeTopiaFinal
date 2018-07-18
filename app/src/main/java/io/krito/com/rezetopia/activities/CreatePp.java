@@ -22,6 +22,7 @@ import com.andrognito.flashbar.Flashbar;
 import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
@@ -39,11 +40,16 @@ import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+import com.tangxiaolv.telegramgallery.GalleryActivity;
+import com.tangxiaolv.telegramgallery.GalleryConfig;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -55,6 +61,7 @@ import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.helper.ListPopupWindowAdapter;
 import io.krito.com.rezetopia.helper.MenuCustomItem;
+import io.krito.com.rezetopia.helper.VolleyMultipartRequest;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -63,10 +70,12 @@ import ru.whalemare.sheetmenu.SheetMenu;
 public class CreatePp extends AppCompatActivity implements View.OnClickListener {
 
     public static boolean skip = false;
+    private static final int PICK_IMAGE_REQUEST_CODE = 1006;
 
     String userId;
     String privacyText = "public";
     Image image;
+    List<String> selectedImages;
 
     ImageView backView;
     TextView createPostView;
@@ -76,6 +85,7 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
     ImageView removePpImage;
     EditText ppText;
     PageLoader pageLoader;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -117,11 +127,14 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                 .withListener(new PermissionListener() {
                     @Override
                     public void onPermissionGranted(PermissionGrantedResponse response) {
-                        ImagePicker.create(CreatePp.this)
-                                .folderMode(true)
-                                .limit(1)
-                                .theme(R.style.CustomImagePickerTheme)
-                                .start();
+                        GalleryConfig config = new GalleryConfig.Build()
+                                .singlePhoto(false)
+                                .hintOfPick("Pick image")
+//                                .filterMimeTypes(new String[]{"image/jpeg"})
+//                                .singlePhoto(true)
+                                .limitPickPhoto(1)
+                                .build();
+                        GalleryActivity.openActivity(CreatePp.this, PICK_IMAGE_REQUEST_CODE, config);
                     }
 
                     @Override
@@ -136,7 +149,7 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                 }).check();
     }
 
-    private void uploadPp(final String path) {
+    private void uploadPp1(final String path) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
@@ -232,6 +245,122 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
         RezetopiaApp.getInstance().getRequestQueue().add(stringRequest);
     }
 
+    private void uploadPp(final String path) {
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, "https://rezetopia.com/Apis/profile/change-avatar",
+                new Response.Listener<NetworkResponse>() {
+                    @Override
+                    public void onResponse(NetworkResponse response) {
+                        String responseString = new String(response.data);
+                        Log.i("CreatePpPost", "onResponse: " + responseString);
+                        NewsFeedItem item = new NewsFeedItem();
+
+                        try {
+                            JSONObject jsonObject = new JSONObject(responseString);
+
+                            if (!jsonObject.getBoolean("error")){
+                                Intent intent = new Intent();
+                                //intent.putExtra("post", item);
+                                intent.putExtra("pp_url", jsonObject.getString("avatar_url"));
+                                setResult(RESULT_OK, intent);
+                                onBackPressed();
+                            }
+//                            if (jsonObject.getInt("post_id") > 0) {
+//                                item.setOwnerId(userId);
+//                                item.setPostId(jsonObject.getString("post_id"));
+//                                item.setOwnerName(jsonObject.getString("username"));
+//                                item.setCreatedAt(jsonObject.getString("createdAt"));
+//                                if (jsonObject.getString("text") != null && !jsonObject.getString("text").isEmpty()) {
+//                                    item.setPostText(jsonObject.getString("text"));
+//                                }
+//
+//                                if (jsonObject.getString("url") != null && !jsonObject.getString("url").isEmpty()) {
+//                                    String ppUrl = jsonObject.getString("url");
+//                                    item.setPpUrl(ppUrl);
+//                                }
+//                                item.setPpPostId(jsonObject.getInt("pp_post_id"));
+//                                item.setLikes(new int[0]);
+//                                item.setCommentSize(0);
+//                                item.setType(NewsFeedItem.PP_TYPE);
+//
+//                            } else {
+//                                pageLoader.stopProgress();
+//                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+
+//                        if (Integer.parseInt(item.getPostId()) > 0) {
+//                            Intent intent = new Intent();
+//                            intent.putExtra("post", item);
+//                            setResult(RESULT_OK, intent);
+//                            onBackPressed();
+//                        } else {
+//                            pageLoader.stopProgress();
+//                        }
+                        pageLoader.stopProgress();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                pageLoader.stopProgress();
+                Log.i("create_pp_error", "onErrorResponse: " + error.getMessage());
+
+                if (error instanceof NetworkError) {
+                    Log.i("CreateError", getResources().getString(R.string.connection_error));
+                } else if (error instanceof ServerError) {
+                    Log.i("CreateError", getResources().getString(R.string.server_error));
+                } else if (error instanceof AuthFailureError) {
+                    Log.i("CreateError", getResources().getString(R.string.connection_error));
+                } else if (error instanceof ParseError) {
+                    Log.i("CreateError", getResources().getString(R.string.parsing_error));
+                } else if (error instanceof NoConnectionError) {
+                    Log.i("CreateError", getResources().getString(R.string.connection_error));
+                } else if (error instanceof TimeoutError) {
+                    Log.i("CreateError", getResources().getString(R.string.time_out));
+                }
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                HashMap<String, String> map = new HashMap<>();
+
+                map.put("method", "create_pp_post");
+                map.put("user_id", userId);
+//                if (ppText.getText().toString().length() > 0) {
+//                    map.put("post_text", ppText.getText().toString());
+//                }
+//
+//                map.put("privacy", privacyText);
+//
+//                if (path != null && !path.isEmpty()) {
+//                    Bitmap bm = null;
+//                    bm = BitmapFactory.decodeFile(path);
+//                    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+//                    bm.compress(Bitmap.CompressFormat.JPEG, 50, baos);
+//                    String encodedImage = Base64.encodeToString(baos.toByteArray(), Base64.DEFAULT);
+//
+//                    map.put("image", encodedImage);
+//                }
+
+                return map;
+            }
+
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Log.i("uploadTest", "getParams: bytes");
+                Map<String, DataPart> params = new HashMap<>();
+
+                if (path != null){
+                    params.put("change_avatar", new DataPart("change_avatar.jpg", convert(path), "image/jpeg"));
+                }
+
+                return params;
+            }
+        };
+
+        RezetopiaApp.getInstance().getRequestQueue().add(request);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -247,6 +376,16 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                 onBackPressed();
             }
         }
+
+        if (requestCode == PICK_IMAGE_REQUEST_CODE && data != null) {
+            selectedImages = (List<String>) data.getSerializableExtra(GalleryActivity.PHOTOS);
+            if (selectedImages != null && selectedImages.size() > 0){
+                Bitmap bm = null;
+                bm = BitmapFactory.decodeFile(selectedImages.get(0));
+                ppView.setImageBitmap(bm);
+            }
+        }
+
     }
 
     @Override
@@ -264,12 +403,36 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                 pickPpImage();
                 break;
             case R.id.createPostView:
-                if (image != null) {
-                    uploadPp(image.getPath());
+                if (selectedImages != null) {
+                    uploadPp(selectedImages.get(0));
                     pageLoader.startProgress();
                 }
                 break;
         }
+    }
+
+    public byte[] convert(String path) {
+
+        FileInputStream fis = null;
+        try {
+            fis = new FileInputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] b = new byte[1024];
+
+        try {
+            for (int readNum; (readNum = fis.read(b)) != -1; ) {
+                bos.write(b, 0, readNum);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        byte[] bytes = bos.toByteArray();
+
+        return bytes;
     }
 
     private void createSheet() {

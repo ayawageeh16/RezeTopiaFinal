@@ -16,12 +16,20 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.security.ProviderInstaller;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLEngine;
 
 import io.krito.com.rezetopia.models.operations.HomeOperations;
 import io.krito.com.rezetopia.models.operations.ProfileOperations;
@@ -90,6 +98,21 @@ public class RezetopiaApp extends Application {
 
     public RequestQueue getRequestQueue() {
         if (mSaveRequestQueue == null) {
+            try {
+                ProviderInstaller.installIfNeeded(this);
+
+                SSLContext sslContext = SSLContext.getInstance("TLSv1.2");
+                sslContext.init(null, null, null);
+                SSLEngine engine = sslContext.createSSLEngine();
+            } catch (GooglePlayServicesRepairableException e) {
+                Log.e("Test321", "PlayServices not installed");
+            } catch (GooglePlayServicesNotAvailableException e) {
+                Log.e("Test321", "Google Play Services not available.");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+            } catch (KeyManagementException e) {
+                e.printStackTrace();
+            }
             mSaveRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 
@@ -98,6 +121,14 @@ public class RezetopiaApp extends Application {
 
     public RequestQueue getSaveRequestQueue() {
         if (mRequestQueue == null) {
+            try {
+                ProviderInstaller.installIfNeeded(this);
+            } catch (GooglePlayServicesRepairableException e) {
+                Log.e("Test321", "PlayServices not installed");
+            } catch (GooglePlayServicesNotAvailableException e) {
+                Log.e("Test321", "Google Play Services not available.");
+            }
+
             mRequestQueue = Volley.newRequestQueue(getApplicationContext());
         }
 

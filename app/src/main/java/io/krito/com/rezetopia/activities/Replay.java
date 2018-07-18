@@ -286,7 +286,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                                         likeReplayView.setText(likeString);
                                     }
 
-                                    reverseLike(replay);
+                                    performLike(replay);
                                     return;
                                 }
                             }
@@ -317,6 +317,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                 @Override
                 public void onClick(View v) {
                     editReplay(replay, position);
+                    itemView.setEnabled(false);
+                    itemView.setAlpha(0.5f);
                 }
             });
 
@@ -332,7 +334,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
 
         private void performLike(final io.krito.com.rezetopia.models.pojo.post.Replay replay) {
 
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/likes/post/comment",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -368,7 +370,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                     map.put("method", "replay_like");
                     map.put("userId", userId);
                     map.put("post_id", String.valueOf(String.valueOf(replay.getReplayId())));
-                    map.put("replay_id", String.valueOf(replay.getReplayId()));
+                    map.put("comment_id", String.valueOf(replay.getReplayId()));
                     map.put("add_like", String.valueOf(true));
 
                     return map;
@@ -436,7 +438,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
         }
 
         private void removeReplay(final io.krito.com.rezetopia.models.pojo.post.Replay replay, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/comments/delete",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -463,8 +465,10 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
 
                     Log.i("remove_replay_params", "getParams: " + userId + " " + postId + " " + replay.getReplayId());
                     map.put("method", "delete_replay");
-                    map.put("userId", userId);
-                    map.put("replay_id", String.valueOf(replay.getReplayId()));
+                    map.put("user_id", userId);
+                    //map.put("replay_id", String.valueOf(replay.getReplayId()));
+                    map.put("comment_id", String.valueOf(replay.getReplayId()));
+                    map.put("parent_id", String.valueOf(commentId));
 
                     return map;
                 }
@@ -474,7 +478,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
         }
 
         private void editReplay(final io.krito.com.rezetopia.models.pojo.post.Replay replay, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/comments/edit",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -482,6 +486,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (!jsonObject.getBoolean("error")){
+                                    itemView.setAlpha(0.5f);
+                                    itemView.setEnabled(true);
                                     replay.setReplayText(replayEditText.getText().toString());
                                     //replayTextView.setText(replay.getReplayText());
                                     replies.set(position, replay);
@@ -494,6 +500,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    itemView.setAlpha(0.5f);
+                    itemView.setEnabled(true);
                     Log.i("edit_replay_params", "onErrorResponse: " + error.getMessage());
                 }
             }){
@@ -504,8 +512,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                     Log.i("remove_replay_params", "getParams: " + userId + " " + postId + " " + replay.getReplayId());
                     map.put("method", "edit_replay");
                     map.put("userId", userId);
-                    map.put("replay_id", String.valueOf(replay.getReplayId()));
-                    map.put("replay", replayEditText.getText().toString());
+                    map.put("comment_id", String.valueOf(replay.getReplayId()));
+                    map.put("description", replayEditText.getText().toString());
 
                     return map;
                 }
@@ -569,7 +577,7 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
         if (replayEditText.getText().toString().length() > 0) {
             final String replayText = replayEditText.getText().toString();
             replayEditText.setText(null);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/comments",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -581,10 +589,10 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                                     //  Toast.makeText(ReplayActivity.this, "Error submitting replay", Toast.LENGTH_SHORT).show();
                                 } else {
                                     replayResponse = new io.krito.com.rezetopia.models.pojo.post.Replay();
-                                    replayResponse.setReplayId(Integer.parseInt(userId));
-                                    replayResponse.setReplierId(jsonObject.getInt("replierId"));
-                                    replayResponse.setReplayText(jsonObject.getString("replay_text"));
-                                    replayResponse.setCreatedAt(jsonObject.getString("createdAt"));
+                                    replayResponse.setReplayId(jsonObject.getInt("comment_id"));
+                                    replayResponse.setReplierId(jsonObject.getInt("user_id"));
+                                    replayResponse.setReplayText(replayText);
+                                    replayResponse.setCreatedAt(jsonObject.getString("created_at"));
                                     replayResponse.setUsername(jsonObject.getString("username"));
                                     replayResponse.setPending(false);
                                     /*JSONArray jsonArray = jsonObject.getJSONArray("likes");
@@ -623,8 +631,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
                     map.put("method", "add_replay");
                     map.put("post_id", String.valueOf(postId));
                     map.put("comment_id", String.valueOf(commentId));
-                    map.put("replay", replayText);
-                    map.put("userId", userId);
+                    map.put("description", replayText);
+                    map.put("user_id", userId);
 
                     return map;
                 }
@@ -637,7 +645,8 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
     }
 
     private void fetchReplies() {
-        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+        String url = "https://rezetopia.com/Apis/replies?comment_id=" + commentId + "&cursor=0";
+        VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.GET, url,
                 ApiReplayResponse.class,
                 new Response.Listener<ApiReplayResponse>() {
                     @Override
@@ -658,17 +667,19 @@ public class Replay extends AppCompatActivity implements View.OnClickListener {
             public void onErrorResponse(VolleyError error) {
                 Log.i("volley error", "onErrorResponse: " + error.getMessage());
             }
-        }) {
-            @Override
-            protected Map<String, String> getParams() throws AuthFailureError {
-                HashMap<String, String> map = new HashMap<>();
-                map.put("method", "get_replies");
-                map.put("comment_id", String.valueOf(commentId));
-                map.put("cursor", "0");
+        });
 
-                return map;
-            }
-        };
+//        {
+//            @Override
+//            protected Map<String, String> getParams() throws AuthFailureError {
+//            HashMap<String, String> map = new HashMap<>();
+//            map.put("method", "get_replies");
+//            map.put("comment_id", String.valueOf(commentId));
+//            map.put("cursor", "0");
+//
+//            return map;
+//        }
+//        }
 
         Volley.newRequestQueue(this).add(stringRequest);
     }

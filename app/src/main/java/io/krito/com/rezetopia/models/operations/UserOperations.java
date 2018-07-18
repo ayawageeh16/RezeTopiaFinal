@@ -147,10 +147,11 @@ public class UserOperations {
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "login.php";
-
+            url = "https://rezetopia.com/Apis/login";
             StringRequest post = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Log.e("login_response", response);
                     try {
                         JSONObject jsonResponse = new JSONObject(response);
                         if (!jsonResponse.getBoolean("error")){
@@ -201,8 +202,8 @@ public class UserOperations {
                 protected Map<String, String> getParams() throws AuthFailureError {
                     Map<String, String>  params = new HashMap<>();
                     // the POST parameters:
-                    params.put("login", "login");
-                    params.put("mail", strings[0]);
+                    //params.put("login", "login");
+                    params.put("email", strings[0]);
                     params.put("password", strings[1]);
                     return params;
                 }

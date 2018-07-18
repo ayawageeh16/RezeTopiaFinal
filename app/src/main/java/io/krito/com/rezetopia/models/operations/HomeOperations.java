@@ -89,8 +89,8 @@ public class HomeOperations {
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "user_post.php";
-
-            VolleyCustomRequest request = new VolleyCustomRequest(Request.Method.POST, url, ApiResponse.class,
+            url = "https://rezetopia.com/Apis/posts?userId=" + strings[0] + "&cursor=" + homeCursor;
+            VolleyCustomRequest request = new VolleyCustomRequest(Request.Method.GET, url, ApiResponse.class,
                     new Response.Listener<ApiResponse>() {
                 @Override
                 public void onResponse(ApiResponse response) {
@@ -132,7 +132,7 @@ public class HomeOperations {
                             newsFeed.setItems(items);
                             newsFeed.setNextCursor(response.getNextCursor());
                             newsFeed.setNow(response.getNow());
-                            homeCursor = String.valueOf(Integer.parseInt(homeCursor) + 11);
+                            homeCursor = String.valueOf(Integer.parseInt(homeCursor) + 1);
                             Log.i("response_cursor", "onResponse: " + homeCursor);
                         }
 
@@ -185,16 +185,18 @@ public class HomeOperations {
                     }
                     feedCallback.onError(R.string.connection_error);
                 }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> map = new HashMap<>();
-                        map.put("method", "get_relative_news_feed");
-                    map.put("userId", strings[0]);
-                    map.put("cursor", homeCursor);
-                    return map;
-                }
-            };
+            });
+
+//            {
+//                @Override
+//                protected Map<String, String> getParams() throws AuthFailureError {
+//                Map<String, String> map = new HashMap<>();
+//                map.put("method", "get_relative_news_feed");
+//                map.put("userId", strings[0]);
+//                map.put("cursor", homeCursor);
+//                return map;
+//            }
+//            }
 
             request.setRetryPolicy(new DefaultRetryPolicy(5000,
                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
@@ -210,12 +212,12 @@ public class HomeOperations {
         @Override
         protected Void doInBackground(final String... strings) {
             String url = baseUrl + "user_post.php";
-
+            url = "https://rezetopia.com/Apis/likes/post";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.i("volley response", "onResponse: " + response);
+                            Log.i("add_like_response", "onResponse: " + response);
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (!jsonObject.getBoolean("error")){
@@ -261,6 +263,7 @@ public class HomeOperations {
                     map.put("userId", strings[1]);
                     map.put("owner_id", strings[2]);
                     map.put("post_id", strings[3]);
+                    Log.i("like_post_id", "getParams: " + strings[3]);
 
                     if (strings[0].contentEquals("add_like")){
                         map.put("add_like", String.valueOf(true));
@@ -278,11 +281,13 @@ public class HomeOperations {
         }
     }
 
-    public static class     FetchCommentsTask extends AsyncTask<String, Void, Void>{
+    public static class FetchCommentsTask extends AsyncTask<String, Void, Void>{
 
         @Override
         protected Void doInBackground(final String... strings) {
-            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            Log.i("fetch_comment_id", "doInBackground: " + strings[0]);
+            String url = "https://rezetopia.com/Apis/comments?post_id=" + strings[0] + "&cursor=" + strings[1];
+            VolleyCustomRequest stringRequest = new VolleyCustomRequest(Request.Method.GET, url,
                     ApiCommentResponse.class,
                     new Response.Listener<ApiCommentResponse>() {
                         @Override
@@ -320,17 +325,19 @@ public class HomeOperations {
                     fetchCommentsCallback.onError(R.string.connection_error);
 
                 }
-            }){
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> map = new HashMap<>();
-                    map.put("method", "get_comments");
-                    map.put("post_id", strings[0]);
-                    map.put("cursor", strings[1]);
+            });
 
-                    return map;
-                }
-            };
+//            {
+//                @Override
+//                protected Map<String, String> getParams() throws AuthFailureError {
+//                HashMap<String, String> map = new HashMap<>();
+//                map.put("method", "get_comments");
+//                map.put("post_id", strings[0]);
+//                map.put("cursor", strings[1]);
+//
+//                return map;
+//            }
+//            }
 
             requestQueue.add(stringRequest);
             return null;

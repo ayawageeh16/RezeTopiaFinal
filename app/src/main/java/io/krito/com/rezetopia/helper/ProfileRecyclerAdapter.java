@@ -313,7 +313,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             if (user.getImageUrl() != null && !user.getImageUrl().isEmpty()) {
                 if (!updatePp) {
-                    Picasso.with(context).load("http://rezetopia.dev-krito.com/images/profileImgs/" + user.getImageUrl() + ".JPG").into(ppView);
+                    Picasso.with(context).load(user.getImageUrl()).into(ppView);
                 } else {
                     Picasso.with(context).load(user.getImageUrl()).into(ppView);
                 }
@@ -322,7 +322,7 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
 
             if (user.getCover() != null && !user.getCover().isEmpty()) {
                 if (!updateCover) {
-                    Picasso.with(context).load("http://rezetopia.dev-krito.com/images/coverImgs/" + user.getCover() + ".JPG").into(coverView);
+                    Picasso.with(context).load(user.getCover() + ".JPG").into(coverView);
                 } else {
                     Picasso.with(context).load(user.getCover()).into(coverView);
                 }
@@ -664,15 +664,17 @@ public class ProfileRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.Vi
                 usernameView.setText(item.getOwnerName());
             }
 
-            Date date = null;
-            try {
-                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
-            } catch (ParseException e) {
-                e.printStackTrace();
+            if (item.getCreatedAt() != null) {
+                Date date = null;
+                try {
+                    date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                long milliseconds = date.getTime();
+                long millisecondsFromNow = milliseconds - now;
+                dateView.setText(DateUtils.getRelativeDateTimeString(context, milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
             }
-            long milliseconds = date.getTime();
-            long millisecondsFromNow = milliseconds - now;
-            dateView.setText(DateUtils.getRelativeDateTimeString(context, milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
 
             if (!(item.getPostText() == null || item.getPostText().contentEquals("null"))){
                 postTextView.setText(item.getPostText());

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
+import android.location.Location;
 import android.media.MediaPlayer;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -28,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.RelativeLayout;
@@ -39,6 +41,7 @@ import com.andrognito.flashbar.Flashbar;
 import com.andrognito.flashbar.anim.FlashAnim;
 import com.andrognito.flashbar.anim.FlashAnimBarBuilder;
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.NetworkError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.NoConnectionError;
@@ -49,14 +52,18 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.esafirm.imagepicker.model.Image;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 import com.tangxiaolv.telegramgallery.GalleryActivity;
 import com.tangxiaolv.telegramgallery.GalleryConfig;
+import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog;
+import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder;
+//import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialog;l
+//import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder;
 
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -101,13 +108,18 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     ImageView privacyIcon;
     ImageView back;
     EditText postText;
-    CustomTextView image;
+    TextView image;
     //CustomTextView video;
-    CustomTextView location;
-    CustomTextView tag;
+    TextView location;
+    TextView tag;
     PageLoader loader;
     RecyclerView imagesVideoRecView;
     RelativeLayout createPostNav;
+    ImageView emoView;
+    Button postButton;
+    TextView actualLocationView;
+    FrameLayout deleteLocationView;
+
 
     private String decodedVideo;
     private String userId;
@@ -142,12 +154,22 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
         loader = findViewById(R.id.pageLoader);
         imagesVideoRecView = findViewById(R.id.imagesRecView);
         createPostNav = findViewById(R.id.createPostNav);
+        emoView = findViewById(R.id.emoView);
+        postButton = findViewById(R.id.postButton);
+        actualLocationView = findViewById(R.id.actualLocationView);
+        deleteLocationView = findViewById(R.id.deleteLocationView);
+
+
 
         createPost.setOnClickListener(this);
         privacyText.setOnClickListener(this);
         privacyIcon.setOnClickListener(this);
         back.setOnClickListener(this);
         image.setOnClickListener(this);
+        emoView.setOnClickListener(this);
+        postButton.setOnClickListener(this);
+        location.setOnClickListener(this);
+        deleteLocationView.setOnClickListener(this);
     }
 
     private void showPostPopupWindow(View anchor) {
@@ -295,8 +317,64 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
 //            case R.id.pickVideo:
 //                break;
             case R.id.pickLocation:
+                SimplePlacesSearchDialog searchDialog = new SimplePlacesSearchDialogBuilder(this)
+                        .setLocationListener(place -> {
+                            actualLocationView.setText(place.getName());
+                            deleteLocationView.setVisibility(View.VISIBLE);
+                        }).build();
+
+                searchDialog.show();
+                break;
+            case R.id.deleteLocationView:
+                actualLocationView.setText("");
+                deleteLocationView.setVisibility(View.GONE);
                 break;
             case R.id.tagFriend:
+                break;
+            case R.id.emoView:
+                break;
+            case R.id.postButton:
+                if (ConnectivityReceiver.isConnected(CreatePost.this)) {
+                    if (validPost()) {
+                        loader.startProgress();
+                        //performUserUpload();
+                        createPostMultiPart();
+                    } else {
+                        new Flashbar.Builder(CreatePost.this)
+                                .gravity(Flashbar.Gravity.TOP)
+                                .duration(500)
+                                .message(R.string.empty_post)
+                                .messageTypeface(Typeface.createFromAsset(getAssets(), "CoconNextArabic-Regular.otf"))
+                                .backgroundColorRes(R.color.colorPrimaryDark)
+                                .enterAnimation(FlashAnim.with(CreatePost.this)
+                                        .animateBar()
+                                        .duration(750)
+                                        .alpha()
+                                        .overshoot())
+                                .exitAnimation(FlashAnim.with(CreatePost.this)
+                                        .animateBar()
+                                        .duration(400)
+                                        .accelerateDecelerate())
+                                .build();
+                    }
+                } else {
+                    new Flashbar.Builder(CreatePost.this)
+                            .gravity(Flashbar.Gravity.TOP)
+                            .duration(500)
+                            .message(R.string.connection_error)
+                            .messageTypeface(Typeface.createFromAsset(getAssets(), "CoconNextArabic-Regular.otf"))
+                            .backgroundColorRes(R.color.colorPrimaryDark)
+                            .enterAnimation(FlashAnim.with(CreatePost.this)
+                                    .animateBar()
+                                    .duration(750)
+                                    .alpha()
+                                    .overshoot())
+                            .exitAnimation(FlashAnim.with(CreatePost.this)
+                                    .animateBar()
+                                    .duration(400)
+                                    .accelerateDecelerate())
+                            .build();
+                }
                 break;
 
             default:
@@ -385,18 +463,20 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
             }
         }
 
-        if (postType == TYPE_TEXT) {
+        createPostMultiPart();
+
+        /*if (postType == TYPE_TEXT) {
             //createPostMultiPart();
             createPost();
             RezetopiaApp.getInstance().getRequestQueue().add(stringRequest);
         } else
             createPostMultiPart();
         //uploadVideo(postText.getText().toString());
-        //uploadMultipart(postText.getText().toString());
+        //uploadMultipart(postText.getText().toString());*/
     }
 
     private void createPost() {
-        stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+        stringRequest = new StringRequest(Request.Method.POST, "http://127.0.0.1:80/reze/user_post.php",
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -518,42 +598,75 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     }
 
     private void createPostMultiPart() {
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, "https://rezetopia.dev-krito.com/app/reze/user_post.php",
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, "https://rezetopia.com/Apis/create/post",
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
                         String responseString = new String(response.data);
                         Log.i("responseString", "onResponse: " + responseString);
+                        loader.stopProgress();
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.i("responseStringError", "onResponse: ");
+                Log.i("responseStringError", "onResponse: " + error.getMessage());
+                loader.stopProgress();
+
+                if (error instanceof NetworkError) {
+                    //message = String.valueOf();
+                    Log.i("uploadError", "onErrorResponse: " + getResources().getString(R.string.checkingNetwork));
+                } else if (error instanceof ServerError) {
+                    Log.i("uploadError", "onErrorResponse: " + getResources().getString(R.string.server_error));
+                } else if (error instanceof AuthFailureError) {
+                    Log.i("uploadError", "onErrorResponse: " + getResources().getString(R.string.connection_error));
+                } else if (error instanceof ParseError) {
+                    Log.i("uploadError", "onErrorResponse: " + getResources().getString(R.string.parsing_error));
+                } else if (error instanceof NoConnectionError) {
+                    Log.i("uploadError", "onErrorResponse: " + getResources().getString(R.string.connection_error));
+                } else if (error instanceof TimeoutError) {
+                    Log.i("uploadError", "onErrorResponse: " + getResources().getString(R.string.time_out));
+                }
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
+                Log.i("uploadTest", "getParams: data");
                 Map<String, String> params = new HashMap<>();
-                params.put("method", "create_post_multipart");
+                params.put("method", "multipart_image_post");
                 params.put("userId", userId);
-                params.put("post_text", postText.getText().toString());
+                params.put("description", postText.getText().toString());
                 params.put("privacy", privacy);
+                if (actualLocationView.getText() != null && !actualLocationView.getText().toString().isEmpty()){
+                    params.put("location", "");
+                }
                 if (selectedImages != null && selectedImages.size() > 0){
-                    params.put("images_size", String.valueOf(selectedImages.size()));
+                    params.put("imageSize", String.valueOf(selectedImages.size()));
+
                 }
                 return params;
             }
 
             @Override
             protected Map<String, DataPart> getByteData() {
+                Log.i("uploadTest", "getParams: bytes");
                 Map<String, DataPart> params = new HashMap<>();
-                params.put("video_file", new DataPart("video_file.mp4", convert(selectedVideo), "image/mp4"));
-                for (int i = 0; i < selectedImages.size(); i++) {
-                    params.put("images" + i, new DataPart("images" + i + ".jpg", convert(selectedImages.get(i)), "image/jpeg"));
+                if (selectedVideo != null){
+                    params.put("video", new DataPart("video.mp4", convert(selectedVideo), "image/mp4"));
                 }
+
+                if (selectedImages != null){
+                    for (int i = 0; i < selectedImages.size(); i++) {
+                        params.put("image" + i, new DataPart("image" + i + ".jpg", convert(selectedImages.get(i)), "image/jpeg"));
+                    }
+                }
+
                 return params;
             }
         };
+
+        request.setRetryPolicy(new DefaultRetryPolicy(500000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
 
         RezetopiaApp.getInstance().getRequestQueue().add(request);
     }

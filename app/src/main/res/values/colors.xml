@@ -3,6 +3,7 @@
     <color name="colorPrimary">#021408</color>
     <color name="colorPrimaryDark">#18783C</color>
     <color name="colorAccent">#bababa</color>
+    <color name="lightGray">#FFDEDEDE</color>
     <color name="tabs">#838384</color>
     <color name="white">#ffffff</color>
     <color name="input_login">#000000</color>
