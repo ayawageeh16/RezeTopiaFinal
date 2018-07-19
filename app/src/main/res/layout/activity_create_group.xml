@@ -4,10 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.krito.com.rezetopia.activities.CreateGroup">
+    tools:context="io.krito.com.rezetopia.activities.CreateGroup"
+  >
 <RelativeLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+   >
 
     <LinearLayout
         android:id="@+id/searchHeader"
@@ -15,8 +17,6 @@
         android:layout_height="wrap_content">
         <include layout="@layout/action_bar" />
     </LinearLayout>
-
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -138,7 +138,7 @@
              android:layout_marginStart="5dp"
              android:text="@string/secret_group_label"
              android:onClick="checkRadioButton"
-             android:drawableLeft="@drawable/ic_secret"/>
+             android:drawableLeft="@drawable/ic_sec"/>
 
      </RadioGroup>
 
@@ -171,6 +171,7 @@
         android:layout_margin="@dimen/fab_margin"
         android:src="@drawable/ic_fir_ball"
         app:backgroundTint="@color/colorPrimary"
+        android:layout_marginBottom="10dp"
         />
 
 </RelativeLayout>

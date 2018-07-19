@@ -1,13 +1,8 @@
 package io.krito.com.rezetopia.helper;
 
-import android.app.FragmentManager;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +11,7 @@ import java.util.List;
  */
 
 public class GroupPagerAdapter extends FragmentPagerAdapter {
+
     private final List<Fragment> mFragmentList = new ArrayList<>();
     private final List<String> mFragmentTitleList = new ArrayList<>();
 

@@ -78,7 +78,8 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/view"
-        android:background="@color/gray">
+        android:background="@color/gray"
+        android:weightSum="5">
 
         <ImageView
             android:layout_width="wrap_content"
@@ -90,7 +91,15 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="15 like"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"/>
+        <ImageView
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
 
         <ImageView
             android:layout_width="wrap_content"
@@ -102,18 +111,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="2 comments"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"/>
+
+        <ImageView
+            android:layout_marginTop="7dp"
+            android:layout_marginBottom="7dp"
+            android:layout_marginStart="10dp"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:background="@android:color/darker_gray"/>
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_share_icon"
+            android:src="@drawable/ic_group_share_post"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="3dp"/>
+            android:layout_marginTop="5dp"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tools:text="share"
+            android:layout_weight="1"
             android:layout_marginTop="10dp"/>
     </LinearLayout>
 

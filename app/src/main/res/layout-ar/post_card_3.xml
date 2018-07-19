@@ -272,7 +272,7 @@
             android:layout_weight="0.8"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:drawableStart="@drawable/ic_share"/>
+            android:drawableStart="@drawable/ic_share_post"/>
 
     </LinearLayout>
 

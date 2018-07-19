@@ -10,21 +10,22 @@ import android.view.ViewGroup;
 
 import io.krito.com.rezetopia.R;
 
-public class GroupReportFragment extends Fragment {
 
-    public GroupReportFragment (){}
+public class DescriptionFragment extends Fragment {
+
+    public DescriptionFragment() {
+        // Required empty public constructor
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_report, container, false);
+        return inflater.inflate(R.layout.fragment_description, container, false);
     }
-
 }
