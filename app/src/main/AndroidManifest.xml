@@ -53,7 +53,8 @@
         <activity android:name=".activities.WelcomeSlider" />
         <activity android:name=".activities.CreateGroup" />
         <activity android:name=".activities.Group" />
-        <activity android:name=".activities.Settings"></activity>
+        <activity android:name=".activities.Settings" />
+        <activity android:name=".activities.GroupActivity"></activity>
     </application>
 
 </manifest>

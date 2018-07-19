@@ -203,14 +203,14 @@
 
         <Button
             android:id="@+id/postCommentButton"
-            android:textSize="13sp"
-            android:textAllCaps="false"
-            android:text="@string/comment"
-            android:background="@android:color/transparent"
-            android:layout_weight="1.1"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:drawableStart="@drawable/ic_comment" />
+            android:layout_weight="1.1"
+            android:background="@android:color/transparent"
+            android:drawableStart="@drawable/ic_comment"
+            android:text="@string/comment"
+            android:textAllCaps="false"
+            android:textSize="13sp" />
 
         <ImageView
             android:layout_marginTop="7dp"
@@ -230,7 +230,7 @@
             android:layout_weight="0.8"
             android:layout_width="0dp"
             android:layout_height="40dp"
-            android:drawableStart="@drawable/ic_share"/>
+            android:drawableStart="@drawable/ic_share_post"/>
 
     </LinearLayout>
 

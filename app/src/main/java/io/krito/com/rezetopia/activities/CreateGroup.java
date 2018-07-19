@@ -48,11 +48,11 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
     TabLayout tabLayout;
     FloatingActionButton fab;
     ViewPager viewPager;
-    private StringRequest stringRequest;
     private String BACK_END = "https://rezetopia.com/Apis/groups/create";
     private String userId;
     private String privacy;
     private RequestQueue requestQueue ;
+    private StringRequest stringRequest;
     private int groupId;
 
     @Override
@@ -113,7 +113,7 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(CreateGroup.this, "failed", Toast.LENGTH_LONG).show();
+                //Toast.makeText(CreateGroup.this, error.toString(), Toast.LENGTH_LONG).show();
                 Log.i("request response", error.toString());
             }
         }) {
@@ -132,24 +132,19 @@ public class CreateGroup extends AppCompatActivity implements View.OnClickListen
                 if (userId == null || userId.isEmpty()){
                     params.put("userid",userId);
                 }
-
                 return params;
             }
         };
         requestQueue.add(stringRequest);
     }
 
-    public String checkRadioButton (View v){
-
+    public void checkRadioButton (View v){
         if (v == open){
-            privacy= open.getText().toString();
+            privacy= "open";
+        } else if (v == closed){
+            privacy= "closed";
+        } else if (v == secret){
+            privacy= "secret";
         }
-        else if (v == closed){
-            privacy= closed.getText().toString();
-        }
-        else if (v == secret){
-            privacy= closed.getText().toString();
-        }
-      return privacy;
     }
 }

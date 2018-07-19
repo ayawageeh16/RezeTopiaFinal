@@ -20,9 +20,7 @@ import android.widget.ListAdapter;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.andrognito.flashbar.Flashbar;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -45,11 +43,8 @@ import java.util.Locale;
 import java.util.Map;
 
 import io.krito.com.rezetopia.R;
-import io.krito.com.rezetopia.activities.EditPost;
 import io.krito.com.rezetopia.activities.Profile;
-import io.krito.com.rezetopia.fragments.Share;
 import io.krito.com.rezetopia.models.operations.HomeOperations;
-import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeed;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 import ru.whalemare.sheetmenu.SheetMenu;
 

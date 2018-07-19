@@ -4,7 +4,7 @@
 
     <item android:title="@string/share"
         android:id="@+id/shareToPP"
-        android:icon="@drawable/ic_share"/>
+        android:icon="@drawable/ic_share_post"/>
 
     <item android:title="@string/share_to_friend"
         android:id="@+id/shareToFriend"
