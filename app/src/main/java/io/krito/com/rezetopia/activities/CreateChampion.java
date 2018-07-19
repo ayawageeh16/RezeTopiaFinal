@@ -40,6 +40,7 @@ public class CreateChampion extends AppCompatActivity {
         matchesSpinner = findViewById(R.id.matches_spinner);
 
         typeSpinner.setItems("League", "Knockout", "Groups");
+        //todo
 
         typeSpinner.setSelectedIndex(0);
 
