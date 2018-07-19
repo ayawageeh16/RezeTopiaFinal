@@ -147,6 +147,12 @@ dependencies {
     //emoj
     implementation 'com.github.apradanas:prismoji-android:1.1.0'
 
+    //time-ago
+    implementation 'com.github.marlonlom:timeago:3.0.2'
+
+    //spinner
+    implementation 'com.jaredrummler:material-spinner:1.2.5'
+
     //places
     implementation 'com.taskail:simple-places-search-dialog:1.0'
     implementation 'com.google.android.gms:play-services-places:15.0.1'

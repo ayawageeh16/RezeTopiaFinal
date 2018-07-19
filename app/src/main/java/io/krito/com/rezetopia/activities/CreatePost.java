@@ -73,6 +73,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -598,13 +600,19 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
     }
 
     private void createPostMultiPart() {
-        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, "https://rezetopia.com/Apis/create/post",
+        VolleyMultipartRequest request = new VolleyMultipartRequest(Request.Method.POST, "https://rezetopia.com/Apis/posts/store",
                 new Response.Listener<NetworkResponse>() {
                     @Override
                     public void onResponse(NetworkResponse response) {
-                        String responseString = new String(response.data);
-                        Log.i("responseString", "onResponse: " + responseString);
-                        loader.stopProgress();
+                        try {
+                            String utf8String = new String(response.data, "UTF-8");
+                            Log.i("responseString", "onResponse: " + utf8String);
+                            loader.stopProgress();
+                        } catch (UnsupportedEncodingException e) {
+                            e.printStackTrace();
+                        }
+                        //String responseString = new String(response.data);
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -634,10 +642,19 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 Map<String, String> params = new HashMap<>();
                 params.put("method", "multipart_image_post");
                 params.put("userId", userId);
-                params.put("description", postText.getText().toString());
+                //params.put("description", postText.getText().toString());
+                try {
+                    params.put("description", URLEncoder.encode(postText.getText().toString(), "UTF-8"));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
                 params.put("privacy", privacy);
                 if (actualLocationView.getText() != null && !actualLocationView.getText().toString().isEmpty()){
-                    params.put("location", "");
+                    try {
+                        params.put("location", URLEncoder.encode(actualLocationView.getText().toString(), "UTF-8"));
+                    } catch (UnsupportedEncodingException e) {
+                        e.printStackTrace();
+                    }
                 }
                 if (selectedImages != null && selectedImages.size() > 0){
                     params.put("imageSize", String.valueOf(selectedImages.size()));

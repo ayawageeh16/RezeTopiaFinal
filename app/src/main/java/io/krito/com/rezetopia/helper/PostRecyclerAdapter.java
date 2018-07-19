@@ -29,12 +29,15 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.marlonlom.utilities.timeago.TimeAgo;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.activities.EditPost;
@@ -429,14 +433,22 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
 
             Date date = null;
+            SimpleDateFormat sdf;
             try {
-                date = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH).parse(item.getCreatedAt());
+                //last format yyyy-MM-dd hh:mm:ss
+                sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.ENGLISH);
+//                sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
+                long time = sdf.parse(item.getCreatedAt()).getTime();
+//                CharSequence ago = DateUtils.getRelativeTimeSpanString(time, now, DateUtils.MINUTE_IN_MILLIS);
+//                dateView.setText(ago);
+                String ago = TimeAgo.using(time);
+                dateView.setText(ago);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            long milliseconds = date.getTime();
-            long millisecondsFromNow = milliseconds - now;
-            dateView.setText(DateUtils.getRelativeDateTimeString(context, milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
+//            long milliseconds = date.getTime();
+//            long millisecondsFromNow = milliseconds - now;
+//            dateView.setText(DateUtils.getRelativeDateTimeString(context, milliseconds, millisecondsFromNow, DateUtils.DAY_IN_MILLIS, 0));
 
 
             if (!(item.getPostText() == null || item.getPostText().contentEquals("null"))){
@@ -444,6 +456,16 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             } else {
                 postTextView.setText("");
             }
+
+//            if (!(item.getPostText() == null || item.getPostText().contentEquals("null"))){
+//                try {
+//                    postTextView.setText(URLDecoder.decode(item.getPostText(), "UTF-8"));
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                }
+//            } else {
+//                postTextView.setText("");
+//            }
 
             String likeString = context.getResources().getString(R.string.like);
             if (item.getLikes() != null && item.getLikes().length > 0) {

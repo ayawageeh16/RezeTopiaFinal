@@ -18,6 +18,9 @@
     <string name="posting">جاري النشر&#8230;</string>
     <string name="image">صورة</string>
     <string name="image_video">صورة/فيديو</string>
+    <string name="rezetopia">ريزيتوبيا</string>
+    <string name="number_of_matches">عدد المبارايات</string>
+    <string name="number_of_players">عدد الاعبين</string>
     <string name="empty_date">منشور فارغ</string>
     <string name="video">فيديو</string>
     <string name="check_in">مكان</string>
@@ -203,7 +206,7 @@
     <string name="teams">الفرق</string>
     <string name="discussion">متاقشة</string>
     <string name="occur_date">يحدث في: </string>
-    <string name="create">عمل</string>
+    <string name="create">انشاء</string>
     <string name="create_event">عمل حدث</string>
     <string name="my_event">احداثي</string>
     <string name="to">الي</string>
