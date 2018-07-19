@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 
+import com.android.volley.toolbox.StringRequest;
 import com.isupatches.wisefy.WiseFy;
 import com.keiferstone.nonet.Monitor;
 import com.keiferstone.nonet.NoNet;
@@ -141,8 +142,6 @@ public class Home extends Fragment implements ConnectivityReceiver.ConnectivityR
 
 //        ConnectionBuddyConfiguration networkInspectorConfiguration = new ConnectionBuddyConfiguration.Builder(getActivity()).build();
 //        ConnectionBuddy.getInstance().init(networkInspectorConfiguration);
-
-
         return view;
     }
 

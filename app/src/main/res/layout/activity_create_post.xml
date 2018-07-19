@@ -30,6 +30,7 @@
                     android:src="@drawable/ic_back"/>
 
                 <TextView
+                    android:visibility="gone"
                     android:textColor="@color/white"
                     android:layout_marginEnd="@dimen/dimen_20"
                     android:layout_marginRight="@dimen/dimen_20"
@@ -42,6 +43,7 @@
                     android:text="@string/post"/>
 
                 <LinearLayout
+                    android:visibility="gone"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
@@ -70,8 +72,58 @@
 
             </RelativeLayout>
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/createPostNav"
+                android:id="@+id/createCancelPostHeader"
+                android:layout_margin="@dimen/dimen_10">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/userImageView"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@drawable/roundone_green"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/userNameView"
+                    android:layout_toEndOf="@id/userImageView"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dimen_10"
+                    android:text="Amr Tarek"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="15sp"/>
+
+                <Button
+                    android:id="@+id/postButton"
+                    android:textColor="@color/green2"
+                    android:textAllCaps="false"
+                    android:text="@string/post"
+                    android:layout_centerVertical="true"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/round_grey_button"/>
+
+                <Button
+                    android:layout_toStartOf="@id/postButton"
+                    android:id="@+id/cancelPostButton"
+                    android:textColor="@color/green2"
+                    android:textAllCaps="false"
+                    android:text="@string/Cancel"
+                    android:layout_centerVertical="true"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="@dimen/dimen_10"
+                    android:background="@drawable/round_grey_button"/>
+
+            </RelativeLayout>
+
             <EditText
-                android:layout_below="@id/createPostNav"
+                android:textAlignment="viewStart"
+                android:layout_below="@id/createCancelPostHeader"
                 android:paddingRight="@dimen/dimen_10"
                 android:paddingEnd="@dimen/dimen_10"
                 android:paddingLeft="@dimen/dimen_10"
@@ -79,27 +131,46 @@
                 android:paddingTop="@dimen/dimen_10"
                 android:paddingBottom="@dimen/dimen_10"
                 android:hint="@string/tell_something"
-                android:layout_marginStart="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:layout_marginBottom="@dimen/dimen_10"
                 android:id="@+id/postText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/white"/>
+                android:background="@drawable/post_text_background"/>
+
+            <ImageView
+                android:id="@+id/emoView"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_below="@id/postText"
+                android:src="@drawable/ic_emo_green"
+                android:layout_marginEnd="@dimen/dimen_20"
+                android:layout_marginBottom="@dimen/dimen_10"/>
 
 
-            <io.krito.com.rezetopia.views.CustomTextView
+            <ImageView
+                android:id="@+id/line1"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrayDark"
+                android:layout_below="@id/emoView"/>
+
+            <TextView
+                android:layout_marginTop="3dp"
                 android:drawableStart="@drawable/ic_image"
                 android:id="@+id/pickImageVideo"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/postText"
+                android:layout_below="@id/line1"
                 android:layout_marginStart="9dp"
                 android:layout_marginEnd="9dp"
-                android:hint="@string/image_video"
+                android:text="@string/image_video"
                 android:gravity="center_vertical"
-                android:paddingStart="@dimen/dimen_10"/>
+                android:paddingStart="@dimen/dimen_10"
+                android:textColor="@color/colorPrimary"
+                android:textSize="15sp"/>
 
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
@@ -133,20 +204,28 @@
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="wrap_content"/>-->
 
-            <io.krito.com.rezetopia.views.CustomTextView
-                android:visibility="gone"
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:id="@+id/line2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrayDark"
+                android:layout_below="@id/imagesRecView"/>
+
+            <TextView
                 android:gravity="center_vertical"
                 android:drawableStart="@drawable/ic_tag"
                 android:textSize="15sp"
                 android:id="@+id/tagFriend"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/imagesRecView"
+                android:layout_below="@id/line2"
                 android:layout_marginStart="9dp"
                 android:layout_marginEnd="9dp"
-                android:layout_marginTop="@dimen/dimen_10"
-                android:hint="@string/tag"
-                android:paddingStart="@dimen/dimen_10"/>
+                android:layout_marginTop="5dp"
+                android:text="@string/tag"
+                android:paddingStart="@dimen/dimen_10"
+                android:textColor="@color/colorPrimary"/>
 
             <android.support.v7.widget.RecyclerView
                 android:visibility="gone"
@@ -157,20 +236,75 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
-            <io.krito.com.rezetopia.views.CustomTextView
-                android:visibility="gone"
-                android:gravity="center_vertical"
-                android:drawableStart="@drawable/ic_location"
-                android:textSize="15sp"
-                android:id="@+id/pickLocation"
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:id="@+id/line3"
                 android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_below="@id/tagRecView"
-                android:layout_marginStart="9dp"
-                android:layout_marginEnd="9dp"
-                android:layout_marginTop="@dimen/dimen_10"
-                android:hint="@string/check_in"
-                android:paddingStart="@dimen/dimen_10"/>
+                android:layout_height="1dp"
+                android:background="@color/colorGrayDark"
+                android:layout_below="@id/tagRecView"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/line3"
+                android:id="@+id/locationView">
+
+
+                <TextView
+                    android:gravity="center_vertical"
+                    android:drawableStart="@drawable/ic_location"
+                    android:textSize="15sp"
+                    android:id="@+id/pickLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginStart="9dp"
+                    android:layout_marginEnd="9dp"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/check_in"
+                    android:paddingStart="@dimen/dimen_10"
+                    android:textColor="@color/colorPrimary"/>
+
+                <TextView
+                    android:gravity="center_vertical"
+                    android:textSize="15sp"
+                    android:id="@+id/actualLocationView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="9dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorPrimary"/>
+
+                <FrameLayout
+                    android:visibility="gone"
+                    android:layout_marginTop="2dp"
+                    android:id="@+id/deleteLocationView"
+                    android:layout_gravity="center_vertical"
+                    android:background="@drawable/roundone_green"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:src="@drawable/ic_exit"/>
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:layout_marginTop="3dp"
+                android:id="@+id/line4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGrayDark"
+                android:layout_below="@id/locationView"/>
+
+
 
         </RelativeLayout>
 

@@ -473,6 +473,11 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     adapter.updatePp(item.getItemImage());
                     //adapter.addPostItem(item);
                 }
+
+                String ppUrl = data.getStringExtra("pp_url");
+                if (ppUrl != null){
+                    adapter.updatePp(ppUrl);
+                }
             }
         } else if (requestCode == CREATE_COVER_RESULT) {
             if (data != null) {
@@ -483,6 +488,12 @@ public class Profile extends AppCompatActivity implements View.OnClickListener {
                     adapter.updateCover(item.getItemImage());
                     //adapter.addPostItem(item);
                 }
+
+                String coverUrl = data.getStringExtra("cover_url");
+                if (coverUrl != null){
+                    adapter.updateCover(coverUrl);
+                }
+
             }
         } else if (requestCode == EDIT_POST_RESULT){
             if (data != null) {

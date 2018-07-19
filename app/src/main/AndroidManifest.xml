@@ -16,6 +16,12 @@
         android:roundIcon="@drawable/rezetopia"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCynqZ24L3m3PEkduxRlovAXHsIidmTQGI"/>
+
+
         <activity android:name=".activities.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

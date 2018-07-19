@@ -15,7 +15,7 @@ public class Comment implements Serializable {
     @Expose
     private int commenterId;
 
-    @SerializedName("commentText")
+    @SerializedName("commenterText")
     @Expose
     private String commentText;
 
@@ -30,6 +30,10 @@ public class Comment implements Serializable {
     @SerializedName("createdAt")
     @Expose
     private String createdAt;
+
+    @SerializedName("image_url")
+    @Expose
+    private String imgUrl;
 
     @SerializedName("likes")
     @Expose
@@ -101,6 +105,14 @@ public class Comment implements Serializable {
 
     public void setCreatedAt(String createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
 

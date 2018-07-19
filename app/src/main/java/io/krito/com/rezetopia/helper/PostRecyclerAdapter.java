@@ -462,7 +462,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             }
             String commentString = context.getResources().getString(R.string.comment);
             if (item.getCommentSize() > 0) {
-
                 commentButton.setText(item.getCommentSize() + " " + commentString);
                 Log.e("post_comment ->> " + item.getPostText(), (item.getCommentSize() + " " + commentString));
             } else {

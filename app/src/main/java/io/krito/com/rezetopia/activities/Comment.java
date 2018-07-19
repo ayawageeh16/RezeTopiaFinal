@@ -34,6 +34,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
+import com.squareup.picasso.Picasso;
 import com.zyyoona7.popup.EasyPopup;
 
 import org.json.JSONException;
@@ -48,6 +49,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.helper.VolleyCustomRequest;
@@ -252,6 +254,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         TextView okEdit;
         TextView cancelEdit;
         LinearLayout likeLayout;
+        CircleImageView ppView;
 
         public CommentViewHolder(View itemView) {
             super(itemView);
@@ -267,6 +270,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
             okEdit = itemView.findViewById(R.id.okEdit);
             cancelEdit = itemView.findViewById(R.id.cancelEdit);
             likeLayout = itemView.findViewById(R.id.likeLayout);
+            ppView = itemView.findViewById(R.id.commentPPView);
 
             oldColor = commentLikeView.getTextColors();
 
@@ -305,6 +309,10 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     commentReplayView.setText(comment.getReplaySize() + " " + replay);
                 }
 
+                if (comment.getImgUrl() != null && !comment.getImgUrl().contentEquals("")){
+                    Picasso.with(Comment.this).load(comment.getImgUrl()).into(ppView);
+                }
+
                 String like = getResources().getString(R.string.like);
                 if (comment.getLikes() != null && comment.getLikes().length > 0) {
                     Log.i("comment_like ->> " , comment.getLikes().length + " " + comment.getCommentId());
@@ -335,14 +343,15 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                                         commentLikeView.setText(likeString);
                                     }
 
-                                    reverseLike(comment, position);
+                                    performLike(comment, position);
                                     return;
                                 }
                             }
                         }
 
-
-                        commentLikeView.setText((comment.getLikes().length + 1) + " " + likeString);
+                        if (comment.getLikes() != null){
+                            commentLikeView.setText((comment.getLikes().length + 1) + " " + likeString);
+                        }
                         commentLikeView.setTextColor(getResources().getColor(R.color.colorPrimary));
                         performLike(comment, position);
                     }
@@ -388,7 +397,8 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     @Override
                     public void onClick(View v) {
                         editComment(comment, position);
-                        likeLayout.setVisibility(View.VISIBLE);
+                        itemView.setEnabled(false);
+                        itemView.setAlpha(0.5f);
                     }
                 });
 
@@ -405,24 +415,30 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         }
 
         private void performLike(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
-
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            String url = "https://rezetopia.com/Apis/likes/post/comment";
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
-                            Log.i("volley response", "onResponse: " + response);
+                            Log.i("comment_like_response", "onResponse: " + response);
                             try {
                                 Log.i("comment_like", "onResponse: " + response);
                                 JSONObject jsonObject = new JSONObject(response);
-                                if (!jsonObject.getBoolean("error")){
-                                    int[] likes = new int[comment.getLikes().length + 1];
-                                    for (int i = 0; i < comment.getLikes().length; i++) {
-                                        likes[i] = comment.getLikes()[i];
-                                    }
+                                if (!jsonObject.getBoolean("error")) {
+                                    if (comment.getLikes() != null) {
+                                        int[] likes = new int[comment.getLikes().length + 1];
+                                        for (int i = 0; i < comment.getLikes().length; i++) {
+                                            likes[i] = comment.getLikes()[i];
+                                        }
 
-                                    likes[likes.length - 1] = Integer.parseInt(userId);
-                                    comment.setLikes(likes);
-                                    //adapter.notifyItemChanged(position);
+                                        likes[likes.length - 1] = Integer.parseInt(userId);
+                                        comment.setLikes(likes);
+                                        //adapter.notifyItemChanged(position);
+                                    } else {
+                                        int[] likes = new int[Integer.parseInt(userId)];
+                                        //likes[likes.length - 1] = Integer.parseInt(userId);
+                                        comment.setLikes(likes);
+                                    }
                                 }
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -510,7 +526,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         }
 
         private void removeComment(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/comments/delete",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -537,7 +553,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
                     Log.i("remove_comment_params", "getParams: " + userId + " " + postId + " " + comment.getCommentId());
                     map.put("method", "remove_comment");
-                    map.put("userId", userId);
+                    map.put("user_id", userId);
                     map.put("comment_id", String.valueOf(comment.getCommentId()));
 
                     return map;
@@ -548,7 +564,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
         }
 
         private void editComment(final io.krito.com.rezetopia.models.pojo.post.Comment comment, final int position){
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/comments/edit",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -556,6 +572,9 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                             try {
                                 JSONObject jsonObject = new JSONObject(response);
                                 if (!jsonObject.getBoolean("error")){
+                                    likeLayout.setVisibility(View.VISIBLE);
+                                    itemView.setAlpha(0.5f);
+                                    itemView.setEnabled(true);
                                     comment.setCommentText(commentEditText.getText().toString());
                                     comments.set(position, comment);
                                     adapter.notifyItemChanged(position + 1);
@@ -567,6 +586,9 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
+                    likeLayout.setVisibility(View.VISIBLE);
+                    itemView.setAlpha(0.5f);
+                    itemView.setEnabled(true);
                     Log.i("edit_comment_params", "onErrorResponse: " + error.getMessage());
                 }
             }){
@@ -578,7 +600,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                     map.put("method", "edit_comment");
                     map.put("userId", userId);
                     map.put("comment_id", String.valueOf(comment.getCommentId()));
-                    map.put("comment", commentEditText.getText().toString());
+                    map.put("description", commentEditText.getText().toString());
 
                     return map;
                 }
@@ -681,7 +703,7 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
     private void performComment(){
         if (commentEditText.getText().toString().length() > 0){
             final String commentText = commentEditText.getText().toString();
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, "http://rezetopia.dev-krito.com/app/reze/user_post.php",
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, "https://rezetopia.com/Apis/comments",
                     new Response.Listener<String>() {
                         @Override
                         public void onResponse(String response) {
@@ -695,11 +717,11 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
                                 } else {
                                     commentEditText.setText(null);
                                     Comment = new io.krito.com.rezetopia.models.pojo.post.Comment();
-                                    Comment.setCommenterId(jsonObject.getInt("commenterId"));
-                                    Comment.setCommentId(jsonObject.getInt("commentId"));
-                                    Comment.setCommentText(jsonObject.getString("commentText"));
-                                    Comment.setCreatedAt(jsonObject.getString("createdAt"));
-                                    Comment.setCommenterName(jsonObject.getString("commenterName"));
+                                    Comment.setCommenterId(jsonObject.getInt("user_id"));
+                                    Comment.setCommentId(jsonObject.getInt("comment_id"));
+                                    Comment.setCommentText(commentText);
+                                    Comment.setCreatedAt(jsonObject.getString("created_at"));
+                                    Comment.setCommenterName(jsonObject.getString("username"));
                                     Comment.setPending(false);
                                     Comment.setLikes(new int[0]);
                                     comments.set(comments.size()-1, Comment);
@@ -726,9 +748,9 @@ public class Comment extends AppCompatActivity implements View.OnClickListener{
 
                     map.put("method", "add_comment");
                     map.put("post_id", String.valueOf(postId));
-                    map.put("comment", commentText);
+                    map.put("description", commentText);
                     map.put("owner_id",  String.valueOf(ownerId));
-                    map.put("userId", userId);
+                    map.put("user_id", userId);
 
                     return map;
                 }
