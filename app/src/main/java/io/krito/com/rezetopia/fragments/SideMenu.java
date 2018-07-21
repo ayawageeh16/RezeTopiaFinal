@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.activities.CreateGroup;
+import io.krito.com.rezetopia.activities.Group;
 import io.krito.com.rezetopia.activities.Login;
 import io.krito.com.rezetopia.activities.Profile;
 import io.krito.com.rezetopia.activities.SavedPosts;
@@ -82,7 +83,7 @@ public class SideMenu extends Fragment implements ConnectivityReceiver.Connectiv
                 startActivity(intent1);
                 break;
             case  R.id.createGroupView:
-                Intent intent2 = new Intent(getActivity(), CreateGroup.class);
+                Intent intent2 = new Intent(getActivity(), Group.class);
                 startActivity(intent2);
                 break;
         }

@@ -50,6 +50,4 @@
         android:src="@drawable/ic_fir_ball"
         app:backgroundTint="@color/colorPrimary"/>
 
-
-
 </RelativeLayout>

@@ -88,7 +88,6 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         //notifyItemInserted(items.size() - 1);
         callback.onItemAdded(items.size());
     }
-
     public int removeLastItem() {
         //items.remove(items.size() - 1);
         //notifyItemRemoved(items.size() - 1);
@@ -605,7 +604,7 @@ public class PostRecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     item.setLikes(likes);
                 }
 
-                @Override
+                   @Override
                 public void onError(int error) {
 
                 }

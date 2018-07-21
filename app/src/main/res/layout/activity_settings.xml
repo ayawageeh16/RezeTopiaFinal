@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="io.krito.com.rezetopia.activities.Settings">
+    tools:context="io.krito.com.rezetopia.activities.GroupSettings">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,12 +24,13 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/searchHeader">
 
-        <ImageView
-            android:id="@+id/cover_image_im"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:src="@color/colorPrimary"
-            android:layout_below="@+id/searchHeader"/>
+            <ImageView
+                android:id="@+id/cover_image_im"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:scaleType="fitXY"
+                android:layout_below="@+id/searchHeader"
+                android:src="@color/colorPrimary" />
             <Button
                 android:id="@+id/edit_cover_btn"
                 android:layout_width="50dp"
@@ -51,15 +52,18 @@
             android:layout_below="@+id/cover_image">
 
             <TextView
+                android:id="@+id/group_name_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="group name"
                 android:layout_marginStart="50dp"
-                android:layout_marginTop="2dp"/>
+                android:layout_marginTop="7dp"
+                android:textSize="20sp"/>
+
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_group_icon"/>
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_group_icon" />
 
             <ImageView
                 android:id="@+id/settings_icon"
@@ -71,10 +75,12 @@
                 />
 
             <TextView
+                android:id="@+id/group_members_tv"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 tools:text="500 member"
                 android:layout_gravity="right"
+                android:layout_marginTop="7dp"
                 android:layout_marginStart="100dp"
                 />
         </LinearLayout>
@@ -86,6 +92,7 @@
             android:layout_below="@+id/group_header"
             android:layout_marginStart="45dp"
             tools:text="open"
+            android:textSize="15sp"
             android:layout_marginBottom="10dp"/>
 
         <TextView
@@ -94,6 +101,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/group_privacy_tv"
             android:text="@string/setting"
+            android:textSize="20sp"
+            android:textStyle="bold"
             android:layout_centerInParent="true"
             android:layout_marginTop="20dp"/>
 
