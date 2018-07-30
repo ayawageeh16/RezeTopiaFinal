@@ -177,7 +177,7 @@ public class GroupSettings extends AppCompatActivity implements View.OnClickList
             profilePhoto = extras.getString("picture");
             allMember = extras.getParcelableArrayList("members");
             groupAdmins = extras.getParcelableArrayList("admins");
-            filterGroupMembers();
+//            filterGroupMembers();
             setView();
         }
 
@@ -201,15 +201,15 @@ public class GroupSettings extends AppCompatActivity implements View.OnClickList
 
     }
 
-    private void filterGroupMembers() {
-        for (int i = 0 ; i < groupAdmins.size(); i++){
-            for (int x=0 ; x< allMember.size(); x++){
-                if (groupAdmins.get(i).getId() == allMember.get(x).getId()){
-                    allMember.remove(x);
-                }
-            }
-        }
-    }
+//    private void filterGroupMembers() {
+//        for (int i = 0 ; i < groupAdmins.size(); i++){
+//            for (int x=0 ; x< allMember.size(); x++){
+//                if (groupAdmins.get(i).getId() == allMember.get(x).getId()){
+//                    allMember.remove(x);
+//                }
+//            }
+//        }
+//    }
 
     private void setRecyclerView (){
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this,2);
