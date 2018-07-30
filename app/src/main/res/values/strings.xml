@@ -403,5 +403,15 @@
     <string name="secretButtonLabel">Secret</string>
     <string name="openButtonLabel">Open</string>
     <string name="confirm">Confirm</string>
+    <string name="Admins">Admins</string>
+    <string name="members">Members</string>
+    <string name="howCanAddMembers">WHO CAN ADD MEMBERS TO THIS GROUP</string>
+    <string name="howCanPost">WHO CAN POST ON THIS GROUP</string>
+    <string name="howCanAddEvent">WHO CAN ADD EVENTS TO THE GROUP</string>
+    <string name="updateGroup">Update Group</string>
+    <string name="add_member">Add member</string>
+    <string name="everyone">Everyone</string>
+    <string name="group_About">About</string>
+    <string name="retry">retry</string>
 
 </resources>

@@ -25,8 +25,6 @@
         android:background="@drawable/post_background"
         android:layout_below="@+id/searchHeader">
 
-
-
         <LinearLayout
             android:id="@+id/createGroupId"
             android:layout_width="match_parent"
@@ -130,7 +128,7 @@
              android:layout_marginStart="5dp"
              android:text="@string/closed_group_label"
              android:onClick="checkRadioButton"
-             android:drawableLeft="@drawable/lock"/>
+             android:drawableLeft="@drawable/ic_closed_group_icon"/>
          <RadioButton
              android:id="@+id/secret_group"
              android:layout_width="wrap_content"
@@ -138,7 +136,7 @@
              android:layout_marginStart="5dp"
              android:text="@string/secret_group_label"
              android:onClick="checkRadioButton"
-             android:drawableLeft="@drawable/ic_sec"/>
+             android:drawableLeft="@drawable/ic_secret_group_icon"/>
 
      </RadioGroup>
 

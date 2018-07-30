@@ -30,6 +30,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class Main extends AppCompatActivity implements Home.HomeCallback {
 
+
     View requestView;
     View notificationView;
     EditText searchBox;

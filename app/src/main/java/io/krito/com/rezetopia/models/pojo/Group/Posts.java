@@ -1,11 +1,14 @@
 package io.krito.com.rezetopia.models.pojo.Group;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Posts {
+public class Posts implements Parcelable {
 
     @SerializedName("posts")
     @Expose
@@ -31,6 +34,33 @@ public class Posts {
         this.nextCursor = nextCursor;
         this.error = error;
     }
+
+    protected Posts(Parcel in) {
+        if (in.readByte() == 0) {
+            now = null;
+        } else {
+            now = in.readInt();
+        }
+        if (in.readByte() == 0) {
+            nextCursor = null;
+        } else {
+            nextCursor = in.readInt();
+        }
+        byte tmpError = in.readByte();
+        error = tmpError == 0 ? null : tmpError == 1;
+    }
+
+    public static final Creator<Posts> CREATOR = new Creator<Posts>() {
+        @Override
+        public Posts createFromParcel(Parcel in) {
+            return new Posts(in);
+        }
+
+        @Override
+        public Posts[] newArray(int size) {
+            return new Posts[size];
+        }
+    };
 
     public List<Post> getPost() {
         return posts;
@@ -64,5 +94,26 @@ public class Posts {
         this.error = error;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (now == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(now);
+        }
+        if (nextCursor == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeInt(nextCursor);
+        }
+        dest.writeByte((byte) (error == null ? 0 : error ? 1 : 2));
+    }
 }
 

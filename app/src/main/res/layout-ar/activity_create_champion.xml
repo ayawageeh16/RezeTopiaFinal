@@ -42,8 +42,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_border"
-        app:ms_arrow_tint="@color/green2"
-        app:ms_text_color="@color/black" />
+        />
 
     <LinearLayout
         android:gravity="center"
@@ -174,8 +173,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/edit_border"
-        app:ms_arrow_tint="@color/green2"
-        app:ms_text_color="@color/black" />
+    />
 
     <Button
         android:layout_marginTop="@dimen/dimen_10"

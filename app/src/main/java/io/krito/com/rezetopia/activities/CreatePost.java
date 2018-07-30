@@ -1,11 +1,9 @@
 package io.krito.com.rezetopia.activities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
-import android.location.Location;
 import android.media.MediaPlayer;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -14,12 +12,9 @@ import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.ListPopupWindow;
 import android.support.v7.widget.RecyclerView;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -63,7 +58,6 @@ import com.taskail.googleplacessearchdialog.SimplePlacesSearchDialogBuilder;
 import net.gotev.uploadservice.MultipartUploadRequest;
 import net.gotev.uploadservice.UploadNotificationConfig;
 
-import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,7 +88,6 @@ import io.krito.com.rezetopia.models.pojo.post.Attachment;
 import io.krito.com.rezetopia.models.pojo.post.Media;
 import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 import io.krito.com.rezetopia.receivers.ConnectivityReceiver;
-import io.krito.com.rezetopia.views.CustomTextView;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import ru.whalemare.sheetmenu.SheetMenu;
@@ -206,7 +199,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 } else if (i == 3) {
                     privacy = "only_me";
                     privacyText.setText(R.string.only_me);
-                    privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                    privacyIcon.setBackground(getResources().getDrawable(R.drawable.ic_closed_group_icon));
                 }
 
 
@@ -242,7 +235,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                             case R.id.only_meId:
                                 privacy = "only_me";
                                 privacyText.setText(R.string.only_me);
-                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.ic_closed_group_icon));
                                 break;
                         }
                         return false;
@@ -837,6 +830,7 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                     .startUpload();
 
         } catch (Exception exc) {
+
             Toast.makeText(this, exc.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
@@ -852,11 +846,11 @@ public class CreatePost extends AppCompatActivity implements View.OnClickListene
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
             }
         }) {
             @Override
             protected Map<String, String> getParams() {
+
                 Map<String, String> params = new HashMap<>();
                 params.put("userId", userId);
                 params.put("post_text", postText.getText().toString());

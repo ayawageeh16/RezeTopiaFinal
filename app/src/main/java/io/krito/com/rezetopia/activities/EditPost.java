@@ -1,17 +1,12 @@
 package io.krito.com.rezetopia.activities;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Typeface;
 import android.net.NetworkInfo;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -34,12 +29,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.github.pwittchen.reactivenetwork.library.rx2.ReactiveNetwork;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -48,9 +40,6 @@ import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
-import io.krito.com.rezetopia.models.pojo.post.Attachment;
-import io.krito.com.rezetopia.models.pojo.post.Media;
-import io.krito.com.rezetopia.models.pojo.post.PostResponse;
 import io.krito.com.rezetopia.receivers.ConnectivityReceiver;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -135,7 +124,7 @@ public class EditPost extends AppCompatActivity implements View.OnClickListener 
             case 4:
                 privacy = getResources().getString(R.string.only_me);
                 privacyText.setText(R.string.only_me);
-                privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                privacyIcon.setBackground(getResources().getDrawable(R.drawable.ic_closed_group_icon));
                 break;
         }
 
@@ -282,7 +271,7 @@ public class EditPost extends AppCompatActivity implements View.OnClickListener 
                             case R.id.only_meId:
                                 privacy = "only_me";
                                 privacyText.setText(R.string.only_me);
-                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.ic_closed_group_icon));
                                 item.setPrivacyId(4);
                                 break;
                         }

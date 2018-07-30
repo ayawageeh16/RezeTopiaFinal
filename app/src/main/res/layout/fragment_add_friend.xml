@@ -1,15 +1,18 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="io.krito.com.rezetopia.fragments.AddFriendFragment"
-    android:padding="20dp">
-<LinearLayout
+    android:padding="20dp"
+    android:orientation="vertical">
+
+   <LinearLayout
     android:id="@+id/add_friend"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="@drawable/post_background">
+
 
    <android.support.v7.widget.RecyclerView
        android:layout_width="match_parent"
@@ -27,7 +30,7 @@
         android:layout_marginTop="@dimen/dimen_10"
         android:layout_marginBottom="@dimen/dimen_10"
         android:background="@color/white"/>
-</LinearLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/addFriendBtn"
@@ -41,4 +44,4 @@
         android:textColor="@color/white"
         android:layout_centerInParent="true"/>
 
-</RelativeLayout>
+</LinearLayout>

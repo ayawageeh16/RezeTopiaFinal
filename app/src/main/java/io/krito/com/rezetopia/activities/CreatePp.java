@@ -7,15 +7,12 @@ import android.graphics.BitmapFactory;
 import android.net.NetworkInfo;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.ListPopupWindow;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.andrognito.flashbar.Flashbar;
@@ -50,7 +47,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -59,8 +55,6 @@ import id.arieridwan.lib.PageLoader;
 import io.krito.com.rezetopia.R;
 import io.krito.com.rezetopia.application.AppConfig;
 import io.krito.com.rezetopia.application.RezetopiaApp;
-import io.krito.com.rezetopia.helper.ListPopupWindowAdapter;
-import io.krito.com.rezetopia.helper.MenuCustomItem;
 import io.krito.com.rezetopia.helper.VolleyMultipartRequest;
 import io.krito.com.rezetopia.models.pojo.news_feed.NewsFeedItem;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -461,7 +455,7 @@ public class CreatePp extends AppCompatActivity implements View.OnClickListener 
                             case R.id.only_meId:
                                 privacyText = "only_me";
                                 privacy.setText(R.string.only_me);
-                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.ic_closed_group_icon));
                                 break;
                         }
                         return false;

@@ -151,13 +151,21 @@ dependencies {
     implementation 'com.github.marlonlom:timeago:3.0.2'
 
     //spinner
-    implementation 'com.jaredrummler:material-spinner:1.2.5'
+   // implementation 'com.jaredrummler:material-spinner:1.2.5'
 
     //places
     implementation 'com.taskail:simple-places-search-dialog:1.0'
     implementation 'com.google.android.gms:play-services-places:15.0.1'
-//    implementation 'com.google.android.gms:play-services-auth:12.0.1'
-//    implementation 'com.google.android.gms:play-services-gcm:12.0.1'
-//    implementation 'com.google.android.gms:play-services:12.0.1'
+    implementation 'com.google.android.gms:play-services-auth:12.0.1'
+    //implementation 'com.google.android.gms:play-services-gcm:12.0.1'
+    //implementation 'com.google.android.gms:play-services:12.0.1'
+
+    //ButterKnife
+    implementation 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+    //Circle ImageView
+    implementation 'de.hdodenhof:circleimageview:1.2.1'
+
 
 }

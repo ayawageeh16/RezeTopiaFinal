@@ -463,7 +463,7 @@ public class CreateCover extends AppCompatActivity implements View.OnClickListen
                             case R.id.only_meId:
                                 privacyText = "only_me";
                                 privacy.setText(R.string.only_me);
-                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.lock));
+                                privacyIcon.setBackground(getResources().getDrawable(R.drawable.ic_closed_group_icon));
                                 break;
                         }
                         return false;
